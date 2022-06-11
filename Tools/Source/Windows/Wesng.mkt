@@ -1,0 +1,31 @@
+def Install():
+    print("[Windows Exploit Suggester] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/bitsadmin/wesng.git Wesng")
+    Setup()
+
+def Uninstall():
+    print("[Windows Exploit Suggester] Uninstalling ...")
+    import os
+    os.system("python3 -m pip -y uninstall wesng")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Wesng")
+
+def Setup():
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Wesng")
+    os.system("python3 setup.py install")
+    os.system("wes --update")
+
+def Upgrade():
+    print("[Windows Exploit Suggester] Upgrade ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Wesng")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+
+    os.system("python3 setup.py install")
+    os.system("wes --update")

@@ -1,0 +1,37 @@
+# please run as: sudo mkt install <path/name>
+
+def Install():
+    print("[sudo_killer] installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Linux/")
+    os.system("git clone https://github.com/TH3xACE/SUDO_KILLER.git Sudo_Killer")
+
+    print("[sudo_killer] Linking the DB ...")
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Res/Data/Sudo_Killer/")
+    path.mkdir(parents=True, exist_ok=True)
+    
+    os.system("ln -s /var/lib/mkt/Tools/Source/Linux/Sudo_Killer/exploits /var/lib/mkt/Res/Data/Sudo_Killer/exploits")
+    os.system("ln -s /var/lib/mkt/Tools/Source/Linux/Sudo_Killer/notes /var/lib/mkt/Res/Data/Sudo_Killer/notes")
+
+
+def Uninstall():
+    print("[sudo_killer] uninstall ...")
+
+    import os
+    os.system("unlink /var/lib/mkt/Res/Data/Sudo_Killer/notes")
+    os.system("unlink /var/lib/mkt/Res/Data/Sudo_Killer/exploits")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Linux/Sudo_Killer")
+
+
+def Upgrade():
+    print("[sudo_killer] Upgrade ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Linux/Sudo_Killer")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+

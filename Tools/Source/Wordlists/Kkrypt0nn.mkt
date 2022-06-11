@@ -1,0 +1,24 @@
+
+
+def Install():
+    print("[Kkrypt0nn] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Wordlists")
+    os.system("git clone https://github.com/kkrypt0nn/Wordlists.git Kkrypt0nn")
+
+def Uninstall():
+    print("[Kkrypt0nn] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Wordlists/Kkrypt0nn")
+
+def Upgrade():
+    print("[Kkrypt0nn] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Wordlists/Kkrypt0nn")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    

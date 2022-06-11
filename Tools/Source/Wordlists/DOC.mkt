@@ -1,0 +1,24 @@
+
+
+def Install():
+    print("[DOC] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Wordlists")
+    os.system("git clone https://github.com/insightglacier/Dictionary-Of-Pentesting.git DOC")
+
+def Uninstall():
+    print("[DOC] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Wordlists/DOC")
+
+def Upgrade():
+    print("[DOC] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Wordlists/DOC")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    

@@ -1,0 +1,21 @@
+def Install():
+    print("[RottenPotato] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Potato")
+    os.system("git clone https://github.com/breenmachine/RottenPotatoNG RottenPotato")
+
+def Uninstall():
+    print("[RottenPotato] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Potato/RottenPotato")
+
+def Upgrade():
+    print("[RottenPotato] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Potato/RottenPotato")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

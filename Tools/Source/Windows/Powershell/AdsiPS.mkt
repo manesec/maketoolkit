@@ -1,0 +1,24 @@
+
+
+def Install():
+    print("[AdsiPS] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell")
+    os.system("git clone https://github.com/lazywinadmin/AdsiPS.git AdsiPS")
+
+def Uninstall():
+    print("[AdsiPS] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Powershell/AdsiPS")
+
+def Upgrade():
+    print("[AdsiPS] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell/AdsiPS")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    

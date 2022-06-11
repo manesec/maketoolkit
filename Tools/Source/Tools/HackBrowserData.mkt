@@ -1,0 +1,95 @@
+def Install():
+    print("[HackBrowserData] Downloading base ...")
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Tools/HackBrowserData/")
+    path.mkdir(parents=True, exist_ok=True)
+
+    UpdateFromGithub()
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/HackBrowserData/")
+    os.system("unzip \*.zip")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/HackBrowserData/*.zip")
+
+def Uninstall():
+    import os
+    print("[HackBrowserData] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/HackBrowserData")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/HackBrowserData_*")
+
+def Upgrade():
+    print("[HackBrowserData] Upgrading ...")
+    UpdateFromGithub()
+    
+def UpdateFromGithub():
+    Files = [
+        ["hack-browser-data-linux-386.zip","/var/lib/mkt/Tools/Source/Tools/HackBrowserData/hack-browser-data-linux-386.zip"],
+        ["hack-browser-data-linux-amd64.zip","/var/lib/mkt/Tools/Source/Tools/HackBrowserData/hack-browser-data-linux-amd64.zip"],
+        ["hack-browser-data-windows-32bit.zip","/var/lib/mkt/Tools/Source/Tools/HackBrowserData/hack-browser-data-windows-32bit.zip"],
+        ["hack-browser-data-windows-64bit.zip","/var/lib/mkt/Tools/Source/Tools/HackBrowserData/hack-browser-data-windows-64bit.zip"]
+    ]
+    UpdateFromGithubReleaseFiles("https://api.github.com/repos/moonD4rk/HackBrowserData/releases/latest",Files,sign_prefix="HackBrowserData_")
+    CheckGithubAPIQuta()
+
+def UpdateFromGithubReleaseFiles(URL,Files,sign_prefix=""):
+    import json,re,os
+    import requests
+
+    CONFIG_JSON = json.load(open('/etc/mkt.json','r'))
+    print(" *  Searching Github Repo ...")
+    
+    Return_json = ""
+    if CONFIG_JSON["GithubToken"].strip() != "":
+        Return_json = requests.get(URL,headers={"Authorization":"token %s" % (CONFIG_JSON["GithubToken"].strip())}).text
+    else:
+        Return_json = requests.get(URL).text
+    Return_json = json.loads(Return_json)
+
+    for filereg,savelink in Files:
+        for f in Return_json["assets"]:
+            if (re.search(filereg,f["name"])):
+                print(" +  Found %s " % (f["name"]))
+                sign_file = "/var/lib/mkt/Tools/Version/" + sign_prefix + os.path.basename(savelink) +".gitid"
+
+                if (os.path.exists(sign_file)):
+                    save_id = open(sign_file,"r")
+                    localid = save_id.read().strip()
+                    save_id.close()
+                    if (localid == str(f["id"])):
+                        print(" !  Already up to date")
+                        break
+
+                print(" *  Downloading %s ..." % (f["name"]))
+                WgetDownloadFile(f['browser_download_url'],savelink,quiet=True)
+                if (os.path.exists(savelink)):
+                    save_id = open(sign_file,"w")
+                    save_id.write(str(f["id"]))
+                    save_id.close()
+                break
+
+def CheckGithubAPIQuta():
+    import json
+    import requests
+    from datetime import datetime
+    import time
+
+    CONFIG_JSON = json.load(open('/etc/mkt.json','r'))
+
+    Return_json = ""
+    if CONFIG_JSON["GithubToken"].strip() != "":
+        Return_json = requests.get("https://api.github.com/rate_limit",headers={"Authorization":"token %s" % (CONFIG_JSON["GithubToken"].strip())}).text
+    else:
+        Return_json = requests.get("https://api.github.com/rate_limit").text
+    Return_json = json.loads(Return_json)
+    Remaining = Return_json["rate"]["remaining"]
+    Limit = Return_json["rate"]["limit"]
+    Reset = (datetime.utcfromtimestamp(Return_json["rate"]["reset"]) - datetime.utcfromtimestamp(time.time())).seconds / 60
+    print("[!] Github API: Remaining %s/%s, Reset in %s minutes later." % (Remaining,Limit,round(Reset,2)))
+
+def WgetDownloadFile(url,local_path,quiet = False):
+    import os
+    if os.path.exists(local_path):
+        os.remove(local_path)
+    quiet = "--quiet" if quiet else ""
+    os.system('wget "%s" %s -O "%s"' % (url,quiet,local_path))

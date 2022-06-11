@@ -1,0 +1,21 @@
+def Install():
+    print("[WinPWN] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/S3cur3Th1sSh1t/WinPwn.git WinPWN")
+
+def Uninstall():
+    print("[WinPWN] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/WinPWN")
+
+def Upgrade():
+    print("[WinPWN] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/WinPWN")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

@@ -1,0 +1,24 @@
+
+
+def Install():
+    print("[RedTeamPowershellEnum] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell")
+    os.system("git clone https://github.com/tobor88/PowerShell-Red-Team.git RedTeamPowershellEnum")
+
+def Uninstall():
+    print("[RedTeamPowershellEnum] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Powershell/RedTeamPowershellEnum")
+
+def Upgrade():
+    print("[RedTeamPowershellEnum] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell/RedTeamPowershellEnum")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    

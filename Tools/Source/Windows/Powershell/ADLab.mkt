@@ -1,0 +1,24 @@
+
+
+def Install():
+    print("[ADLab] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell")
+    os.system("git clone https://github.com/browninfosecguy/ADLab.git ADLab")
+
+def Uninstall():
+    print("[ADLab] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Powershell/ADLab")
+
+def Upgrade():
+    print("[ADLab] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell/ADLab")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    

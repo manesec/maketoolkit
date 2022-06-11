@@ -1,0 +1,24 @@
+
+
+def Install():
+    print("[PowerSploit_Dev] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell")
+    os.system("git clone https://github.com/PowerShellMafia/PowerSploit.git PowerSploit_Dev")
+
+def Uninstall():
+    print("[PowerSploit_Dev] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Powershell/PowerSploit_Dev")
+
+def Upgrade():
+    print("[PowerSploit_Dev] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell/PowerSploit_Dev")
+    
+    Branches = "dev"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    

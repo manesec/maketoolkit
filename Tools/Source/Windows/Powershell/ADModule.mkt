@@ -1,0 +1,24 @@
+
+
+def Install():
+    print("[ADModule] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell")
+    os.system("git clone https://github.com/samratashok/ADModule.git ADModule")
+
+def Uninstall():
+    print("[ADModule] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Powershell/ADModule")
+
+def Upgrade():
+    print("[ADModule] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell/ADModule")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    

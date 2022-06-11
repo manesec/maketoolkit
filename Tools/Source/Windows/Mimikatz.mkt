@@ -1,0 +1,22 @@
+def Install():
+    print("[Mimikatz] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/ParrotSec/mimikatz.git Mimikatz")
+
+def Uninstall():
+    print("[Mimikatz] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Mimikatz")
+
+def Upgrade():
+    print("[Mimikatz] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Mimikatz")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    

@@ -1,0 +1,21 @@
+def Install():
+    print("[AutoWordlists] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Wordlists")
+    os.system("git clone https://github.com/carlospolop/Auto_Wordlists.git AutoWordlists")
+
+def Uninstall():
+    print("[AutoWordlists] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Wordlists/AutoWordlists")
+
+def Upgrade():
+    print("[AutoWordlists] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Wordlists/AutoWordlists")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

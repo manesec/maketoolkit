@@ -1,0 +1,19 @@
+def Install():
+    print("[Rockyou] Download the base ...")
+    WgetDownloadFile("https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt","/var/lib/mkt/Tools/Source/Wordlists/rockyou.txt")
+
+def Uninstall():
+    print("[Rockyou] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Wordlists/rockyou.txt")
+
+def Upgrade():
+    print("[Rockyou] This script can not be update.")
+
+def WgetDownloadFile(url,local_path,quiet = False):
+    import os
+    if os.path.exists(local_path):
+        os.remove(local_path)
+    quiet = "--quiet" if quiet else ""
+    os.system('wget "%s" %s -O "%s"' % (url,quiet,local_path))

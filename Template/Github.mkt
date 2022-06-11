@@ -1,0 +1,21 @@
+def Install():
+    print("[Tools4mane] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+    os.system("git clone https://github.com/manesec/tools4mane.git Tools4mane")
+
+def Uninstall():
+    print("[Tools4mane] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Tools4mane")
+
+def Upgrade():
+    print("[Tools4mane] Upgrade ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Tools4mane")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

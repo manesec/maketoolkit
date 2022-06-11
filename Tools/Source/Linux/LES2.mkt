@@ -1,0 +1,84 @@
+
+def Install():
+    print("[linux-exploit-suggester-2] Install ...")
+    GithubProject()
+
+def Uninstall():
+    print("[linux-exploit-suggester-2] Uninstall ...")
+    
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Linux/LES2.pl")
+
+def Upgrade():
+    print("[linux-exploit-suggester-2] Upgrade ...")
+    GithubProject()
+
+def GithubProject():
+    file = [
+        ["linux-exploit-suggester-2.pl","/var/lib/mkt/Tools/Source/Linux/LES2.pl"]
+    ]
+    ProjectGetFilesAndUpdate("jondonas/linux-exploit-suggester-2","master",file)  
+    CheckGithubAPIQuta()  
+
+def ProjectGetFilesAndUpdate(repoaddr,branches,files):
+    import json,os,sys,subprocess
+    import requests
+
+    CONFIG_JSON = json.load(open('/etc/mkt.json','r'))
+
+    api_url = "https://api.github.com/repos/%s/git/trees/%s?recursive=1" % (repoaddr,branches)
+    import requests
+    Return_json = ""
+    if CONFIG_JSON["GithubToken"].strip() != "":
+        Return_json = requests.get(api_url,headers={"Authorization":"token %s" % (CONFIG_JSON["GithubToken"].strip())}).text
+    else:
+        Return_json = requests.get(api_url).text
+    Return_json = json.loads(Return_json)["tree"]
+    
+    for afile in files:
+        RemotePath,LocalPath = afile
+        print(" *  Checking %s ..." % RemotePath)
+        if os.path.exists(LocalPath):
+            LocalPathSha = subprocess.getoutput("git hash-object %s" % (LocalPath))
+            RemotePathSha = ""
+            for RemoteFileObj in Return_json:
+                if (RemoteFileObj["path"].strip() == RemotePath) : 
+                    RemotePathSha = RemoteFileObj["sha"]
+                    break
+            if (RemotePathSha == ""):
+                print("[ERR] %s was not found on github repo!" % (RemotePath))
+                sys.exit(0)
+            if (LocalPathSha == RemotePathSha):
+                print(" !  Already up to date.")
+                continue
+        print(" *  Updating %s ..." % (RemotePath))
+        WgetDownloadFile("https://raw.githubusercontent.com/%s/%s/%s" % (repoaddr,branches,RemotePath),LocalPath,True)
+        print(" +  Finish.")
+        continue
+
+def WgetDownloadFile(url,local_path,quiet = False):
+    import os
+    if os.path.exists(local_path):
+        os.remove(local_path)
+    quiet = "--quiet" if quiet else ""
+    os.system('wget "%s" %s -O "%s"' % (url,quiet,local_path))
+
+
+def CheckGithubAPIQuta():
+    import json
+    import requests
+    from datetime import datetime
+    import time
+
+    CONFIG_JSON = json.load(open('/etc/mkt.json','r'))
+
+    Return_json = ""
+    if CONFIG_JSON["GithubToken"].strip() != "":
+        Return_json = requests.get("https://api.github.com/rate_limit",headers={"Authorization":"token %s" % (CONFIG_JSON["GithubToken"].strip())}).text
+    else:
+        Return_json = requests.get("https://api.github.com/rate_limit").text
+    Return_json = json.loads(Return_json)
+    Remaining = Return_json["rate"]["remaining"]
+    Limit = Return_json["rate"]["limit"]
+    Reset = (datetime.utcfromtimestamp(Return_json["rate"]["reset"]) - datetime.utcfromtimestamp(time.time())).seconds / 60
+    print("[!] Github API: Remaining %s/%s, Reset in %s minutes later." % (Remaining,Limit,round(Reset,2)))

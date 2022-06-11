@@ -1,0 +1,24 @@
+
+
+def Install():
+    print("[SecLists] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Wordlists")
+    os.system("git clone https://github.com/danielmiessler/SecLists.git SecLists")
+
+def Uninstall():
+    print("[SecLists] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Wordlists/SecLists")
+
+def Upgrade():
+    print("[SecLists] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Wordlists/SecLists")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    

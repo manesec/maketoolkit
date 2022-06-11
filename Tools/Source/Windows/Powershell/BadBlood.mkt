@@ -1,0 +1,24 @@
+
+
+def Install():
+    print("[BadBlood] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell")
+    os.system("git clone https://github.com/davidprowe/BadBlood.git BadBlood")
+
+def Uninstall():
+    print("[BadBlood] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Powershell/BadBlood")
+
+def Upgrade():
+    print("[BadBlood] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell/BadBlood")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    

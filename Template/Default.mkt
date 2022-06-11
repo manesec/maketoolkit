@@ -1,0 +1,10 @@
+# please run as: sudo mkt install <path>
+
+def Install():
+    print("install ...")
+
+def Uninstall():
+    print("uninstall ...")
+
+def Upgrade():
+    print("Upgrade ...")

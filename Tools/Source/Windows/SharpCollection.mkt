@@ -1,0 +1,21 @@
+def Install():
+    print("[SharpCollection] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/Flangvik/SharpCollection.git SharpCollection")
+
+def Uninstall():
+    print("[SharpCollection] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/SharpCollection")
+
+def Upgrade():
+    print("[SharpCollection] Upgrade ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/SharpCollection")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

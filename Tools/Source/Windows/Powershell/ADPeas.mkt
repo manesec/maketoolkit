@@ -1,0 +1,24 @@
+
+
+def Install():
+    print("[ADPeas] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell")
+    os.system("git clone https://github.com/61106960/adPEAS.git ADPeas")
+
+def Uninstall():
+    print("[ADPeas] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Powershell/ADPeas")
+
+def Upgrade():
+    print("[ADPeas] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell/ADPeas")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    

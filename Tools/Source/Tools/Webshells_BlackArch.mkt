@@ -1,0 +1,21 @@
+def Install():
+    print("[Webshells_BlackArch] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+    os.system("git clone https://github.com/BlackArch/webshells.git Webshells_BlackArch")
+
+def Uninstall():
+    print("[Webshells_BlackArch] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Webshells_BlackArch")
+
+def Upgrade():
+    print("[Webshells_BlackArch] Upgrade ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Webshells_BlackArch")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

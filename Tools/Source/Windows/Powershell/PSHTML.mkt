@@ -1,0 +1,24 @@
+
+
+def Install():
+    print("[PSHTML] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell")
+    os.system("git clone https://github.com/bwya77/PSHTML-AD-Report.git PSHTML")
+
+def Uninstall():
+    print("[PSHTML] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Powershell/PSHTML")
+
+def Upgrade():
+    print("[PSHTML] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell/PSHTML")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    

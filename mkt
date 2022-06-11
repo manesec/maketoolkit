@@ -1,0 +1,573 @@
+#! /bin/python3
+import sys,os,shutil
+
+# mkt update
+def MKT_UPDATE():
+    print('[!] Please run "sudo mkt-update" command to update all the source include mkt.')
+
+# mkt help and version
+def MKT_HELP():
+    print("""
+         __      __                .__          
+  _____ |  | ___/  |_  ____   ____ |  |   ______
+ /     \|  |/ /\   __\/  _ \ /  _ \|  |  /  ___/
+|  Y Y  \    <  |  | (  <_> |  <_> )  |__\___ \ 
+|__|_|  /__|_ \ |__|  \____/ \____/|____/____  >
+      \/     \/                              \/ 
+          By @manesec, Version: 20220611 Beta
+      https://github.com/manesec/maketoolkit
+
+Usage:
+    # Base install and uninstall tools.
+    mkt   install     [<tools name>, <.mkt files>]
+    mkt   uninstall    <tools name>
+    mkt   reinstall    <tools name>
+    mkt   upgrade      <tools name>
+    mkt   upgrade      all
+
+List:
+    # List install the tools name.
+    mkt   list     install
+    mkt   list     installable
+
+Script:
+    # List build-in script
+    mkt   script   list
+    mkt   script   info
+    # Run the script 
+    mkt   script   <script_name>
+
+DB and res:
+    mkt   db   installable
+    mkt   db   list
+    mkt   db   install       <db_name>
+    mkt   db   uninstall     <db_name>
+
+Search DB and res:
+    mkt   search   <string>
+
+Other:
+    # Update all the source include mkt.
+    mkt-update
+
+    # Remove all "__pycache__" in tools
+    mkt clearup """)
+
+def MKT_CLEARUP():
+    print("[*] Clearing up ...")
+    os.system("find /var/lib/mkt/Tools/ -type d -name '__pycache__' | xargs -I $ rm -rf $")
+    os.system("chmod -R 755 /var/lib/mkt/")
+
+# ==========================================================================
+#                                 Base
+# ==========================================================================
+
+# mkt Install module
+def MKT_INSTALL():
+    if (len(sys.argv) != 3):
+        print("[ERROR] Invalid parameter")
+        print("    Usage: mkt install [ <tools name>, <.mkt files> ]")
+        sys.exit(0)
+
+    input_str = sys.argv[2] 
+    if (len(input_str)<=4) or (input_str[-4:] != ".mkt"):
+        input_str += ".mkt"
+
+    if (os.path.isabs(input_str)):
+        input_path = input_str
+    else:
+        systempwd = "/tmp"
+        try:
+            systempwd = os.getcwd() + "/" + input_str
+            systempwd = os.path.abspath(systempwd)
+        except:
+            pass
+        if (systempwd.startswith("/var/lib/mkt/Tools/Source/") or systempwd.startswith("/Tools/")):
+            input_path = systempwd
+        else:
+            input_path = "/var/lib/mkt/Tools/Source/" + input_str
+
+    abs_file = os.path.abspath(input_path)
+    relative_file = ""
+    relative_path = ""
+
+    if (abs_file.startswith("/var/lib/mkt/Tools/Source/")):
+        relative_file = os.path.basename(abs_file)
+        relative_path = os.path.dirname(abs_file).replace("/var/lib/mkt/Tools/Source/","")
+    elif (abs_file.startswith("/Tools/")):
+        relative_file = os.path.basename(abs_file)
+        relative_path = os.path.dirname(abs_file).replace("/Tools/","")
+    else:
+        print("[ERROR] The mkt file path without standard paths.")
+        sys.exit(0)
+
+    if (os.path.exists("/var/lib/mkt/Tools/Install/" + relative_path + "/" + relative_file)):
+        print("[ERROR] %s already installed." % (relative_path + "/" + relative_file.replace(".mkt","")))
+        sys.exit(0)
+
+    if not (os.path.exists(abs_file)):
+        print("[ERROR] No such file or name.")
+        sys.exit(0)
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Install/" + relative_path)
+    path.mkdir(parents=True, exist_ok=True)
+    shutil.move(abs_file,"/var/lib/mkt/Tools/Install/" + relative_path + "/" + relative_file)
+
+    from importlib.machinery import SourceFileLoader
+    SourceFileLoader("manesec","/var/lib/mkt/Tools/Install/" + relative_path + "/" +relative_file).load_module().Install()
+    MKT_CLEARUP()
+
+# mkt Uninstall module
+def MKT_UNINSTALL():
+    if (len(sys.argv) != 3):
+        print("[ERROR] Invalid parameter")
+        print("    Usage: mkt uninstall <tools name>")
+        sys.exit(0)
+
+    if (os.path.isabs(sys.argv[2])):
+        print("[ERROR] Please input tools name no abs path.")
+        sys.exit(0)
+
+    input_str = sys.argv[2] 
+    if (len(input_str)<=4) or (input_str[-4:] != ".mkt"):
+        input_str += ".mkt"
+
+    abs_file = os.path.abspath("/var/lib/mkt/Tools/Install/" + input_str)
+    module_name = abs_file.replace("/var/lib/mkt/Tools/Install/","")
+
+    if not (os.path.exists(abs_file)):
+        print("[ERROR] Unable to find the tools name.")
+        sys.exit(0)
+
+    shutil.move(abs_file,"/var/lib/mkt/Tools/Source/" + module_name)
+
+    from importlib.machinery import SourceFileLoader
+    SourceFileLoader("manesec","/var/lib/mkt/Tools/Source/" + module_name).load_module().Uninstall()
+
+    MKT_CLEARUP()
+
+# mkt Reinstall module
+def MKT_REINSTALL():
+    if (len(sys.argv) != 3):
+        print("[ERROR] Invalid parameter")
+        print("    Usage: mkt reinstall <tools name>")
+        sys.exit(0)
+
+    if (os.path.isabs(sys.argv[2])):
+        print("[ERROR] Please input tools name no abs path.")
+        sys.exit(0)
+
+    input_str = sys.argv[2] 
+    if (len(input_str)<=4) or (input_str[-4:] != ".mkt"):
+        input_str += ".mkt"
+
+    MKT_UNINSTALL()
+    MKT_INSTALL()
+    MKT_CLEARUP()
+
+# mkt Upgrade 
+def MKT_UPGRADE():
+    if (len(sys.argv) != 3):
+        print("[ERROR] Invalid parameter")
+        print("    Usage: mkt upgrade <name>")
+        sys.exit(0)
+    
+    match sys.argv[2] :
+        case "all": MKT_UPGRADE_ALL()
+        case _ : MKT_UPGRADE_TOOLS()
+
+def MKT_UPGRADE_ALL():
+    print("[*] Upgrade all the tools ...")
+    nolist = True
+    for path,subpaths,files in os.walk("/var/lib/mkt/Tools/Install/"):
+        for file in files:
+            if file[-4:] == ".mkt":
+                abs_path = (path + "/"+ file)
+                module_name = abs_path[:-4]
+                module_name = module_name.replace("/var/lib/mkt/Tools/Install/","")
+                print("[*] Pre-running %s ..." %module_name )
+                nolist = False
+
+                from importlib.machinery import SourceFileLoader
+                SourceFileLoader("manesec",abs_path).load_module().Upgrade()
+                MKT_CLEARUP()
+    if (nolist):
+        print("[!] There are no tools installed.")
+
+def MKT_UPGRADE_TOOLS():
+    input_str = sys.argv[2] 
+    if (input_str.strip() == ""):
+        print("[ERROR] Input can not be null.")
+        sys.exit(0)
+
+    abs_paths = os.path.abspath("/var/lib/mkt/Tools/Install/" + input_str + ".mkt")
+    if not (os.path.exists(abs_paths) and (abs_paths.startswith("/var/lib/mkt/Tools/Install/"))):
+        print("[ERROR] No such tools.")
+        sys.exit(0)
+
+    from importlib.machinery import SourceFileLoader
+    SourceFileLoader("manesec",abs_paths).load_module().Upgrade()
+    MKT_CLEARUP()
+
+# ==========================================================================
+#                                 List
+# ==========================================================================
+
+# mkt list install module
+def MKT_LIST():
+    if (len(sys.argv) != 3):
+        print("[ERROR] Invalid parameter")
+        print("    Usage: mkt list <install,installable>")
+        sys.exit(0)
+    
+    match sys.argv[2] :
+        case "install": MKT_LIST_INSTALLED()
+        case "installable": MKT_LIST_INSTALLABLE()
+        case _ : MKT_HELP()
+
+
+def MKT_LIST_INSTALLED():
+    print("[*] Installed Tools List:")
+    nolist = True
+    for path,subpaths,files in os.walk("/var/lib/mkt/Tools/Install/"):
+        for file in files:
+            if file[-4:] == ".mkt":
+                module_name = (path + "/"+ file)[:-4]
+                module_name = module_name.replace("/var/lib/mkt/Tools/Install/","")
+                print("    %s" %module_name )
+                nolist = False
+    if (nolist):
+        print("[!] There are no tools installed.")
+
+def MKT_LIST_INSTALLABLE():
+    print("[*] Installable Tools List:")
+    nolist = True
+    for path,subpaths,files in os.walk("/var/lib/mkt/Tools/Source/"):
+        for file in files:
+            if file[-4:] == ".mkt":
+                module_name = (path + "/"+ file)[:-4]
+                module_name = module_name.replace("/var/lib/mkt/Tools/Source/","")
+                print("    %s" %module_name )
+                nolist = False
+                
+    if (nolist):
+        print("[!] There are no tools can be install.")
+
+# ==========================================================================
+#                                 Script
+# ==========================================================================
+# mkt script
+def MKT_SCRIPT():
+    if (len(sys.argv) != 3):
+        print("[ERROR] Invalid parameter")
+        print("    Usage: mkt script <list,info, <string> >")
+        sys.exit(0)
+    
+    match sys.argv[2] :
+        case "list": MKT_SCRIPT_LIST()
+        case "info": MKT_SCRIPT_INFO()
+        case _ : MKT_SCRIPT_USE()
+
+def MKT_SCRIPT_LIST():
+    print("[*] Available scripts:")
+    nolist = True
+    for path,subpaths,files in os.walk("/var/lib/mkt/Script"):
+        for file in files:
+            if file[-3:] == ".py":
+                module_name = (path + "/"+ file)[:-3]
+                module_name = module_name.replace("/var/lib/mkt/Script/","")
+                print("    %s" %module_name )
+                nolist = False
+    if (nolist):
+        print("[*] There are no any script can be use.")
+
+def MKT_SCRIPT_USE():
+    input_str = sys.argv[2] 
+    if (input_str.strip() == ""):
+        print("[ERROR] Input can not be null.")
+        sys.exit(0)
+
+    abs_paths = os.path.abspath("/var/lib/mkt/Script/" + input_str + ".py")
+    if not (os.path.exists(abs_paths) and (abs_paths.startswith("/var/lib/mkt/Script/"))):
+        print("[ERROR] No such script.")
+        sys.exit(0)
+
+    from importlib.machinery import SourceFileLoader
+    SourceFileLoader("manesec",abs_paths).load_module().Run()
+    MKT_CLEARUP()
+
+def MKT_SCRIPT_INFO():
+    nolist = True
+    for path,subpaths,files in os.walk("/var/lib/mkt/Script"):
+        for file in files:
+            if file[-3:] == ".py":
+                abs_path = (path + "/"+ file)
+                module_name = abs_path[:-3]
+                module_name = module_name.replace("/var/lib/mkt/Script/","")
+                print("[%s]" %module_name )
+                nolist = False
+
+                from importlib.machinery import SourceFileLoader
+                SourceFileLoader("manesec",abs_path).load_module().Info()
+
+    if (nolist):
+        print("[!] There are no any script can be use.")
+
+# ==========================================================================
+#                              Res and DB
+# ==========================================================================
+
+def MKT_DB():
+    if not ((len(sys.argv) ==3) or len(sys.argv) ==4):
+        print("[ERROR] Invalid parameter")
+        print("    Usage: mkt db <list, installable, install <db_name>, uninstall <db_name> >")
+        sys.exit(0)
+    
+    match sys.argv[2] :
+        case "install" : MKT_DB_INSTALL()
+        case "uninstall" : MKT_DB_UNINSTALL()
+        case "upgrade" : MKT_DB_UPGRADE()
+        case "list" : MKT_DB_LIST()
+        case "installable": MKT_DB_INSTALL_ABLE()
+        case _ : 
+            print("    Usage: mkt db <list, installable, install <db_name>, uninstall <db_name> >")
+
+def MKT_DB_INSTALL():
+    if (len(sys.argv) !=4):
+        print("[ERROR] Invalid parameter")
+        print("    Usage: mkt db install <db_name>")
+        sys.exit(0)
+
+    input_str = sys.argv[3] 
+    if (input_str.strip() == ""):
+        print("[ERROR] Input can not be null.")
+        sys.exit(0)
+
+    abs_paths = os.path.abspath("/var/lib/mkt/Res/Source/" + input_str + ".py")
+    if not (os.path.exists(abs_paths) and (abs_paths.startswith("/var/lib/mkt/Res/Source/"))):
+        print("[ERROR] No such db.")
+        sys.exit(0)
+
+    relative_path = os.path.dirname(abs_paths).replace("/var/lib/mkt/Res/Source","")
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Res/Install/" + relative_path)
+    path.mkdir(parents=True, exist_ok=True)
+    new_path = "/var/lib/mkt/Res/Install/" + relative_path + os.path.basename(abs_paths)
+    shutil.move(abs_paths,new_path)
+
+    from importlib.machinery import SourceFileLoader
+    SourceFileLoader("manesec",new_path).load_module().Install()    
+    MKT_CLEARUP()
+
+def MKT_DB_UNINSTALL():
+    if (len(sys.argv) !=4):
+        print("[ERROR] Invalid parameter")
+        print("    Usage: mkt db uninstall <db_name>")
+        sys.exit(0)
+
+    input_str = sys.argv[3] 
+    if (input_str.strip() == ""):
+        print("[ERROR] Input can not be null.")
+        sys.exit(0)
+
+    abs_paths = os.path.abspath("/var/lib/mkt/Res/Install/" + input_str + ".py")
+    if not (os.path.exists(abs_paths) and (abs_paths.startswith("/var/lib/mkt/Res/Install/"))):
+        print("[ERROR] No such db.")
+        sys.exit(0)
+
+    relative_path = os.path.dirname(abs_paths).replace("/var/lib/mkt/Res/Install","")
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Res/Source/" + relative_path)
+    path.mkdir(parents=True, exist_ok=True)
+    new_path = "/var/lib/mkt/Res/Source/" + relative_path + os.path.basename(abs_paths)
+    shutil.move(abs_paths,new_path)
+
+    from importlib.machinery import SourceFileLoader
+    SourceFileLoader("manesec",new_path).load_module().Uninstall()        
+    MKT_CLEARUP()
+    MKT_CLEARUP()
+def MKT_DB_LIST():
+    print("[*] List all installed db ...")
+    nolist = True
+    for path,_, files in os.walk("/var/lib/mkt/Res/Install/"):
+        for file in files:
+            if file[-3:] == ".py":
+                abs_path = (path + file)
+                module_name = abs_path[:-3]
+                module_name = module_name.replace("/var/lib/mkt/Res/Install/","")
+                print("    %s" %module_name )
+                nolist = False
+
+    if (nolist):
+        print("[!] There are no db installed.")    
+
+def MKT_DB_INSTALL_ABLE():
+    print("[*] List all installable db ...")
+    nolist = True
+    for path,_, files in os.walk("/var/lib/mkt/Res/Source/"):
+        for file in files:
+            if file[-3:] == ".py":
+                abs_path = (path + file)
+                module_name = abs_path[:-3]
+                module_name = module_name.replace("/var/lib/mkt/Res/Source/","")
+                print("    %s" %module_name )
+                nolist = False
+
+    if (nolist):
+        print("[!] There are no db can be install.")    
+
+def MKT_DB_UPGRADE():
+    if (len(sys.argv) != 4):
+        print("[ERROR] Invalid parameter")
+        print("    Usage: mkt db upgrade <name>")
+        sys.exit(0)
+    
+    match sys.argv[3] :
+        case "all": MKT_DB_UPGRADE_ALL()
+        case _ : MKT_DB_UPGRADE_TOOLS()
+
+def MKT_DB_UPGRADE_ALL():
+    print("[*] Upgrade all the db ...")
+    nolist = True
+    for path,subpaths,files in os.walk("/var/lib/mkt/Res/Install/"):
+        for file in files:
+            if file[-3:] == ".py":
+                abs_path = (path + file)
+                module_name = abs_path[:-3]
+                module_name = module_name.replace("/var/lib/mkt/Res/Install/","")
+                print("Pre-running %s ..." %module_name )
+                nolist = False
+
+                from importlib.machinery import SourceFileLoader
+                SourceFileLoader("manesec",abs_path).load_module().Upgrade()
+                MKT_CLEARUP()
+    if (nolist):
+        print("[!] There are no db installed.")
+
+def MKT_DB_UPGRADE_TOOLS():
+    input_str = sys.argv[3] 
+    if (input_str.strip() == ""):
+        print("[ERROR] Input can not be null.")
+        sys.exit(0)
+
+    abs_paths = os.path.abspath("/var/lib/mkt/Res/Install/" + input_str + ".py")
+    if not (os.path.exists(abs_paths) and (abs_paths.startswith("/var/lib/mkt/Res/Install/"))):
+        print("[ERROR] No such db.")
+        sys.exit(0)
+
+    from importlib.machinery import SourceFileLoader
+    SourceFileLoader("manesec",abs_paths).load_module().Upgrade()
+    MKT_CLEARUP()
+
+def MKT_DB_CHECK_COMMAND(command):
+    import subprocess
+    code,_ =  subprocess.getstatusoutput("command -v " + command)
+    if code == 0:
+        return True
+    else:
+        return False
+
+# mkt search mane
+def MKT_DB_SEARCH():
+    import subprocess
+    if (len(sys.argv) < 3):
+        print("[ERROR] Invalid parameter")
+        print("    Usage: mkt search <string>")
+        sys.exit(0)
+    print("[*] Searching LocalDB ...")
+
+    out_stdout_list = ()
+
+    frist_search = True
+    for searchstr in sys.argv[2:]:
+        if frist_search:
+            print("[*] Frist search with %s ..." % (searchstr))
+            command = "grep -Rnil /var/lib/mkt/Res/Data/ -e '%s' --exclude-dir='.[^.]*'" % searchstr
+            status,output_str = subprocess.getstatusoutput(command)
+
+            if (status != 0) :
+                print("[!] No found on Local DB.")
+                sys.exit(0)
+
+            for l in output_str.split('\n'):
+                out_stdout_list += (l,)
+
+            frist_search = False
+            continue
+        
+        new_stdout_list = ()
+        print("[*] Filtering %s ..." % (searchstr))
+        for f in out_stdout_list:
+            command = "grep -il '%s' -e '%s' " % (f,searchstr)
+            status,output_str = subprocess.getstatusoutput(command)
+            if (status != 0) :
+                continue
+            new_stdout_list += (f,)
+        out_stdout_list = new_stdout_list
+
+    if (len(out_stdout_list) == 0):
+        print("[!] No found on Local DB.")
+        sys.exit(0)
+    print("\n[*] Found that in the file: ")
+
+    def listoutput():
+        print("-"*50)
+        for file in out_stdout_list:
+            print("[%s] %s" % (out_stdout_list.index(file),file.replace("/var/lib/mkt/Res/Data/","")))
+
+    listoutput()
+
+    user_not_exit = True
+    while (user_not_exit):
+        input_str = input("    (Q)uit,(L)ist,(Num)ber : ")
+        input_str = input_str.strip().lower()
+        if (input_str.isdigit()):
+            input_number = int(input_str)
+            if (input_number > len(out_stdout_list)-1):
+                print("[ERROR] Out of range.")
+            else:
+                doc_path = out_stdout_list[input_number]
+                if ((os.path.basename(doc_path).lower().find(".md")!= -1) and (MKT_DB_CHECK_COMMAND("glow"))):
+                    os.system("glow -p '%s'" % (doc_path))
+                else:
+                    less_param = "/"
+                    for searchstr in sys.argv[2:]:
+                        less_param += "%s|" % (searchstr.strip())
+                    less_param = less_param[:-1]
+                    os.system("less  +'%s'  +1  '%s'" % (less_param, doc_path) )
+                    listoutput()
+
+        if (input_str == "l"):
+            listoutput()
+
+        if (input_str == "q"):
+            user_not_exit = False
+
+# ==========================================================================
+#                                 Main
+# ==========================================================================
+def CheckUID():
+    if os.getuid() != 0 :
+        print("[ERROR] Please run as root user.")
+        sys.exit()
+
+if __name__ == "__main__" :
+    if (len(sys.argv) == 1):
+        MKT_HELP()
+        sys.exit()
+    match sys.argv[1] :
+        case "help" : MKT_HELP()
+        case "update": MKT_UPDATE()
+        case "install": CheckUID();MKT_INSTALL()
+        case "uninstall": CheckUID();MKT_UNINSTALL()
+        case "reinstall": CheckUID();MKT_REINSTALL()
+        case "list": MKT_LIST()
+        case "script": CheckUID(); MKT_SCRIPT()
+        case "upgrade": CheckUID(); MKT_UPGRADE()
+        case "db" : CheckUID(); MKT_DB()
+        case "search" : MKT_DB_SEARCH()
+        case "clearup" : CheckUID(); MKT_CLEARUP()
+        case _ : MKT_HELP()

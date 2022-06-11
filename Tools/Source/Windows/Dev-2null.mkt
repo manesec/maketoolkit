@@ -1,0 +1,5 @@
+tools = [
+        ["https://github.com/dev-2null/ADIDNSRecords/releases/download/1.4/ADIDNSRecords.exe","ADIDNSRecords.exe"],
+        ["https://github.com/dev-2null/KerberosRun/releases/download/1.0.0/KerberosRun.exe","KerberosRun.exe"],
+        ["https://github.com/dev-2null/ADCollector/releases/download/Release/ADCollector.exe","ADCollector.exe"]
+    ]
