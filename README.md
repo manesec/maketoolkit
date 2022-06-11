@@ -2,7 +2,7 @@
 
 Quick to install some pen-testing tools on python3.10+ and debian.
 
-![Logo](README_assets/1237a34c591de882d5ff4b159fc2890042f3c725.png)
+![Logo](Data\main.png)
 
 # Warning
 
