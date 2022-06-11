@@ -126,8 +126,12 @@ $ sudo mkt list installable
 $ sudo mkt db installable
 [*] List all installable db ...
     Cheatsheet
+    PWKCheatsheet
+    IRedTeam
     PayloadsAllTheThings
     ADCheatsheet_drak3hft7
+    ADExploitation
     ADCheatsheet_S1ckB0y1337
+    HackTricks
     BaseDB
 ```
