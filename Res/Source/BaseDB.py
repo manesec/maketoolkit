@@ -3,15 +3,18 @@ def Install():
     import os
     os.chdir("/var/lib/mkt/Res/Data/")
     os.system("git clone https://github.com/manesec/maketoolkit-db.git BaseDB")
+    os.chdir("/var/lib/mkt/Res/Data/BaseDB")
+    
+    from importlib.machinery import SourceFileLoader
+    SourceFileLoader("manesec","/var/lib/mkt/Res/Data/BaseDB/Build.py").load_module().Run()    
 
 def Uninstall():
-    print("[cheatsheet] Removing db...")
+    print("[BaseDB] Removing db...")
     import os
     os.system("rm -rf /var/lib/mkt/Res/Data/BaseDB")
 
 def Upgrade():
-    print("[cheatsheet] Checking and upgrading ...")
-    import os
-    os.chdir("/var/lib/mkt/Res/Data/BaseDB/")
-    Branches = "main"
-    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    print("[BaseDB] The BaseDB not support to upgrade, but you can uninstall and install it again.")
+    print("Try to run:")
+    print("    sudo mkt db uninstall BaseDB")
+    print("    sudo mkt db install BaseDB")
