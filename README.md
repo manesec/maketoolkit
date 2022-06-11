@@ -1,6 +1,6 @@
 # maketoolkit
 
-Quick to install some pen-testing tools on python3.10+ and debian.
+Quick to install some pen-testing tools on python and debian like os.
 
 ![Logo](Data/main.png)
 
@@ -12,7 +12,7 @@ This is **BETA** version, which mean it need to very unstable.
 
 ```bash
 git clone https://github.com/manesec/maketoolkit.git
-cd maketoolkit ; chmod u+x install.sh; sudo ./install.sh
+cd maketoolkit; chmod u+x install.sh; sudo ./install.sh
 ```
 
 **Note**: All tools will be locate in `/var/lib/mkt/Tools/Source` which soft link to `/Tools`.
@@ -61,13 +61,13 @@ Other:
     mkt-update
 
     # Remove all "__pycache__" in tools
-    mkt clearup """)
+    mkt clearup 
 ```
 
 ## Collection Tools List
 
 ```bash
-$ mkt list installable
+$ sudo mkt list installable
 [*] Installable Tools List:
     Binary/Ghidra
     Tools/JSPWebShellCollection
@@ -118,4 +118,16 @@ $ mkt list installable
     Wordlists/AutoWordlists
     Wordlists/DOC
     Wordlists/Kkrypt0nn
+```
+
+## Collection DB
+
+```bash
+$ sudo mkt db installable
+[*] List all installable db ...
+    Cheatsheet
+    PayloadsAllTheThings
+    ADCheatsheet_drak3hft7
+    ADCheatsheet_S1ckB0y1337
+    BaseDB
 ```
