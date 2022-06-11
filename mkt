@@ -14,7 +14,7 @@ def MKT_HELP():
 |  Y Y  \    <  |  | (  <_> |  <_> )  |__\___ \ 
 |__|_|  /__|_ \ |__|  \____/ \____/|____/____  >
       \/     \/                              \/ 
-          By @manesec, Version: 20220611 Beta
+       By @manesec, Version: 20220611 Beta
       https://github.com/manesec/maketoolkit
 
 Usage:
@@ -173,9 +173,10 @@ def MKT_UPGRADE():
         print("    Usage: mkt upgrade <name>")
         sys.exit(0)
     
-    match sys.argv[2] :
-        case "all": MKT_UPGRADE_ALL()
-        case _ : MKT_UPGRADE_TOOLS()
+    if (sys.argv[2] == "all"):
+        MKT_UPGRADE_ALL()
+    else:
+        MKT_UPGRADE_TOOLS()
 
 def MKT_UPGRADE_ALL():
     print("[*] Upgrade all the tools ...")
@@ -221,10 +222,12 @@ def MKT_LIST():
         print("    Usage: mkt list <install,installable>")
         sys.exit(0)
     
-    match sys.argv[2] :
-        case "install": MKT_LIST_INSTALLED()
-        case "installable": MKT_LIST_INSTALLABLE()
-        case _ : MKT_HELP()
+    if (sys.argv[2] == "install"):
+        MKT_LIST_INSTALLED()
+    elif (sys.argv[2] == "installable"):
+        MKT_LIST_INSTALLABLE()
+    else:
+        MKT_HELP()
 
 
 def MKT_LIST_INSTALLED():
@@ -264,10 +267,12 @@ def MKT_SCRIPT():
         print("    Usage: mkt script <list,info, <string> >")
         sys.exit(0)
     
-    match sys.argv[2] :
-        case "list": MKT_SCRIPT_LIST()
-        case "info": MKT_SCRIPT_INFO()
-        case _ : MKT_SCRIPT_USE()
+    if (sys.argv[2] == "list") :
+        MKT_SCRIPT_LIST()
+    elif (sys.argv[2] == "info"):
+        MKT_SCRIPT_INFO()
+    else:
+        MKT_SCRIPT_USE()
 
 def MKT_SCRIPT_LIST():
     print("[*] Available scripts:")
@@ -324,14 +329,18 @@ def MKT_DB():
         print("    Usage: mkt db <list, installable, install <db_name>, uninstall <db_name> >")
         sys.exit(0)
     
-    match sys.argv[2] :
-        case "install" : MKT_DB_INSTALL()
-        case "uninstall" : MKT_DB_UNINSTALL()
-        case "upgrade" : MKT_DB_UPGRADE()
-        case "list" : MKT_DB_LIST()
-        case "installable": MKT_DB_INSTALL_ABLE()
-        case _ : 
-            print("    Usage: mkt db <list, installable, install <db_name>, uninstall <db_name> >")
+    if (sys.argv[2] == "install" ):
+        MKT_DB_INSTALL()
+    elif (sys.argv[2] == "uninstall"):
+        MKT_DB_UNINSTALL()
+    elif (sys.argv[2] == "upgrade"):
+        MKT_DB_UPGRADE()
+    elif (sys.argv[2] == "list"):
+        MKT_DB_LIST()
+    elif (sys.argv[2] == "installable"):
+        MKT_DB_INSTALL_ABLE()
+    else:
+        print("    Usage: mkt db <list, installable, install <db_name>, uninstall <db_name> >")
 
 def MKT_DB_INSTALL():
     if (len(sys.argv) !=4):
@@ -425,9 +434,10 @@ def MKT_DB_UPGRADE():
         print("    Usage: mkt db upgrade <name>")
         sys.exit(0)
     
-    match sys.argv[3] :
-        case "all": MKT_DB_UPGRADE_ALL()
-        case _ : MKT_DB_UPGRADE_TOOLS()
+    if (sys.argv[3] == "all") :
+        MKT_DB_UPGRADE_ALL()
+    else:
+        MKT_DB_UPGRADE_TOOLS()
 
 def MKT_DB_UPGRADE_ALL():
     print("[*] Upgrade all the db ...")
@@ -558,16 +568,35 @@ if __name__ == "__main__" :
     if (len(sys.argv) == 1):
         MKT_HELP()
         sys.exit()
-    match sys.argv[1] :
-        case "help" : MKT_HELP()
-        case "update": MKT_UPDATE()
-        case "install": CheckUID();MKT_INSTALL()
-        case "uninstall": CheckUID();MKT_UNINSTALL()
-        case "reinstall": CheckUID();MKT_REINSTALL()
-        case "list": MKT_LIST()
-        case "script": CheckUID(); MKT_SCRIPT()
-        case "upgrade": CheckUID(); MKT_UPGRADE()
-        case "db" : CheckUID(); MKT_DB()
-        case "search" : MKT_DB_SEARCH()
-        case "clearup" : CheckUID(); MKT_CLEARUP()
-        case _ : MKT_HELP()
+
+    if (sys.argv[1] == "help"):
+        MKT_HELP()
+    elif(sys.argv[1] == "update"):
+        MKT_UPDATE()
+    elif(sys.argv[1] == "install"):
+        CheckUID()
+        MKT_INSTALL()
+    elif(sys.argv[1] == "uninstall"):
+        CheckUID()
+        MKT_UNINSTALL()
+    elif(sys.argv[1] == "reinstall"):
+        CheckUID()
+        MKT_REINSTALL()
+    elif(sys.argv[1] == "list"):
+        MKT_LIST()
+    elif(sys.argv[1] == "script"):
+        CheckUID()
+        MKT_SCRIPT()
+    elif(sys.argv[1] == "upgrade"):
+        CheckUID()
+        MKT_UPGRADE()
+    elif(sys.argv[1] == "db"):
+        CheckUID()
+        MKT_DB()
+    elif(sys.argv[1] == "search"):
+        MKT_DB_SEARCH()
+    elif(sys.argv[1] == "clearup"):
+        CheckUID()
+        MKT_CLEARUP()
+    else:
+        MKT_HELP()
