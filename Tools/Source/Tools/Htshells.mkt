@@ -1,0 +1,21 @@
+def Install():
+    print("[Htshells] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+    os.system("git clone https://github.com/wireghoul/htshells.git Htshells")
+
+def Uninstall():
+    print("[Htshells] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Htshells")
+
+def Upgrade():
+    print("[Htshells] Upgrade ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Htshells")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

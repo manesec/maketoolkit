@@ -1,0 +1,44 @@
+def Install():
+    import shutil
+    import os
+
+    print("[XC] Checking go env ...")
+    os.system("apt update && apt -y install golang-go rlwrap upx")
+
+    print("[XC] Installing base ...")
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Tools/xc")
+    path.mkdir(parents=True, exist_ok=True)
+
+    norootuser = os.getenv("SUDO_USER")
+
+    if (os.path.exists("/tmp/xc")):
+        os.system("rm -rf /tmp/xc")
+
+    os.system("sudo -u %s mkdir /tmp/xc" % norootuser)
+
+    os.chdir("/tmp/xc")
+
+    print("[XC] Compiling ...")
+    
+    os.system("sudo -u %s git clone --recurse-submodules https://github.com/xct/xc.git xc" % (norootuser))
+    os.system("sudo -u %s bash -c \"GO111MODULE=off go get golang.org/x/sys/...; GO111MODULE=off go get golang.org/x/text/encoding/unicode ; GO111MODULE=off go get github.com/hashicorp/yamux; GO111MODULE=off go get github.com/libp2p/go-reuseport ; cd xc ; python3 build.py\"" % norootuser)
+    os.chdir("/tmp/xc/xc")
+
+    print("[XC] Copying ...")
+    shutil.copy("/tmp/xc/xc/xc","/var/lib/mkt/Tools/Source/Tools/xc/xc")
+    shutil.copy("/tmp/xc/xc/xc.exe","/var/lib/mkt/Tools/Source/Tools/xc/xc.exe")
+    
+    print("[XC] Clearing up ...")
+    os.chdir("/tmp")
+    os.system("rm -rf /tmp/xc")
+
+def Uninstall():
+    print("[XC] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/xc")
+
+def Upgrade():
+    print("[XC] XC no support update, please uninstall and install again ...")

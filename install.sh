@@ -51,6 +51,7 @@ echo "Installing Source ..."
 cp -r Tools /var/lib/mkt/
 cp -r Res /var/lib/mkt/
 cp -r Script /var/lib/mkt/
+cp -r Data /var/lib/mkt/
 
 mkdir -p /var/lib/mkt/Res/Data
 mkdir -p /var/lib/mkt/Res/Install

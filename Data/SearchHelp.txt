@@ -1,0 +1,24 @@
+         __      __                .__          
+  _____ |  | ___/  |_  ____   ____ |  |   ______
+ /     \|  |/ /\   __\/  _ \ /  _ \|  |  /  ___/
+|  Y Y  \    <  |  | (  <_> |  <_> )  |__\___ \ 
+|__|_|  /__|_ \ |__|  \____/ \____/|____/____  >
+      \/     \/                              \/ 
+            By @manesec,  Find manual.
+      https://github.com/manesec/maketoolkit
+
+
+Basic command:
+    <number>      opening the manual.
+    h             help manual.
+    l             list the result.
+    q             exit.
+
+Search command:
+    f <string>    finding <string> including content and file name.
+    t <string>    only finding the title name.
+    b <string>    back to frist search.
+
+
+
+

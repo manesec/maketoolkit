@@ -14,37 +14,37 @@ def MKT_HELP():
 |  Y Y  \    <  |  | (  <_> |  <_> )  |__\___ \ 
 |__|_|  /__|_ \ |__|  \____/ \____/|____/____  >
       \/     \/                              \/ 
-       By @manesec, Version: 20220611 Beta
+       By @manesec, Version: 20220613 Beta
       https://github.com/manesec/maketoolkit
 
 Usage:
     # Base install and uninstall tools.
-    mkt   install     [<tools name>, <.mkt files>]
-    mkt   uninstall    <tools name>
-    mkt   reinstall    <tools name>
-    mkt   upgrade      <tools name>
-    mkt   upgrade      all
+    mkt      install     [<tools name>, <.mkt files>]
+    mkt      uninstall    <tools name>
+    mkt      reinstall    <tools name>
+    mkt      upgrade      <tools name>
+    mkt      upgrade      all
 
 List:
     # List install the tools name.
-    mkt   list     install
-    mkt   list     installable
+    mkt      list         install
+    mkt      list         installable
 
 Script:
     # List build-in script
-    mkt   script   list
-    mkt   script   info
+    mkt      script       list
+    mkt      script       info
     # Run the script 
-    mkt   script   <script_name>
+    mkt      script       <script_name>
 
 DB and res:
-    mkt   db   installable
-    mkt   db   list
-    mkt   db   install       <db_name>
-    mkt   db   uninstall     <db_name>
+    mkt      db           installable
+    mkt      db           list
+    mkt      db           install       <db_name>
+    mkt      db           uninstall     <db_name>
 
 Search DB and res:
-    mkt   search   <string>
+    mkt     search        <string>
 
 Other:
     # Update all the source include mkt.
@@ -480,6 +480,10 @@ def MKT_DB_CHECK_COMMAND(command):
     else:
         return False
 
+# ==========================================================================
+#                             Search Module
+# ==========================================================================
+
 # mkt search mane
 def MKT_DB_SEARCH():
     import subprocess
@@ -494,16 +498,29 @@ def MKT_DB_SEARCH():
     frist_search = True
     for searchstr in sys.argv[2:]:
         if frist_search:
+            searchstr = searchstr.replace("'","\'")
+
             print("[*] Frist search with %s ..." % (searchstr))
             command = "grep -Rnil /var/lib/mkt/Res/Data/ -e '%s' --exclude-dir='.[^.]*'" % searchstr
             status,output_str = subprocess.getstatusoutput(command)
 
-            if (status != 0) :
-                print("[!] No found on Local DB.")
-                sys.exit(0)
+            if (status == 0) :
+                for l in output_str.split('\n'):
+                    if (l.strip() == ""):
+                        continue
+                    out_stdout_list += (l,)
+
+            command = "find /var/lib/mkt/Res/Data/ -i -name '*%s*'" % searchstr
+            status,output_str = subprocess.getstatusoutput(command)
 
             for l in output_str.split('\n'):
-                out_stdout_list += (l,)
+                if (l.strip() == ""):
+                    continue                
+                if l not in out_stdout_list:
+                    out_stdout_list += (l,)
+
+            if (len(out_stdout_list)==0):
+                print("[!] No found on db.")
 
             frist_search = False
             continue
@@ -513,35 +530,46 @@ def MKT_DB_SEARCH():
         for f in out_stdout_list:
             command = "grep -il '%s' -e '%s' " % (f,searchstr)
             status,output_str = subprocess.getstatusoutput(command)
-            if (status != 0) :
+            if (status == 0) :
+                if f not in new_stdout_list:
+                    new_stdout_list += (f,)
                 continue
-            new_stdout_list += (f,)
+
+            if (f.lower().find(searchstr.lower()) !=-1):
+                if f not in new_stdout_list:
+                    new_stdout_list += (f,)
+                continue
+
         out_stdout_list = new_stdout_list
 
     if (len(out_stdout_list) == 0):
         print("[!] No found on Local DB.")
         sys.exit(0)
+
     print("\n[*] Found that in the file: ")
+
+    history_stack = []
+    history_stack.append(out_stdout_list)
 
     def listoutput():
         print("-"*50)
-        for file in out_stdout_list:
-            print("[%s] %s" % (out_stdout_list.index(file),file.replace("/var/lib/mkt/Res/Data/","")))
-
+        for file in history_stack[-1]:
+            print("[%s] %s" % (history_stack[-1].index(file),file.replace("/var/lib/mkt/Res/Data/","")))
     listoutput()
 
-    user_not_exit = True
-    while (user_not_exit):
-        input_str = input("    (Q)uit,(L)ist,(Num)ber : ")
+    while (True):
+        input_str = input("  (h)elp :")
         input_str = input_str.strip().lower()
         if (input_str.isdigit()):
             input_number = int(input_str)
-            if (input_number > len(out_stdout_list)-1):
+            if (input_number > len(history_stack[-1])-1):
                 print("[ERROR] Out of range.")
             else:
-                doc_path = out_stdout_list[input_number]
+                doc_path = history_stack[-1][input_number]
+                print("[*] Opening %s ..." % (doc_path.replace("/var/lib/mkt/Res/Data/","")))
                 if ((os.path.basename(doc_path).lower().find(".md")!= -1) and (MKT_DB_CHECK_COMMAND("glow"))):
                     os.system("glow -p '%s'" % (doc_path))
+                    listoutput()
                 else:
                     less_param = "/"
                     for searchstr in sys.argv[2:]:
@@ -549,12 +577,79 @@ def MKT_DB_SEARCH():
                     less_param = less_param[:-1]
                     os.system("less  +'%s'  +1  '%s'" % (less_param, doc_path) )
                     listoutput()
+            continue
+
+        # Reading command
+        if (input_str.strip() == ""):
+            continue
 
         if (input_str == "l"):
             listoutput()
+            continue
 
         if (input_str == "q"):
-            user_not_exit = False
+            sys.exit()
+
+        if (input_str[0] == "f"):
+            input_array = input_str.strip().split(" ")
+            if (len(input_array) <2):
+                print("[ERROR] Please input key words.")
+                continue
+
+            new_stdout_list = ()
+
+            for searchstr in input_array[1:]:
+                print("[*] Filtering %s ..." % (searchstr))
+                for f in history_stack[-1]:
+                    command = "grep -il '%s' -e '%s' " % (f,searchstr)
+                    status,output_str = subprocess.getstatusoutput(command)
+                    if (status == 0) :
+                        if f not in new_stdout_list:
+                            new_stdout_list += (f,)
+                        continue
+
+            if (len(new_stdout_list) == 0):
+                print("[!] No found.")
+            else:
+                history_stack.append(new_stdout_list)
+                listoutput()
+            continue
+
+        if (input_str[0] == "t"):
+            input_array = input_str.strip().split(" ")
+            if (len(input_array) <2):
+                print("[ERROR] Please input key words.")
+                continue            
+            new_stdout_list = ()
+            
+            for searchstr in input_array[1:]:
+                print("[*] Filtering title %s ..." % (searchstr))
+                for f in history_stack[-1]:
+                    if (f.lower().find(searchstr.lower()) !=-1) :
+                        if (f not in new_stdout_list):
+                            new_stdout_list += (f,)
+                        
+            if (len(new_stdout_list) == 0):
+                print("[!] No found.")
+            else:
+                history_stack.append(new_stdout_list)
+                listoutput()
+            continue
+
+        if (input_str == "b"):
+            if (len(history_stack) == 1):
+                print("[!] Already on the top.")
+            else:
+                del history_stack[-1]
+                print("[*] Back to %s ..." % (len(history_stack) -1 ))
+                listoutput()
+            continue
+
+        if (input_str == "h"):
+            os.system("less /var/lib/mkt/Data/SearchHelp.txt")
+            continue
+
+        print("[ERROR] Unknow command: %s" % (input_str.split(" ")[0]))
 
 # ==========================================================================
 #                                 Main

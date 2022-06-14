@@ -6,13 +6,13 @@ Quick to install some pen-testing tools on python and debian like os.
 
 # Warning
 
-This is **BETA** version, which mean it need to very unstable.
+This is **BETA** version, which mean it need to very unstable, you need to update before to use.
 
 ## Install
 
 ```bash
 git clone https://github.com/manesec/maketoolkit.git
-cd maketoolkit; chmod u+x install.sh; sudo ./install.sh
+cd maketoolkit; chmod u+x *.sh; sudo ./install.sh
 ```
 
 **Note**: All tools will be locate in `/var/lib/mkt/Tools/Source` which soft link to `/Tools`.
@@ -135,3 +135,5 @@ $ sudo mkt db installable
     HackTricks
     BaseDB
 ```
+
+## ......
