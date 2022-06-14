@@ -510,8 +510,9 @@ def MKT_DB_SEARCH():
                         continue
                     out_stdout_list += (l,)
 
-            command = "find /var/lib/mkt/Res/Data/ -i -name '*%s*'" % searchstr
+            command = "find /var/lib/mkt/Res/Data/ -iname '*%s*'" % searchstr
             status,output_str = subprocess.getstatusoutput(command)
+            print(command)
 
             for l in output_str.split('\n'):
                 if (l.strip() == ""):
