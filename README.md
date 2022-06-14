@@ -29,8 +29,13 @@ sudo mkt install LinPEAS.mkt
 # Before you need to search, you need to install search db.
 sudo mkt db install HackTricks
 
+# If you want to support to view .md file, you need to:
+sudo mkt script InstallGlow
+
 # When it finish just type :
 mkt search reverse shell
+
+# Enjoy it
 ```
 
 ## Options
