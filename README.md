@@ -6,7 +6,7 @@ Quick to install some pen-testing tools on python and debian like os.
 
 # Warning
 
-This is **BETA** version, which mean it need to very unstable, you need to update before to use.
+This is **BETA** version, which mean it need to very unstable, if you find a bug just feel free to submit the issue. you need to update before to use.
 
 ## Install
 
@@ -20,8 +20,17 @@ cd maketoolkit; chmod u+x *.sh; sudo ./install.sh
 ## Usage
 
 ```bash
-mkt install Windows/WinPEAS
-mkt search reverse cheat sheet
+# Install the tools, you can type tools name: 
+sudo mkt install Windows/WinPEAS
+
+# Or, goto /Tools/Linux and :
+sudo mkt install LinPEAS.mkt
+
+# Before you need to search, you need to install search db.
+sudo mkt db install HackTricks
+
+# When it finish just type :
+mkt search reverse shell
 ```
 
 ## Options
@@ -67,14 +76,16 @@ Other:
 ## Collection Tools List
 
 ```bash
-$ sudo mkt list installable
+$ sudo mkt list installable               
 [*] Installable Tools List:
     Binary/Ghidra
     Tools/JSPWebShellCollection
+    Tools/Htshells
     Tools/NmapAutomator
     Tools/ReverseSSH
     Tools/Tools4mane
     Tools/HackBrowserData
+    Tools/xc
     Tools/Webshells_BlackArch
     Tools/Chisel
     Windows/Gosecretsdump
@@ -123,17 +134,18 @@ $ sudo mkt list installable
 ## Collection DB
 
 ```bash
-$ sudo mkt db installable
+$ sudo mkt db installable     
 [*] List all installable db ...
     Cheatsheet
     PWKCheatsheet
     IRedTeam
     PayloadsAllTheThings
     ADCheatsheet_drak3hft7
+    PentestBook
     ADExploitation
     ADCheatsheet_S1ckB0y1337
     HackTricks
-    BaseDB
+    BaseD
 ```
 
 ## ......
