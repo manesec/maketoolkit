@@ -17,6 +17,10 @@ cd maketoolkit; chmod u+x *.sh; sudo ./install.sh
 
 **Note**: All tools will be locate in `/var/lib/mkt/Tools/Source` which soft link to `/Tools`.
 
+## Update
+
+Just type `mkt-update` to update the tools, **all tools will be delete it and reinstall the source**.
+
 ## Usage
 
 ```bash
