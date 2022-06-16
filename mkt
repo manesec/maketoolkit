@@ -14,7 +14,7 @@ def MKT_HELP():
 |  Y Y  \    <  |  | (  <_> |  <_> )  |__\___ \ 
 |__|_|  /__|_ \ |__|  \____/ \____/|____/____  >
       \/     \/                              \/ 
-       By @manesec, Version: 20220613 Beta
+       By @manesec, Version: 20220616 Beta
       https://github.com/manesec/maketoolkit
 
 Usage:
@@ -54,7 +54,6 @@ Other:
     mkt clearup """)
 
 def MKT_CLEARUP():
-    print("[*] Clearing up ...")
     os.system("find /var/lib/mkt/Tools/ -type d -name '__pycache__' | xargs -I $ rm -rf $")
     os.system("chmod -R 755 /var/lib/mkt/")
 
@@ -343,6 +342,7 @@ def MKT_DB():
         print("    Usage: mkt db <list, installable, install <db_name>, uninstall <db_name> >")
 
 def MKT_DB_INSTALL():
+    import os
     if (len(sys.argv) !=4):
         print("[ERROR] Invalid parameter")
         print("    Usage: mkt db install <db_name>")
@@ -358,12 +358,12 @@ def MKT_DB_INSTALL():
         print("[ERROR] No such db.")
         sys.exit(0)
 
-    relative_path = os.path.dirname(abs_paths).replace("/var/lib/mkt/Res/Source","")
+    relative_path = os.path.dirname(abs_paths).replace("/var/lib/mkt/Res/Source/","")
 
     from pathlib import Path
     path = Path("/var/lib/mkt/Res/Install/" + relative_path)
     path.mkdir(parents=True, exist_ok=True)
-    new_path = "/var/lib/mkt/Res/Install/" + relative_path + os.path.basename(abs_paths)
+    new_path = "/var/lib/mkt/Res/Install/" + relative_path +"/" + os.path.basename(abs_paths)
     shutil.move(abs_paths,new_path)
 
     from importlib.machinery import SourceFileLoader
@@ -386,12 +386,13 @@ def MKT_DB_UNINSTALL():
         print("[ERROR] No such db.")
         sys.exit(0)
 
-    relative_path = os.path.dirname(abs_paths).replace("/var/lib/mkt/Res/Install","")
+    relative_path = os.path.dirname(abs_paths).replace("/var/lib/mkt/Res/Install/","")
 
     from pathlib import Path
     path = Path("/var/lib/mkt/Res/Source/" + relative_path)
     path.mkdir(parents=True, exist_ok=True)
-    new_path = "/var/lib/mkt/Res/Source/" + relative_path + os.path.basename(abs_paths)
+
+    new_path = "/var/lib/mkt/Res/Source/" + relative_path + "/" + os.path.basename(abs_paths)
     shutil.move(abs_paths,new_path)
 
     from importlib.machinery import SourceFileLoader
@@ -401,10 +402,10 @@ def MKT_DB_UNINSTALL():
 def MKT_DB_LIST():
     print("[*] List all installed db ...")
     nolist = True
-    for path,_, files in os.walk("/var/lib/mkt/Res/Install/"):
+    for path,_, files in os.walk("/var/lib/mkt/Res/Install"):
         for file in files:
             if file[-3:] == ".py":
-                abs_path = (path + file)
+                abs_path = (path + "/"+ file)
                 module_name = abs_path[:-3]
                 module_name = module_name.replace("/var/lib/mkt/Res/Install/","")
                 print("    %s" %module_name )
@@ -416,10 +417,10 @@ def MKT_DB_LIST():
 def MKT_DB_INSTALL_ABLE():
     print("[*] List all installable db ...")
     nolist = True
-    for path,_, files in os.walk("/var/lib/mkt/Res/Source/"):
+    for path,_, files in os.walk("/var/lib/mkt/Res/Source"):
         for file in files:
             if file[-3:] == ".py":
-                abs_path = (path + file)
+                abs_path = (path + "/"+ file)
                 module_name = abs_path[:-3]
                 module_name = module_name.replace("/var/lib/mkt/Res/Source/","")
                 print("    %s" %module_name )

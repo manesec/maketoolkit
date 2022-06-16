@@ -5,11 +5,15 @@ def Install():
     os.chdir("/var/lib/mkt/Tools/Source/Windows/")
     os.system("git clone https://github.com/ParrotSec/mimikatz.git Mimikatz")
 
+    os.system("mkt db install Tools/Mimikatz")
+
 def Uninstall():
     print("[Mimikatz] Uninstalling ...")
 
     import os
     os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Mimikatz")
+
+    os.system("mkt db uninstall Tools/Mimikatz")
 
 def Upgrade():
     print("[Mimikatz] Upgrading ...")
@@ -19,4 +23,6 @@ def Upgrade():
     
     Branches = "master"
     os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+
+    os.system("mkt db upgrade Tools/Mimikatz")
     
