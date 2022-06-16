@@ -511,7 +511,7 @@ def MKT_DB_SEARCH():
                         continue
                     out_stdout_list += (l,)
 
-            command = "find /var/lib/mkt/Res/Data/ -iname '*%s*'" % searchstr
+            command = "find /var/lib/mkt/Res/Data/ -type f -iname '*%s*'" % searchstr
             status,output_str = subprocess.getstatusoutput(command)
             print(command)
 
