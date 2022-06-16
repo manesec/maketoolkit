@@ -619,7 +619,6 @@ def MKT_DB_SEARCH():
                         if f not in new_stdout_list:
                             new_stdout_list += (f,)
                         continue
-            new_stdout_list = CHECK_TEXT_FILE(new_stdout_list)
             if (len(new_stdout_list) == 0):
                 print("[!] No found.")
             else:
