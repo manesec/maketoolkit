@@ -17,5 +17,5 @@ def Upgrade():
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Tools/Webshells_BlackArch")
     
-    Branches = "main"
+    Branches = "master"
     os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

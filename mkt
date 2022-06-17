@@ -14,7 +14,7 @@ def MKT_HELP():
 |  Y Y  \    <  |  | (  <_> |  <_> )  |__\___ \ 
 |__|_|  /__|_ \ |__|  \____/ \____/|____/____  >
       \/     \/                              \/ 
-       By @manesec, Version: 20220616 Beta
+       By @manesec, Version: 20220617 Beta
       https://github.com/manesec/maketoolkit
 
 Usage:
@@ -44,7 +44,7 @@ DB and res:
     mkt      db           uninstall     <db_name>
 
 Search DB and res:
-    mkt     search        <string>
+    mkt     s(earch)      <string>
 
 Other:
     # Update all the source include mkt.
@@ -54,6 +54,7 @@ Other:
     mkt clearup """)
 
 def MKT_CLEARUP():
+    CheckUID()
     os.system("find /var/lib/mkt/Tools/ -type d -name '__pycache__' | xargs -I $ rm -rf $")
     os.system("chmod -R 755 /var/lib/mkt/")
 
@@ -67,7 +68,7 @@ def MKT_INSTALL():
         print("[ERROR] Invalid parameter")
         print("    Usage: mkt install [ <tools name>, <.mkt files> ]")
         sys.exit(0)
-
+    CheckUID()
     input_str = sys.argv[2] 
     if (len(input_str)<=4) or (input_str[-4:] != ".mkt"):
         input_str += ".mkt"
@@ -123,11 +124,11 @@ def MKT_UNINSTALL():
         print("[ERROR] Invalid parameter")
         print("    Usage: mkt uninstall <tools name>")
         sys.exit(0)
-
     if (os.path.isabs(sys.argv[2])):
         print("[ERROR] Please input tools name no abs path.")
         sys.exit(0)
 
+    CheckUID()
     input_str = sys.argv[2] 
     if (len(input_str)<=4) or (input_str[-4:] != ".mkt"):
         input_str += ".mkt"
@@ -161,6 +162,7 @@ def MKT_REINSTALL():
     if (len(input_str)<=4) or (input_str[-4:] != ".mkt"):
         input_str += ".mkt"
 
+    CheckUID()
     MKT_UNINSTALL()
     MKT_INSTALL()
     MKT_CLEARUP()
@@ -172,6 +174,7 @@ def MKT_UPGRADE():
         print("    Usage: mkt upgrade <name>")
         sys.exit(0)
     
+    CheckUID()
     if (sys.argv[2] == "all"):
         MKT_UPGRADE_ALL()
     else:
@@ -271,6 +274,7 @@ def MKT_SCRIPT():
     elif (sys.argv[2] == "info"):
         MKT_SCRIPT_INFO()
     else:
+        CheckUID()
         MKT_SCRIPT_USE()
 
 def MKT_SCRIPT_LIST():
@@ -348,6 +352,7 @@ def MKT_DB_INSTALL():
         print("    Usage: mkt db install <db_name>")
         sys.exit(0)
 
+    CheckUID()
     input_str = sys.argv[3] 
     if (input_str.strip() == ""):
         print("[ERROR] Input can not be null.")
@@ -376,6 +381,7 @@ def MKT_DB_UNINSTALL():
         print("    Usage: mkt db uninstall <db_name>")
         sys.exit(0)
 
+    CheckUID()
     input_str = sys.argv[3] 
     if (input_str.strip() == ""):
         print("[ERROR] Input can not be null.")
@@ -435,6 +441,7 @@ def MKT_DB_UPGRADE():
         print("    Usage: mkt db upgrade <name>")
         sys.exit(0)
     
+    CheckUID()
     if (sys.argv[3] == "all") :
         MKT_DB_UPGRADE_ALL()
     else:
@@ -587,7 +594,7 @@ def MKT_DB_SEARCH():
                     for searchstr in sys.argv[2:]:
                         less_param += "%s|" % (searchstr.strip())
                     less_param = less_param[:-1]
-                    os.system("less  +'%s'  +1  '%s'" % (less_param, doc_path) )
+                    os.system("less +1 +'%s'  '%s'" % (less_param, doc_path) )
                     listoutput()
             continue
 
@@ -675,34 +682,21 @@ if __name__ == "__main__" :
         MKT_HELP()
         sys.exit()
 
-    if (sys.argv[1] == "help"):
-        MKT_HELP()
-    elif(sys.argv[1] == "update"):
-        MKT_UPDATE()
-    elif(sys.argv[1] == "install"):
-        CheckUID()
-        MKT_INSTALL()
-    elif(sys.argv[1] == "uninstall"):
-        CheckUID()
-        MKT_UNINSTALL()
-    elif(sys.argv[1] == "reinstall"):
-        CheckUID()
-        MKT_REINSTALL()
-    elif(sys.argv[1] == "list"):
-        MKT_LIST()
-    elif(sys.argv[1] == "script"):
-        CheckUID()
-        MKT_SCRIPT()
-    elif(sys.argv[1] == "upgrade"):
-        CheckUID()
-        MKT_UPGRADE()
-    elif(sys.argv[1] == "db"):
-        CheckUID()
-        MKT_DB()
-    elif(sys.argv[1] == "search"):
-        MKT_DB_SEARCH()
-    elif(sys.argv[1] == "clearup"):
-        CheckUID()
-        MKT_CLEARUP()
-    else:
-        MKT_HELP()
+    SelectFunction = {
+        "help" : MKT_HELP,
+        "update": MKT_UPDATE,
+        "upgrade":MKT_UPGRADE,
+        "install": MKT_INSTALL,
+        "uninstall": MKT_UNINSTALL,
+        "reinstall": MKT_REINSTALL,
+        "list": MKT_LIST,
+        "script": MKT_SCRIPT,
+        "db":MKT_DB,
+
+        "s":MKT_DB_SEARCH,
+        "search": MKT_DB_SEARCH,
+    
+        "clearup": MKT_CLEARUP
+    }
+
+    SelectFunction.get(sys.argv[1],MKT_HELP)()

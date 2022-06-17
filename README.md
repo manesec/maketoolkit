@@ -2,7 +2,7 @@
 
 Quick to install some pen-testing tools on python and debian like os.
 
-![Logo](Data/main.png)
+![Logo](Picture/main.png)
 
 # Warning
 
@@ -94,6 +94,7 @@ $ sudo mkt list installable
     Tools/ReverseSSH
     Tools/Tools4mane
     Tools/HackBrowserData
+    Tools/EyeWitness
     Tools/xc
     Tools/Webshells_BlackArch
     Tools/Chisel

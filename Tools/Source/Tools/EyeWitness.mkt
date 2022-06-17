@@ -1,0 +1,107 @@
+def Install():
+    print("[EyeWitness] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+    os.system("git clone https://github.com/FortyNorthSecurity/EyeWitness.git EyeWitness")
+    os.system("pip3 install   fuzzywuzzy   python-Levenshtein   pyvirtualdisplay")
+
+    print("[EyeWitness] Installing geckodriver ...")
+
+    from pathlib import Path
+    path = Path("/tmp/mktools")
+    path.mkdir(parents=True, exist_ok=True)
+    
+    UpdateFromGithub()
+
+    os.chdir("/tmp/mktools")
+    os.system("tar -xf *.tar.gz")
+    os.system("mv /tmp/mktools/geckodriver /bin")
+    os.system("chmod 777 /bin/geckodriver")
+    os.chdir("/tmp")
+    os.system("rm -rf /tmp/mktools/")
+
+
+def Uninstall():
+    print("[EyeWitness] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/EyeWitness")
+
+def Upgrade():
+    print("[EyeWitness] Upgrade ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/EyeWitness")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+
+def UpdateFromGithub():
+    Files = [
+        ["geckodriver-v0.31.0-linux64.tar.gz","/tmp/mktools/geckodriver-v0.31.0-linux64.tar.gz"],
+    ]
+    UpdateFromGithubReleaseFiles("https://api.github.com/repos/mozilla/geckodriver/releases/latest",Files,sign_prefix="JSPWebShellCollection")
+    CheckGithubAPIQuta()
+
+def UpdateFromGithubReleaseFiles(URL,Files,sign_prefix=""):
+    import json,re,os
+    import requests
+
+    CONFIG_JSON = json.load(open('/etc/mkt.json','r'))
+    print(" *  Searching Github Repo ...")
+    
+    Return_json = ""
+    if CONFIG_JSON["GithubToken"].strip() != "":
+        Return_json = requests.get(URL,headers={"Authorization":"token %s" % (CONFIG_JSON["GithubToken"].strip())}).text
+    else:
+        Return_json = requests.get(URL).text
+    Return_json = json.loads(Return_json)
+
+    for filereg,savelink in Files:
+        for f in Return_json["assets"]:
+            if (re.search(filereg,f["name"])):
+                print(" +  Found %s " % (f["name"]))
+                sign_file = "/var/lib/mkt/Tools/Version/" + sign_prefix + os.path.basename(savelink) +".gitid"
+
+                if (os.path.exists(sign_file)):
+                    save_id = open(sign_file,"r")
+                    localid = save_id.read().strip()
+                    save_id.close()
+                    if (localid == str(f["id"])):
+                        print(" !  Already up to date")
+                        break
+
+                print(" *  Downloading %s ..." % (f["name"]))
+                WgetDownloadFile(f['browser_download_url'],savelink,quiet=True)
+                if (os.path.exists(savelink)):
+                    save_id = open(sign_file,"w")
+                    save_id.write(str(f["id"]))
+                    save_id.close()
+                break
+
+def CheckGithubAPIQuta():
+    import json
+    import requests
+    from datetime import datetime
+    import time
+
+    CONFIG_JSON = json.load(open('/etc/mkt.json','r'))
+
+    Return_json = ""
+    if CONFIG_JSON["GithubToken"].strip() != "":
+        Return_json = requests.get("https://api.github.com/rate_limit",headers={"Authorization":"token %s" % (CONFIG_JSON["GithubToken"].strip())}).text
+    else:
+        Return_json = requests.get("https://api.github.com/rate_limit").text
+    Return_json = json.loads(Return_json)
+    Remaining = Return_json["rate"]["remaining"]
+    Limit = Return_json["rate"]["limit"]
+    Reset = (datetime.utcfromtimestamp(Return_json["rate"]["reset"]) - datetime.utcfromtimestamp(time.time())).seconds / 60
+    print("[!] Github API: Remaining %s/%s, Reset in %s minutes later." % (Remaining,Limit,round(Reset,2)))
+
+def WgetDownloadFile(url,local_path,quiet = False):
+    import os
+    if os.path.exists(local_path):
+        os.remove(local_path)
+    quiet = "--quiet" if quiet else ""
+    os.system('wget "%s" %s -O "%s"' % (url,quiet,local_path))
