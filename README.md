@@ -19,11 +19,14 @@ cd maketoolkit; chmod u+x *.sh; sudo ./install.sh
 
 ## Update
 
-Just type `mkt-update` to update the tools, **all tools will be delete it and reinstall the source**.
+Just type `sudo mkt-update` to update the tools, **all tools will be delete it and reinstall the source**.
 
 ## Usage
 
 ```bash
+# Update mkt tools and the source just type:
+sudo mkt-update
+
 # Install the tools, you can type tools name: 
 sudo mkt install Windows/WinPEAS
 
@@ -36,7 +39,9 @@ sudo mkt db install HackTricks
 # If you want to support to view .md file, you need to:
 sudo mkt script InstallGlow
 
-# When it finish just type :
+# When it finish to install db just type :
+mkt s reverse shell
+# or
 mkt search reverse shell
 
 # Enjoy it
@@ -158,4 +163,4 @@ $ sudo mkt db installable
     BaseD
 ```
 
-## ......
+## Later ...
