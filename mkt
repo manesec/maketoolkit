@@ -14,13 +14,13 @@ def MKT_HELP():
 |  Y Y  \    <  |  | (  <_> |  <_> )  |__\___ \ 
 |__|_|  /__|_ \ |__|  \____/ \____/|____/____  >
       \/     \/                              \/ 
-       By @manesec, Version: 20220617 Beta
+       By @manesec, Version: 20220624 Beta
       https://github.com/manesec/maketoolkit
 
 Usage:
     # Base install and uninstall tools.
     mkt      install     [<tools name>, <.mkt files>]
-    mkt      uninstall    <tools name>
+    mkt   uninstall/remove    <tools name>
     mkt      reinstall    <tools name>
     mkt      upgrade      <tools name>
     mkt      upgrade      all
@@ -48,10 +48,7 @@ Search DB and res:
 
 Other:
     # Update all the source include mkt.
-    mkt-update
-
-    # Remove all "__pycache__" in tools
-    mkt clearup """)
+    mkt-update""")
 
 def MKT_CLEARUP():
     CheckUID()
@@ -69,28 +66,47 @@ def MKT_INSTALL():
         print("    Usage: mkt install [ <tools name>, <.mkt files> ]")
         sys.exit(0)
     CheckUID()
+
+    # find the mkt file
     input_str = sys.argv[2] 
     if (len(input_str)<=4) or (input_str[-4:] != ".mkt"):
         input_str += ".mkt"
 
-    if (os.path.isabs(input_str)):
-        input_path = input_str
-    else:
-        systempwd = "/tmp"
-        try:
-            systempwd = os.getcwd() + "/" + input_str
-            systempwd = os.path.abspath(systempwd)
-        except:
-            pass
-        if (systempwd.startswith("/var/lib/mkt/Tools/Source/") or systempwd.startswith("/Tools/")):
-            input_path = systempwd
-        else:
-            input_path = "/var/lib/mkt/Tools/Source/" + input_str
+    # fix bug for unknow path
+    systempwd = "/tmp"
+    try:
+        systempwd = os.getcwd() + "/" + input_str
+        systempwd = os.path.abspath(systempwd)
+    except:
+        pass
 
-    abs_file = os.path.abspath(input_path)
-    relative_file = ""
-    relative_path = ""
+    find_mkt = False
 
+    abs_file = None
+    relative_file = None
+
+    if (os.path.exists("/var/lib/mkt/Tools/Source/" + input_str)):
+        abs_file = "/var/lib/mkt/Tools/Source/" + input_str
+        relative_file = input_str
+        find_mkt = True
+
+    if (systempwd.startswith("/var/lib/mkt/Tools/Source/") and (find_mkt == False)):
+        if ((os.path.exists(systempwd))):
+            abs_file = systempwd
+            relative_file = systempwd.replace("/var/lib/mkt/Tools/Source/","")
+            find_mkt = True
+
+    if (systempwd.startswith("/Tools/") and (find_mkt == False)):
+        if ((os.path.exists(systempwd))):
+            abs_file = systempwd
+            relative_file = systempwd.replace("/Tools/","")
+            find_mkt = True
+
+    if (find_mkt == False):
+        print("[ERROR] No such file or name.")
+        sys.exit(0)
+
+    relative_path = None
     if (abs_file.startswith("/var/lib/mkt/Tools/Source/")):
         relative_file = os.path.basename(abs_file)
         relative_path = os.path.dirname(abs_file).replace("/var/lib/mkt/Tools/Source/","")
@@ -100,7 +116,6 @@ def MKT_INSTALL():
     else:
         print("[ERROR] The mkt file path without standard paths.")
         sys.exit(0)
-
     if (os.path.exists("/var/lib/mkt/Tools/Install/" + relative_path + "/" + relative_file)):
         print("[ERROR] %s already installed." % (relative_path + "/" + relative_file.replace(".mkt","")))
         sys.exit(0)
@@ -362,12 +377,15 @@ def MKT_DB_INSTALL():
     if not (os.path.exists(abs_paths) and (abs_paths.startswith("/var/lib/mkt/Res/Source/"))):
         print("[ERROR] No such db.")
         sys.exit(0)
-
-    relative_path = os.path.dirname(abs_paths).replace("/var/lib/mkt/Res/Source/","")
+   
+    relative_path = os.path.dirname(abs_paths).replace("/var/lib/mkt/Res/Source","")
+    if (relative_path.strip() == ""):
+        relative_path = "."
 
     from pathlib import Path
     path = Path("/var/lib/mkt/Res/Install/" + relative_path)
     path.mkdir(parents=True, exist_ok=True)
+
     new_path = "/var/lib/mkt/Res/Install/" + relative_path +"/" + os.path.basename(abs_paths)
     shutil.move(abs_paths,new_path)
 
@@ -392,7 +410,9 @@ def MKT_DB_UNINSTALL():
         print("[ERROR] No such db.")
         sys.exit(0)
 
-    relative_path = os.path.dirname(abs_paths).replace("/var/lib/mkt/Res/Install/","")
+    relative_path = os.path.dirname(abs_paths).replace("/var/lib/mkt/Res/Install","")
+    if (relative_path.strip() == ""):
+        relative_path = "."
 
     from pathlib import Path
     path = Path("/var/lib/mkt/Res/Source/" + relative_path)
@@ -531,6 +551,8 @@ def MKT_DB_SEARCH():
             status,output_str = subprocess.getstatusoutput(command)
 
             for l in output_str.split('\n'):
+                if (l.find("/.")!=-1):
+                    continue
                 if (l.strip() == ""):
                     continue                
                 if l not in out_stdout_list:
@@ -687,16 +709,17 @@ if __name__ == "__main__" :
         "update": MKT_UPDATE,
         "upgrade":MKT_UPGRADE,
         "install": MKT_INSTALL,
+        "remove": MKT_UNINSTALL,
         "uninstall": MKT_UNINSTALL,
         "reinstall": MKT_REINSTALL,
         "list": MKT_LIST,
         "script": MKT_SCRIPT,
         "db":MKT_DB,
 
+        # Search function
         "s":MKT_DB_SEARCH,
         "search": MKT_DB_SEARCH,
-    
-        "clearup": MKT_CLEARUP
+
     }
 
     SelectFunction.get(sys.argv[1],MKT_HELP)()

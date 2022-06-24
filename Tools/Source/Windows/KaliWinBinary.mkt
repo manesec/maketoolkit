@@ -1,0 +1,21 @@
+def Install():
+    print("[KaliWinBinary] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://gitlab.com/kalilinux/packages/windows-binaries.git KaliWinBinary")
+
+def Uninstall():
+    print("[KaliWinBinary] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/KaliWinBinary")
+
+def Upgrade():
+    print("[KaliWinBinary] Upgrade ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/KaliWinBinary")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

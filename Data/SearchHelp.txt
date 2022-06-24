@@ -9,15 +9,15 @@
 
 
 Basic command:
-    <number>      opening the manual.
-    h             help manual.
-    l             list the result.
-    q             exit.
+    <number>      Open the manual.
+    h             Help manual.
+    l             List the result.
+    q             Exit.
 
 Search command:
-    f <string>    finding <string> including content and file name.
-    t <string>    only finding the title name.
-    b <string>    back to frist search.
+    f <string>    Filter by key word.
+    t <string>    Filter by title.
+    b <string>    Back to Previous search.
 
 
 
