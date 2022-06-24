@@ -103,10 +103,12 @@ $ sudo mkt list installable
     Tools/xc
     Tools/Webshells_BlackArch
     Tools/Chisel
+    Tools/Godzilla
     Windows/Gosecretsdump
     Windows/Boodhound
     Windows/Mimikatz
     Windows/Wesng
+    Windows/KaliWinBinary
     Windows/WinPWN
     Windows/SharpCollection
     Windows/PrintSpoofer
@@ -151,16 +153,26 @@ $ sudo mkt list installable
 ```bash
 $ sudo mkt db installable     
 [*] List all installable db ...
+    XapaxSecurity
     Cheatsheet
+    KaliDocs
     PWKCheatsheet
     IRedTeam
+    LOLBAS
+    GTFOBin
     PayloadsAllTheThings
     ADCheatsheet_drak3hft7
+    PentestCheatSheets
+    AtomicRedTeam
     PentestBook
     ADExploitation
+    Ruuand
     ADCheatsheet_S1ckB0y1337
     HackTricks
-    BaseD
+    RedTeamWiki
+    BaseDB
+    Tools/Mimikatz
+    Tools/BloodHound
 ```
 
 ## Later ...
