@@ -94,13 +94,14 @@ $ sudo mkt list installable
 [*] Installable Tools List:
     Binary/Ghidra
     Tools/JSPWebShellCollection
+    Tools/GrepForOSINT
+    Tools/XC
     Tools/Htshells
     Tools/NmapAutomator
     Tools/ReverseSSH
     Tools/Tools4mane
     Tools/HackBrowserData
     Tools/EyeWitness
-    Tools/xc
     Tools/Webshells_BlackArch
     Tools/Chisel
     Tools/Godzilla
@@ -117,6 +118,7 @@ $ sudo mkt list installable
     Windows/Powershell/PSHTML
     Windows/Powershell/NetSPI
     Windows/Powershell/ADACLScanner
+    Windows/Powershell/PrivescCheck
     Windows/Powershell/ADEssentials
     Windows/Powershell/ADPeas
     Windows/Powershell/AdsiPS

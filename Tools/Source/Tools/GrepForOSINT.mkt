@@ -1,0 +1,21 @@
+def Install():
+    print("[GrepForOSINT] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+    os.system("git clone https://github.com/cipher387/grep_for_osint.git GrepForOSINT")
+
+def Uninstall():
+    print("[GrepForOSINT] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/GrepForOSINT")
+
+def Upgrade():
+    print("[GrepForOSINT] Upgrade ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/GrepForOSINT")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
