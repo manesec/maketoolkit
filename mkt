@@ -14,37 +14,38 @@ def MKT_HELP():
 |  Y Y  \    <  |  | (  <_> |  <_> )  |__\___ \ 
 |__|_|  /__|_ \ |__|  \____/ \____/|____/____  >
       \/     \/                              \/ 
-       By @manesec, Version: 20220624 Beta
+       By @manesec, Version: 20220626 Beta
       https://github.com/manesec/maketoolkit
 
 Usage:
     # Base install and uninstall tools.
-    mkt      install     [<tools name>, <.mkt files>]
+    mkt      install          [<tools name>, <.mkt files>]
     mkt   uninstall/remove    <tools name>
-    mkt      reinstall    <tools name>
-    mkt      upgrade      <tools name>
-    mkt      upgrade      all
+    mkt      reinstall        <tools name>
+    mkt      upgrade          <tools name>
+    mkt      upgrade          all
 
 List:
     # List install the tools name.
-    mkt      list         install
-    mkt      list         installable
+    mkt      list             install
+    mkt      list             installable
 
 Script:
     # List build-in script
-    mkt      script       list
-    mkt      script       info
+    mkt      script           list
+    mkt      script           info
     # Run the script 
-    mkt      script       <script_name>
+    mkt      script           <script_name>
 
 DB and res:
-    mkt      db           installable
-    mkt      db           list
-    mkt      db           install       <db_name>
-    mkt      db           uninstall     <db_name>
+    mkt        db         installable
+    mkt        db         list
+    mkt        db         install       <db_name>
+    mkt        db         uninstall     <db_name>
+    mkt        db         upgrade       <db_name> / all
 
 Search DB and res:
-    mkt     s(earch)      <string>
+    mkt     s(earch)          <string>
 
 Other:
     # Update all the source include mkt.
@@ -249,30 +250,40 @@ def MKT_LIST():
 
 def MKT_LIST_INSTALLED():
     print("[*] Installed Tools List:")
-    nolist = True
+    output_list = []
     for path,subpaths,files in os.walk("/var/lib/mkt/Tools/Install/"):
         for file in files:
             if file[-4:] == ".mkt":
                 module_name = (path + "/"+ file)[:-4]
                 module_name = module_name.replace("/var/lib/mkt/Tools/Install/","")
-                print("    %s" %module_name )
-                nolist = False
-    if (nolist):
+                output_list.append(module_name)
+
+    if (len(output_list) == 0):
         print("[!] There are no tools installed.")
+        sys.exit(0)
+
+    output_list.sort()
+    for module_name in output_list: 
+        print("    %s" % module_name )
+
 
 def MKT_LIST_INSTALLABLE():
     print("[*] Installable Tools List:")
-    nolist = True
+    output_list = []
     for path,subpaths,files in os.walk("/var/lib/mkt/Tools/Source/"):
         for file in files:
             if file[-4:] == ".mkt":
                 module_name = (path + "/"+ file)[:-4]
                 module_name = module_name.replace("/var/lib/mkt/Tools/Source/","")
-                print("    %s" %module_name )
-                nolist = False
-                
-    if (nolist):
+                output_list.append(module_name)
+
+    if (len(output_list) == 0):
         print("[!] There are no tools can be install.")
+        sys.exit(0)
+
+    output_list.sort()
+    for module_name in output_list: 
+        print("    %s" % module_name )
 
 # ==========================================================================
 #                                 Script
@@ -425,35 +436,44 @@ def MKT_DB_UNINSTALL():
     SourceFileLoader("manesec",new_path).load_module().Uninstall()        
     MKT_CLEARUP()
     MKT_CLEARUP()
+    
 def MKT_DB_LIST():
     print("[*] List all installed db ...")
-    nolist = True
+    output_list = []
     for path,_, files in os.walk("/var/lib/mkt/Res/Install"):
         for file in files:
             if file[-3:] == ".py":
                 abs_path = (path + "/"+ file)
                 module_name = abs_path[:-3]
                 module_name = module_name.replace("/var/lib/mkt/Res/Install/","")
-                print("    %s" %module_name )
-                nolist = False
+                output_list.append(module_name)
 
-    if (nolist):
-        print("[!] There are no db installed.")    
+    if (len(output_list) == 0):
+        print("[!] There are no search DB installed.")
+        sys.exit(0)
+
+    output_list.sort()
+    for module_name in output_list: 
+        print("    %s" % module_name )
 
 def MKT_DB_INSTALL_ABLE():
     print("[*] List all installable db ...")
-    nolist = True
+    output_list = []
     for path,_, files in os.walk("/var/lib/mkt/Res/Source"):
         for file in files:
             if file[-3:] == ".py":
                 abs_path = (path + "/"+ file)
                 module_name = abs_path[:-3]
                 module_name = module_name.replace("/var/lib/mkt/Res/Source/","")
-                print("    %s" %module_name )
-                nolist = False
+                output_list.append(module_name)
 
-    if (nolist):
-        print("[!] There are no db can be install.")    
+    if (len(output_list) == 0):
+        print("[!] There are no search DB can be install.")
+        sys.exit(0)
+
+    output_list.sort()
+    for module_name in output_list: 
+        print("    %s" % module_name )
 
 def MKT_DB_UPGRADE():
     if (len(sys.argv) != 4):

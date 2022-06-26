@@ -1,5 +1,3 @@
-
-
 def Install():
     print("[Privesc] Installing base ...")
 
