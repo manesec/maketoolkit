@@ -112,9 +112,12 @@ $ sudo mkt list installable
     Tools/Webshells_BlackArch
     Tools/XC
     Windows/Boodhound
+    Windows/DFSCoerce
     Windows/Gosecretsdump
     Windows/KaliWinBinary
+    Windows/Krbrelayx
     Windows/Mimikatz
+    Windows/PetitPotam
     Windows/Potato/Juicypotato
     Windows/Potato/RoguePotato
     Windows/Potato/RottenPotato
@@ -150,7 +153,7 @@ $ sudo mkt list installable
     Wordlists/SecLists
 ```
 
-## Collection DB
+## Search Document DB
 
 ```bash
 $ sudo mkt db installable     
@@ -172,9 +175,22 @@ $ sudo mkt db installable
     PentestCheatSheets
     RedTeamWiki
     Ruuand
+    TheHackerRecipes
+    TheHackerTools
     Tools/BloodHound
     Tools/Mimikatz
     XapaxSecurity
 ```
 
-## Later ...
+## Script
+
+```bash
+$ sudo mkt script info
+[*] Available scripts:
+    InstallBasicTools
+    InstallGlow
+    InstallNTH
+    InstallAllDB
+```
+
+## Updating ...
