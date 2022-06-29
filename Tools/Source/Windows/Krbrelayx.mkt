@@ -1,0 +1,21 @@
+def Install():
+    print("[krbrelayx] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/dirkjanm/krbrelayx.git krbrelayx")
+
+def Uninstall():
+    print("[krbrelayx] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/krbrelayx")
+
+def Upgrade():
+    print("[krbrelayx] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/krbrelayx")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

@@ -93,61 +93,61 @@ Other:
 $ sudo mkt list installable               
 [*] Installable Tools List:
     Binary/Ghidra
-    Tools/JSPWebShellCollection
+    Linux/LES
+    Linux/LES2
+    Linux/LinEnum
+    Linux/LinPEAS
+    Linux/Pspy
+    Linux/Sudo_killer
+    Tools/Chisel
+    Tools/EyeWitness
+    Tools/Godzilla
     Tools/GrepForOSINT
-    Tools/XC
+    Tools/HackBrowserData
     Tools/Htshells
+    Tools/JSPWebShellCollection
     Tools/NmapAutomator
     Tools/ReverseSSH
     Tools/Tools4mane
-    Tools/HackBrowserData
-    Tools/EyeWitness
     Tools/Webshells_BlackArch
-    Tools/Chisel
-    Tools/Godzilla
-    Windows/Gosecretsdump
+    Tools/XC
     Windows/Boodhound
-    Windows/Mimikatz
-    Windows/Wesng
+    Windows/Gosecretsdump
     Windows/KaliWinBinary
-    Windows/WinPWN
-    Windows/SharpCollection
-    Windows/PrintSpoofer
-    Windows/WinPEAS
-    Windows/Powershell/Nishang
-    Windows/Powershell/PSHTML
-    Windows/Powershell/NetSPI
+    Windows/Mimikatz
+    Windows/Potato/Juicypotato
+    Windows/Potato/RoguePotato
+    Windows/Potato/RottenPotato
     Windows/Powershell/ADACLScanner
-    Windows/Powershell/PrivescCheck
     Windows/Powershell/ADEssentials
+    Windows/Powershell/ADLab
+    Windows/Powershell/ADModule
     Windows/Powershell/ADPeas
     Windows/Powershell/AdsiPS
-    Windows/Powershell/Sherlock
-    Windows/Powershell/ADModule
-    Windows/Powershell/PowerSploit_Master
-    Windows/Powershell/VulnerableAD
     Windows/Powershell/BadBlood
-    Windows/Powershell/RedTeamPowershellScripts
+    Windows/Powershell/NetSPI
+    Windows/Powershell/Nishang
+    Windows/Powershell/PSHTML
     Windows/Powershell/PowerShellSuite
-    Windows/Powershell/RedTeamPowershellEnum
     Windows/Powershell/PowerSploit_Dev
-    Windows/Powershell/Privesc
-    Windows/Powershell/ADLab
+    Windows/Powershell/PowerSploit_Master
     Windows/Powershell/PowerUpSQL
-    Windows/Potato/RottenPotato
-    Windows/Potato/RoguePotato
-    Windows/Potato/Juicypotato
-    Linux/Sudo_killer
-    Linux/LinEnum
-    Linux/LES2
-    Linux/LinPEAS
-    Linux/LES
-    Linux/Pspy
-    Wordlists/Rockyou
-    Wordlists/SecLists
+    Windows/Powershell/Privesc
+    Windows/Powershell/PrivescCheck
+    Windows/Powershell/RedTeamPowershellEnum
+    Windows/Powershell/RedTeamPowershellScripts
+    Windows/Powershell/Sherlock
+    Windows/Powershell/VulnerableAD
+    Windows/PrintSpoofer
+    Windows/SharpCollection
+    Windows/Wesng
+    Windows/WinPEAS
+    Windows/WinPWN
     Wordlists/AutoWordlists
     Wordlists/DOC
     Wordlists/Kkrypt0nn
+    Wordlists/Rockyou
+    Wordlists/SecLists
 ```
 
 ## Collection DB
@@ -155,26 +155,26 @@ $ sudo mkt list installable
 ```bash
 $ sudo mkt db installable     
 [*] List all installable db ...
-    XapaxSecurity
-    Cheatsheet
-    KaliDocs
-    PWKCheatsheet
-    IRedTeam
-    LOLBAS
-    GTFOBin
-    PayloadsAllTheThings
-    ADCheatsheet_drak3hft7
-    PentestCheatSheets
-    AtomicRedTeam
-    PentestBook
-    ADExploitation
-    Ruuand
     ADCheatsheet_S1ckB0y1337
-    HackTricks
-    RedTeamWiki
+    ADCheatsheet_drak3hft7
+    ADExploitation
+    AtomicRedTeam
     BaseDB
-    Tools/Mimikatz
+    Cheatsheet
+    GTFOBin
+    HackTricks
+    IRedTeam
+    KaliDocs
+    LOLBAS
+    PWKCheatsheet
+    PayloadsAllTheThings
+    PentestBook
+    PentestCheatSheets
+    RedTeamWiki
+    Ruuand
     Tools/BloodHound
+    Tools/Mimikatz
+    XapaxSecurity
 ```
 
 ## Later ...

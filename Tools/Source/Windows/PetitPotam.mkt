@@ -1,0 +1,21 @@
+def Install():
+    print("[PetitPotam] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/topotam/PetitPotam.git PetitPotam")
+
+def Uninstall():
+    print("[PetitPotam] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/PetitPotam")
+
+def Upgrade():
+    print("[PetitPotam] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/PetitPotam")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
