@@ -1,0 +1,50 @@
+def Install():
+    print("[ApacheDirectoryStudio] Installing base ...")
+    import os,sys
+
+    from lxml import html
+    import requests
+    print(" *  Getting Directory Path ...")
+    req = requests.get("https://dlcdn.apache.org/directory/studio/").text
+    webpage = html.fromstring(req)
+    href = webpage.xpath('//a/@href')
+    print(" >  Entering %s ..." %(href[-1]))
+    dir = "https://dlcdn.apache.org/directory/studio/" + href[-1]
+
+    req = requests.get(dir).text
+    webpage = html.fromstring(req)
+    href = webpage.xpath('//a/@href')
+
+    getlink = ""
+    for link in href:
+        find_end = "linux.gtk.x86_64.tar.gz"
+        if (link[-(len(find_end)):] == find_end):
+            getlink = link
+            print(" >  " + link)
+
+    if (getlink == ""):
+        print("[E] No such file!")
+        sys.exit(0)
+
+    from pathlib import Path
+    path = Path("/tmp/mktools")
+    path.mkdir(exist_ok=True,parents=True)
+
+    print(" *  Starting Download files ...")
+    dir = dir + getlink
+
+    os.chdir("/tmp/mktools")
+    os.system("wget '%s' -O /tmp/mktools/linux.tar.gz" % dir)
+    os.system("tar -xf linux.tar.gz")
+    os.system("mv ApacheDirectoryStudio /var/lib/mkt/Tools/Source/Tools/ApacheDirectoryStudio")
+    os.chdir("/tmp")
+    os.system("rm -rf /tmp/mktools")
+    
+def Uninstall():
+    print("[ApacheDirectoryStudio] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/ApacheDirectoryStudio")
+
+def Upgrade():
+    print("[ApacheDirectoryStudio] This tools not support update,but you can uninstall and install it again.")

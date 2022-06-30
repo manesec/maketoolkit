@@ -1,0 +1,26 @@
+def Install():
+    print("[Certipy] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/ly4k/Certipy.git Certipy")
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Certipy")
+    os.system("python3 setup.py install")
+
+def Uninstall():
+    print("[Certipy] Uninstalling ...")
+
+    import os
+    os.system("pip3 uninstall -y Certipy")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Certipy")
+
+def Upgrade():
+    print("[Certipy] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Certipy")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+
+    os.system("python3 setup.py install")

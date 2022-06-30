@@ -1,0 +1,21 @@
+def Install():
+    print("[PKINITtools] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/dirkjanm/PKINITtools.git PKINITtools")
+
+def Uninstall():
+    print("[PKINITtools] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/PKINITtools")
+
+def Upgrade():
+    print("[PKINITtools] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/PKINITtools")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
