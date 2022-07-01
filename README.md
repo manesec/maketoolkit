@@ -31,33 +31,50 @@ There are 3 main structure, `Tools` , `Search db` and `Script`.
 
 Just type `sudo mkt-update` to update the tools, **But all tools will be delete it and reinstall the source**.
 
-## Usage
+## Example
 
 ```bash
-# Update mkt tools and the source just type:
-sudo mkt-update
+# ========== Tools ==========
+# If you need to see what tools can be install: 
+sudo mkt list installable
 
-# Install the tools, you can type tools name: 
+# Install the tools, just type tools name: 
 sudo mkt install Windows/WinPEAS
 
 # Or, goto /Tools/Linux and :
 sudo mkt install LinPEAS.mkt
 
+# ========== Search DB ==========
+# What db can be installable: 
+sudo mkt db installable
+
+# (Recommend) If you want to support to view .md file, you need to:
+sudo mkt script InstallGlow
+
 # Before you need to search, you need to install search db.
 sudo mkt db install HackTricks
-
-# If you want to support to view .md file, you need to:
-sudo mkt script InstallGlow
 
 # When it finish to install db just type :
 mkt s reverse shell
 # or
 mkt search reverse shell
 
+# ========== Script ==========
+# List all the script
+sudo mkt script list
+
+# use the script
+sudo mkt script <script_name> 
+
+# ========== Other ==========
+# Update mkt tools and the source just type:
+# All the tools will be delete.
+sudo mkt-update
+
 # Enjoy it
 ```
 
-## Options
+## Usage
 
 ```bash
 Usage:
