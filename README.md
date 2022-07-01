@@ -17,9 +17,19 @@ cd maketoolkit; chmod u+x *.sh; sudo ./install.sh
 
 **Note**: All tools will be locate in `/var/lib/mkt/Tools/Source` which soft link to `/Tools`.
 
+## Structure
+
+There are 3 main structure, `Tools` , `Search db` and `Script`.
+
+`Tools` use to install all the pen-test tools.
+
+`Search DB` use to search local document. It mean you need to download search db before to use.
+
+`Script` is some script, use to install some tools or setup the env.
+
 ## Update
 
-Just type `sudo mkt-update` to update the tools, **all tools will be delete it and reinstall the source**.
+Just type `sudo mkt-update` to update the tools, **But all tools will be delete it and reinstall the source**.
 
 ## Usage
 
