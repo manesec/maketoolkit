@@ -99,6 +99,7 @@ $ sudo mkt list installable
     Linux/LinPEAS
     Linux/Pspy
     Linux/Sudo_killer
+    Tools/ApacheDirectoryStudio
     Tools/Chisel
     Tools/EyeWitness
     Tools/Godzilla
@@ -112,12 +113,12 @@ $ sudo mkt list installable
     Tools/Webshells_BlackArch
     Tools/XC
     Windows/Boodhound
-    Windows/DFSCoerce
+    Windows/Certipy
     Windows/Gosecretsdump
     Windows/KaliWinBinary
-    Windows/Krbrelayx
+    Windows/KrbCredExport
     Windows/Mimikatz
-    Windows/PetitPotam
+    Windows/PKINITtools
     Windows/Potato/Juicypotato
     Windows/Potato/RoguePotato
     Windows/Potato/RottenPotato
@@ -142,6 +143,10 @@ $ sudo mkt list installable
     Windows/Powershell/Sherlock
     Windows/Powershell/VulnerableAD
     Windows/PrintSpoofer
+    Windows/RPC/DFSCoerce
+    Windows/RPC/Krbrelayx
+    Windows/RPC/PetitPotam
+    Windows/RPC/ShadowCoerce
     Windows/SharpCollection
     Windows/Wesng
     Windows/WinPEAS
@@ -169,6 +174,7 @@ $ sudo mkt db installable
     IRedTeam
     KaliDocs
     LOLBAS
+    MSRPCtoATTACK
     PWKCheatsheet
     PayloadsAllTheThings
     PentestBook
@@ -193,4 +199,4 @@ $ sudo mkt script info
     InstallAllDB
 ```
 
-## Updating ...
+## Also Updating ...
