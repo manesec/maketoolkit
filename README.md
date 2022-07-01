@@ -21,7 +21,7 @@ cd maketoolkit; chmod u+x *.sh; sudo ./install.sh
 
 There are 3 main structure, `Tools` , `Search db` and `Script`.
 
-`Tools` use to install all the pen-test tools.
+`Tools` use to install the pen-test tools.
 
 `Search DB` use to search local document. It mean you need to download search db before to use.
 
