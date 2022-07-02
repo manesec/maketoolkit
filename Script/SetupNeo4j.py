@@ -7,7 +7,7 @@ def Run():
     import os,sys
     print("[SetupNeo4j] Initing ...")
 
-    if (os.path.exists() == False):
+    if (os.path.exists("/etc/neo4j/neo4j.conf") == False):
         print("[!] No found config files on /etc/neo4j/neo4j.conf")
         sys.exit(0)
 
