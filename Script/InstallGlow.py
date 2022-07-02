@@ -1,5 +1,6 @@
 def Info():
-    print("    This is command line to display markdown files tools, like less.")
+    print("This is script will be install glow.")
+    print(" - Markdown viewer on terminal.")
 
 def Run():
     import os

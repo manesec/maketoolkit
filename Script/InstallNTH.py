@@ -1,5 +1,5 @@
 def Info():
-    print("    This script will install Name that hash(NTH).")
+    print("This script will install Name that hash(NTH).")
 
 def Run():
     import os

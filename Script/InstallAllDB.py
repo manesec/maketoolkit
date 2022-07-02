@@ -1,5 +1,5 @@
 def Info():
-    print("    This script will install all the DB.")
+    print("This script will be install all search DB.")
 
 def Run():
     import os

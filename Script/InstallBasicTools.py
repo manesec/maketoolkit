@@ -1,6 +1,6 @@
 def Info():
-    print("    It will install basic tools include: ")
-    print("         python2, Pwncat-cs, cherrytree, glow")
+    print("This script will be install basic tools include: ")
+    print(" - python2, pwncat-cs, cherrytree, glow")
 
 def Run():
     import os
