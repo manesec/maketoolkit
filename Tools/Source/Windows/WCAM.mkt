@@ -1,0 +1,20 @@
+def Install():
+    print("[windows coerced authentication methods] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/p0dalirius/windows-coerced-authentication-methods.git WCAM")
+
+def Uninstall():
+    print("[windows coerced authentication methods] Uninstalling ...")
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/WCAM")
+
+def Upgrade():
+    print("[windows coerced authentication methods] Upgrade ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/WCAM")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

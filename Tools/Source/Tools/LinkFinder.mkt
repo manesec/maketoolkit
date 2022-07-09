@@ -1,0 +1,24 @@
+def Install():
+    print("[LinkFinder] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+    os.system("git clone https://github.com/GerbenJavado/LinkFinder.git LinkFinder")
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/LinkFinder")
+    os.system("pip3 install -r requirements.txt")
+    os.system("python3 setup.py install")
+
+def Uninstall():
+    print("[LinkFinder] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/LinkFinder")
+
+def Upgrade():
+    print("[LinkFinder] Upgrade ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/LinkFinder")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

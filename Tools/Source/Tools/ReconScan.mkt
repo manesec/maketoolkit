@@ -1,0 +1,21 @@
+def Install():
+    print("[ReconScan] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+    os.system("git clone https://github.com/RoliSoft/ReconScan.git ReconScan")
+
+def Uninstall():
+    print("[ReconScan] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/ReconScan")
+
+def Upgrade():
+    print("[ReconScan] Upgrade ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/ReconScan")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
