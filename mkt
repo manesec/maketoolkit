@@ -550,10 +550,14 @@ def MKT_DB_SEARCH():
         sys.exit(0)
     print("[*] Searching LocalDB ...")
 
+    searchWorldList = sys.argv[2:]
+    searchWorldList = sorted(searchWorldList,key=len)
+    searchWorldList.reverse()
+
     out_stdout_list = ()
 
     frist_search = True
-    for searchstr in sys.argv[2:]:
+    for searchstr in searchWorldList:
         if frist_search:
             searchstr = searchstr.replace("'","\'")
 
