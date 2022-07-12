@@ -76,8 +76,11 @@ def MKT_INSTALL():
     # fix bug for unknow path
     systempwd = "/tmp"
     try:
-        systempwd = os.getcwd() + "/" + input_str
-        systempwd = os.path.abspath(systempwd)
+        if (os.path.isabs(input_str)):
+            systempwd = os.path.abspath(input_str)
+        else:
+            systempwd = os.getcwd() + "/" + input_str
+            systempwd = os.path.abspath(systempwd)
     except:
         pass
 
