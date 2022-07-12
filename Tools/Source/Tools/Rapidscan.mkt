@@ -1,0 +1,24 @@
+def Install():
+    print("[rapidscan] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+    os.system("git clone https://github.com/skavngr/rapidscan.git rapidscan")
+
+    os.system("apt update")    
+    os.system("apt-get -yq --allow-downgrades install python3  host   whois   sslyze   wapiti   nmap   dmitry   dnsenum   dnsmap   dnsrecon   dnswalk   dirb   wafw00f   whatweb   nikto   lbd   xsser   fierce   theharvester   davtest   uniscan   amass   wget")
+
+def Uninstall():
+    print("[rapidscan] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/rapidscan")
+
+def Upgrade():
+    print("[rapidscan] Upgrade ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/rapidscan")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

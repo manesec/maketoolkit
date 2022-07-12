@@ -1,0 +1,21 @@
+def Install():
+    print("[PHPReverseShell] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/Dhayalanb/windows-php-reverse-shell.git PHPReverseShell")
+
+def Uninstall():
+    print("[PHPReverseShell] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/PHPReverseShell")
+
+def Upgrade():
+    print("[PHPReverseShell] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/PHPReverseShell")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

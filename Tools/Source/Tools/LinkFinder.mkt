@@ -22,3 +22,5 @@ def Upgrade():
     
     Branches = "master"
     os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    os.system("pip3 install -r requirements.txt")
+    os.system("python3 setup.py install")

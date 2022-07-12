@@ -1,0 +1,24 @@
+def Install():
+    print("[ADenum] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/SecuProject/ADenum.git ADenum")
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/ADenum")
+    os.system("pip3 install -r requirements.txt")
+
+def Uninstall():
+    print("[ADenum] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/ADenum")
+
+def Upgrade():
+    print("[ADenum] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/ADenum")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    os.system("pip3 install -r requirements.txt")

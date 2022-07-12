@@ -1,0 +1,21 @@
+def Install():
+    print("[Deepce] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+    os.system("git clone https://github.com/stealthcopter/deepce.git Deepce")
+
+def Uninstall():
+    print("[Deepce] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Deepce")
+
+def Upgrade():
+    print("[Deepce] Upgrade ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Deepce")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

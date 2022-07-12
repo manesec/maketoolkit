@@ -1,0 +1,24 @@
+def Install():
+    print("[Nullinux] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/m8sec/nullinux.git Nullinux")
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Nullinux")
+    os.system("bash setup.sh")
+
+def Uninstall():
+    print("[Nullinux] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Nullinux")
+
+def Upgrade():
+    print("[Nullinux] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Nullinux")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    os.system("bash setup.sh")

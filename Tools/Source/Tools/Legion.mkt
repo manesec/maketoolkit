@@ -1,0 +1,25 @@
+def Install():
+    print("[Legion] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+    os.system("git clone https://github.com/carlospolop/legion.git Legion")
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Legion/git")
+    os.system("bash install.sh")
+
+def Uninstall():
+    print("[Legion] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Legion")
+
+def Upgrade():
+    print("[Legion] Upgrade ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Legion")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Legion/git")
+    os.system("bash install.sh")
