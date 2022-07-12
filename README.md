@@ -127,24 +127,37 @@ $ sudo mkt list installable
     Linux/Pspy
     Linux/Sudo_killer
     Tools/ApacheDirectoryStudio
+    Tools/AutoRecon
     Tools/Chisel
+    Tools/DDexec
+    Tools/Deepce
     Tools/EyeWitness
+    Tools/Gitjacker
     Tools/Godzilla
     Tools/GrepForOSINT
     Tools/HackBrowserData
     Tools/Htshells
     Tools/JSPWebShellCollection
+    Tools/Legion
+    Tools/LinkFinder
     Tools/NmapAutomator
+    Tools/Rapidscan
+    Tools/ReconScan
     Tools/ReverseSSH
     Tools/Tools4mane
     Tools/Webshells_BlackArch
-    Tools/XC
+    Tools/xc
+    Windows/ADenum
     Windows/Boodhound
     Windows/Certipy
+    Windows/Coercer
+    Windows/DomainUsersToXLSX
     Windows/Gosecretsdump
     Windows/KaliWinBinary
     Windows/KrbCredExport
     Windows/Mimikatz
+    Windows/Nullinux
+    Windows/PHPReverseShell
     Windows/PKINITtools
     Windows/Potato/Juicypotato
     Windows/Potato/RoguePotato
@@ -154,6 +167,7 @@ $ sudo mkt list installable
     Windows/Powershell/ADLab
     Windows/Powershell/ADModule
     Windows/Powershell/ADPeas
+    Windows/Powershell/ADRecon
     Windows/Powershell/AdsiPS
     Windows/Powershell/BadBlood
     Windows/Powershell/NetSPI
@@ -169,15 +183,13 @@ $ sudo mkt list installable
     Windows/Powershell/RedTeamPowershellScripts
     Windows/Powershell/Sherlock
     Windows/Powershell/VulnerableAD
+    Windows/Powershell/WinPWN
     Windows/PrintSpoofer
-    Windows/RPC/DFSCoerce
-    Windows/RPC/Krbrelayx
-    Windows/RPC/PetitPotam
-    Windows/RPC/ShadowCoerce
+    Windows/Rev
     Windows/SharpCollection
+    Windows/WCAM
     Windows/Wesng
     Windows/WinPEAS
-    Windows/WinPWN
     Wordlists/AutoWordlists
     Wordlists/DOC
     Wordlists/Kkrypt0nn
@@ -195,6 +207,7 @@ $ sudo mkt db installable
     ADExploitation
     AtomicRedTeam
     BaseDB
+    Burmat
     Cheatsheet
     GTFOBin
     HackTricks
@@ -212,6 +225,7 @@ $ sudo mkt db installable
     TheHackerTools
     Tools/BloodHound
     Tools/Mimikatz
+    WADComs
     XapaxSecurity
 ```
 
@@ -220,10 +234,12 @@ $ sudo mkt db installable
 ```bash
 $ sudo mkt script info
 [*] Available scripts:
+    InstallAllDB
     InstallBasicTools
     InstallGlow
     InstallNTH
-    InstallAllDB
+    InstallRaccon
+    SetupNeo4j
 ```
 
 ## Also Updating ...
