@@ -1,13 +1,13 @@
 def Info():
     print("This script will be install basic tools include: ")
-    print(" - python2, pwncat-cs, cherrytree, glow")
+    print(" - python2, pwncat-cs, cherrytree, glow, ripgrep")
 
 def Run():
     import os
     print("[InstallBasicTools] Running ...")
     Info()
     os.system("pip3 install pwncat-cs")
-    os.system("apt update && apt -y install cherrytree python2")
+    os.system("apt update && apt -y install cherrytree python2 ripgrep")
     InstallGlow()
 
 
