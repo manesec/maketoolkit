@@ -1,5 +1,8 @@
 #! /bin/python3
 import sys,os,shutil
+from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED
+
+max_worker = 10
 
 # mkt update
 def MKT_UPDATE():
@@ -14,7 +17,7 @@ def MKT_HELP():
 |  Y Y  \    <  |  | (  <_> |  <_> )  |__\___ \ 
 |__|_|  /__|_ \ |__|  \____/ \____/|____/____  >
       \/     \/                              \/ 
-       By @manesec, Version: 20220712 Beta
+       By @manesec, Version: 20220713 Beta
       https://github.com/manesec/maketoolkit
 
 Usage:
@@ -39,7 +42,6 @@ Script:
 
 DB and res:
     mkt        db         installable
-    mkt        db         list
     mkt        db         install       <db_name>
     mkt        db         uninstall     <db_name>
     mkt        db         upgrade       <db_name> / all
@@ -565,7 +567,7 @@ def MKT_DB_SEARCH():
             searchstr = searchstr.replace("'","\'")
 
             print("[*] Frist search with %s ..." % (searchstr))
-            command = "grep -Rnil /var/lib/mkt/Res/Data/ -e '%s' --exclude-dir='.[^.]*'" % searchstr
+            command = "grep -m 1 -Rnil /var/lib/mkt/Res/Data/ -e '%s' --exclude-dir='.[^.]*'" % searchstr
             status,output_str = subprocess.getstatusoutput(command)
 
             if (status == 0) :
@@ -591,21 +593,35 @@ def MKT_DB_SEARCH():
 
             frist_search = False
             continue
-        
-        new_stdout_list = ()
+
         print("[*] Filtering %s ..." % (searchstr))
-        for f in out_stdout_list:
-            command = "grep -il '%s' -e '%s' " % (f,searchstr)
+
+        new_stdout_list = ()
+        def sub_search_thread (f,searchstr):
+            global __search_list
+            command = "grep -m 1 -il '%s' -e '%s' " % (f,searchstr)
             status,output_str = subprocess.getstatusoutput(command)
             if (status == 0) :
-                if f not in new_stdout_list:
-                    new_stdout_list += (f,)
-                continue
+                return (f,True)
+            return (f,False)
 
-            if (f.lower().find(searchstr.lower()) !=-1):
-                if f not in new_stdout_list:
-                    new_stdout_list += (f,)
-                continue
+        executor = ThreadPoolExecutor(max_workers=max_worker)
+        all_task = []
+        for f in out_stdout_list:
+            all_task.append(executor.submit(sub_search_thread,f,searchstr))
+        
+        wait(all_task,return_when=ALL_COMPLETED)
+        for task in all_task:
+            taskname,result = task.result()
+            if (result):
+                if (taskname not in new_stdout_list):
+                    new_stdout_list += (taskname,)
+                    continue
+            
+            if (taskname.lower().find(searchstr.lower()) !=-1):
+                if result not in new_stdout_list:
+                    new_stdout_list += (taskname,)
+                    continue
 
         out_stdout_list = new_stdout_list
         out_stdout_list = CHECK_TEXT_FILE(out_stdout_list)
@@ -664,21 +680,46 @@ def MKT_DB_SEARCH():
                 print("[ERROR] Please input key words.")
                 continue
 
-            new_stdout_list = ()
+            def sub_search_thread (f,searchstr):
+                global __search_list
+                command = "grep -m 1 -il '%s' -e '%s' " % (f,searchstr)
+                status,output_str = subprocess.getstatusoutput(command)
+                if (status == 0) :
+                    return (f,True)
+                return (f,False)
 
+            
+            out_stdout_list = history_stack[-1]
             for searchstr in input_array[1:]:
                 print("[*] Filtering %s ..." % (searchstr))
-                for f in history_stack[-1]:
-                    command = "grep -il '%s' -e '%s' " % (f,searchstr)
-                    status,output_str = subprocess.getstatusoutput(command)
-                    if (status == 0) :
-                        if f not in new_stdout_list:
-                            new_stdout_list += (f,)
-                        continue
-            if (len(new_stdout_list) == 0):
+
+                new_stdout_list = ()
+
+                all_task = []
+                executor = ThreadPoolExecutor(max_workers=max_worker)
+                for f in out_stdout_list:
+                    all_task.append(executor.submit(sub_search_thread,f,searchstr))
+                    
+                wait(all_task,return_when=ALL_COMPLETED)
+                for task in all_task:
+                    taskname,result = task.result()
+                    if (result):
+                        if (taskname not in new_stdout_list):
+                            new_stdout_list += (taskname,)
+                            continue
+                        
+                    if (taskname.lower().find(searchstr.lower()) !=-1):
+                        if result not in new_stdout_list:
+                            new_stdout_list += (taskname,)
+                            continue
+
+                new_stdout_list = CHECK_TEXT_FILE(new_stdout_list)
+                out_stdout_list = new_stdout_list
+
+            if (len(out_stdout_list) == 0):
                 print("[!] No found.")
             else:
-                history_stack.append(new_stdout_list)
+                history_stack.append(out_stdout_list)
                 listoutput()
             continue
 
