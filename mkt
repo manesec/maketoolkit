@@ -2,7 +2,7 @@
 import sys,os,shutil
 from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED
 
-max_worker = 10
+max_worker = 20
 
 # mkt update
 def MKT_UPDATE():
