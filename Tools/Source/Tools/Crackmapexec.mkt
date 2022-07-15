@@ -40,10 +40,12 @@ def Setup():
     
     print("[Crackmapexec] Writing run.sh ...")
     start_script = open("run.sh",'w')
-    start_script.writelines("""
-#! /bin/bash
+    start_script.writelines("""#! /bin/bash
 source $HOME/.poetry/env
 poetry run crackmapexec "$@"
 """)
     start_script.close()
 
+    print("[!] Done!")
+    print("  Run: poetry run crackmapexec <option>")
+    print("  Run: ./run.sh <option>")
