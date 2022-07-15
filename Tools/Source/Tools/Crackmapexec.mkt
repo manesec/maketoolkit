@@ -1,0 +1,49 @@
+def Install():
+    print("[Crackmapexec] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+    os.system("git clone https://github.com/Porchetta-Industries/CrackMapExec Crackmapexec")
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Crackmapexec")
+    Setup()
+
+def Uninstall():
+    print("[Crackmapexec] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Crackmapexec")
+
+def Upgrade():
+    print("[Crackmapexec] Upgrade ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Crackmapexec")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    Setup()
+
+
+def Setup():
+    print("[Crackmaexec] Running to setup ...")
+    import os
+    os.system("chmod 777 -R /var/lib/mkt/Tools/Source/Tools/Crackmapexec")
+    os.system("apt update")
+    os.system("apt-get install -y libssl-dev libkrb5-dev libffi-dev python-dev build-essential")
+    os.system("pip3 install -r requirements.txt")  
+
+    print("[Crackmapexec] Running poetry ...")
+    norootuser = os.getenv("SUDO_USER")
+    os.system("sudo -u %s /bin/bash -c 'curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3 -'" %(norootuser))
+    os.system("sudo -u %s poetry update" % (norootuser))
+    os.system("sudo -u %s poetry run crackmapexec")
+    
+    print("[Crackmapexec] Writing run.sh ...")
+    start_script = open("run.sh",'w')
+    start_script.writelines("""
+#! /bin/bash
+poetry run crackmapexec "$@"
+""")
+    start_script.close()
+
+    
