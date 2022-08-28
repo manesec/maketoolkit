@@ -1,0 +1,23 @@
+def Install():
+    print("[URO] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+    os.system("git clone https://github.com/s0md3v/uro.git URO")
+    os.system("python3 setup.py install")
+
+def Uninstall():
+    print("[URO] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/URO")
+
+def Upgrade():
+    print("[URO] Upgrade ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/URO")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    os.system("python3 setup.py install")

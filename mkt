@@ -6,7 +6,8 @@ max_worker = 20
 
 # mkt update
 def MKT_UPDATE():
-    print('[!] Please run "sudo mkt-update" command to update all the source include mkt.')
+    import os
+    os.system("sudo mkt-update")
 
 # mkt help and version
 def MKT_HELP():
@@ -17,7 +18,7 @@ def MKT_HELP():
 |  Y Y  \    <  |  | (  <_> |  <_> )  |__\___ \ 
 |__|_|  /__|_ \ |__|  \____/ \____/|____/____  >
       \/     \/                              \/ 
-       By @manesec, Version: 20220713 Beta
+       By @manesec, Version: 20220828 Beta
       https://github.com/manesec/maketoolkit
 
 Usage:

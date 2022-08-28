@@ -1,0 +1,24 @@
+def Install():
+    print("[gMSADumper] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/micahvandeusen/gMSADumper.git gMSADumper")
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/gMSADumper")
+    os.system("pip3 install -r requirements.txt")
+
+def Uninstall():
+    print("[gMSADumper] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/gMSADumper")
+
+def Upgrade():
+    print("[gMSADumper] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/gMSADumper")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    os.system("pip3 install -r requirements.txt")

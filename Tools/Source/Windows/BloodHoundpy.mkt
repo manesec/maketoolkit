@@ -1,0 +1,26 @@
+def Install():
+    print("[BloodHoundpy] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/fox-it/BloodHound.py.git BloodHoundpy")
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/BloodHoundpy")
+    os.system("pip3 install impacket ldap3 dnspython")
+    os.system("python3 setup.py install")
+
+def Uninstall():
+    print("[BloodHoundpy] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/BloodHoundpy")
+
+def Upgrade():
+    print("[BloodHoundpy] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/BloodHoundpy")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    os.system("pip3 install impacket ldap3 dnspython")
+    os.system("python3 setup.py install")
