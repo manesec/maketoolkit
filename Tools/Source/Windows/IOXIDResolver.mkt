@@ -1,0 +1,24 @@
+def Install():
+    print("[IOXIDResolver] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/mubix/IOXIDResolver.git IOXIDResolver")
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/IOXIDResolver")
+    os.system("pip3 install -r requirements.txt")
+
+def Uninstall():
+    print("[IOXIDResolver] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/IOXIDResolver")
+
+def Upgrade():
+    print("[IOXIDResolver] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/IOXIDResolver")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    os.system("pip3 install -r requirements.txt")
