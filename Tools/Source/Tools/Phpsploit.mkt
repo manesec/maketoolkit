@@ -1,0 +1,24 @@
+def Install():
+    print("[Phpsploit] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+    os.system("git clone https://github.com/nil0x42/phpsploit.git Phpsploit")
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Phpsploit")
+    os.system("pip3 install -r requirements.txt")
+
+def Uninstall():
+    print("[Phpsploit] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Phpsploit")
+
+def Upgrade():
+    print("[Phpsploit] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Phpsploit")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    os.system("pip3 install -r requirements.txt")
