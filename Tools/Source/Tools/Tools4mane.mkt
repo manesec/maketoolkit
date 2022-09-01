@@ -12,7 +12,7 @@ def Uninstall():
     os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Tools4mane")
 
 def Upgrade():
-    print("[Tools4mane] Upgrade ...")
+    print("[Tools4mane] Upgrading ...")
 
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Tools/Tools4mane")

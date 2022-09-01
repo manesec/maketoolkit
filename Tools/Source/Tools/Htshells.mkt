@@ -12,7 +12,7 @@ def Uninstall():
     os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Htshells")
 
 def Upgrade():
-    print("[Htshells] Upgrade ...")
+    print("[Htshells] Upgrading ...")
 
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Tools/Htshells")

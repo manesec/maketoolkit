@@ -1,0 +1,21 @@
+def Install():
+    print("[SeLoadDriverPrivilege] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/manesec/SeLoadDriverPrivilegeExp.git SeLoadDriverPrivilege")
+
+def Uninstall():
+    print("[SeLoadDriverPrivilege] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/SeLoadDriverPrivilege")
+
+def Upgrade():
+    print("[SeLoadDriverPrivilege] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/SeLoadDriverPrivilege")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

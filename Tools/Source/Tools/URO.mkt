@@ -13,7 +13,7 @@ def Uninstall():
     os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/URO")
 
 def Upgrade():
-    print("[URO] Upgrade ...")
+    print("[URO] Upgrading ...")
 
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Tools/URO")

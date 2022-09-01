@@ -1,0 +1,21 @@
+def Install():
+    print("[URLFinder] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+    os.system("git clone https://github.com/pingc0y/URLFinder.git URLFinder")
+
+def Uninstall():
+    print("[URLFinder] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/URLFinder")
+
+def Upgrade():
+    print("[URLFinder] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/URLFinder")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

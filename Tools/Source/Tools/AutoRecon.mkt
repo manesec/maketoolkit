@@ -14,7 +14,7 @@ def Uninstall():
     os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/AutoRecon")
 
 def Upgrade():
-    print("[AutoRecon] Upgrade ...")
+    print("[AutoRecon] Upgrading ...")
 
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Tools/AutoRecon")

@@ -1,0 +1,24 @@
+def Install():
+    print("[hoaxshell] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/t3l3machus/hoaxshell.git hoaxshell")
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/hoaxshell")
+    os.system("pip3 install -r requirements.txt")
+
+def Uninstall():
+    print("[hoaxshell] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/hoaxshell")
+
+def Upgrade():
+    print("[hoaxshell] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/hoaxshell")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    os.system("pip3 install -r requirements.txt")

@@ -15,7 +15,7 @@ def Uninstall():
     os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/rapidscan")
 
 def Upgrade():
-    print("[rapidscan] Upgrade ...")
+    print("[rapidscan] Upgrading ...")
 
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Tools/rapidscan")

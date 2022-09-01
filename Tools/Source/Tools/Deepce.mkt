@@ -12,7 +12,7 @@ def Uninstall():
     os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Deepce")
 
 def Upgrade():
-    print("[Deepce] Upgrade ...")
+    print("[Deepce] Upgrading ...")
 
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Tools/Deepce")

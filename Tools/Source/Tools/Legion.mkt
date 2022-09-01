@@ -14,7 +14,7 @@ def Uninstall():
     os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Legion")
 
 def Upgrade():
-    print("[Legion] Upgrade ...")
+    print("[Legion] Upgrading ...")
 
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Tools/Legion")

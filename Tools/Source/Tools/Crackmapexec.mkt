@@ -14,7 +14,7 @@ def Uninstall():
     os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Crackmapexec")
 
 def Upgrade():
-    print("[Crackmapexec] Upgrade ...")
+    print("[Crackmapexec] Upgrading ...")
 
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Tools/Crackmapexec")
