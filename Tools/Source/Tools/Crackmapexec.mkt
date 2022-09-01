@@ -34,7 +34,7 @@ def Setup():
 
     print("[Crackmapexec] Running poetry ...")
     norootuser = os.getenv("SUDO_USER")
-    os.system("sudo -u %s /bin/bash -c 'curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3 -'" %(norootuser))
+    os.system("sudo -u %s /bin/bash -c 'curl -sSL https://install.python-poetry.org | python3 -'" %(norootuser))
     os.system("sudo -u %s /bin/bash -c 'source $HOME/.poetry/env; poetry update'" % (norootuser))
     os.system("sudo -u %s /bin/bash -c 'source $HOME/.poetry/env; poetry run crackmapexec'" % (norootuser))
     
