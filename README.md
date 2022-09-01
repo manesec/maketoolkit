@@ -120,6 +120,7 @@ Other:
 $ sudo mkt list installable               
 [*] Installable Tools List:
     Binary/Ghidra
+    Linux/DDexec
     Linux/LES
     Linux/LES2
     Linux/LinEnum
@@ -129,7 +130,6 @@ $ sudo mkt list installable
     Tools/ApacheDirectoryStudio
     Tools/AutoRecon
     Tools/Chisel
-    Tools/DDexec
     Tools/Deepce
     Tools/EyeWitness
     Tools/Gitjacker
@@ -141,20 +141,27 @@ $ sudo mkt list installable
     Tools/Legion
     Tools/LinkFinder
     Tools/NmapAutomator
+    Tools/Phpsploit
     Tools/Rapidscan
     Tools/ReconScan
     Tools/ReverseSSH
     Tools/Tools4mane
+    Tools/URLFinder
+    Tools/URO
     Tools/Webshells_BlackArch
     Tools/xc
     Windows/ADenum
+    Windows/BloodHoundpy
     Windows/Boodhound
     Windows/Certipy
     Windows/Coercer
     Windows/DomainUsersToXLSX
     Windows/Gosecretsdump
+    Windows/Hoaxshell
+    Windows/IOXIDResolver
     Windows/KaliWinBinary
     Windows/KrbCredExport
+    Windows/Krbrelayx
     Windows/Mimikatz
     Windows/Nullinux
     Windows/PHPReverseShell
@@ -186,10 +193,12 @@ $ sudo mkt list installable
     Windows/Powershell/WinPWN
     Windows/PrintSpoofer
     Windows/Rev
+    Windows/SeLoadDriverPrivilege
     Windows/SharpCollection
     Windows/WCAM
     Windows/Wesng
     Windows/WinPEAS
+    Windows/gMSADumper
     Wordlists/AutoWordlists
     Wordlists/DOC
     Wordlists/Kkrypt0nn
@@ -217,6 +226,7 @@ $ sudo mkt db installable
     MSRPCtoATTACK
     PWKCheatsheet
     PayloadsAllTheThings
+    PenetrationTestingGrimoire
     PentestBook
     PentestCheatSheets
     RedTeamWiki
@@ -242,4 +252,4 @@ $ sudo mkt script info
     SetupNeo4j
 ```
 
-## Also Updating ...
+## Still Updating ...
