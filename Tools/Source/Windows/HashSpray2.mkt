@@ -1,0 +1,23 @@
+def Install():
+    print("[HashSpray2] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/manesec/HashSpray2.py.git HashSpray2")
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/HashSpray2")
+
+
+def Uninstall():
+    print("[HashSpray2] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/HashSpray2")
+
+def Upgrade():
+    print("[HashSpray2] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/HashSpray2")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
