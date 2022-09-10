@@ -1,10 +1,33 @@
 def Install():
-    print("[Icmpsh] Installing base ...")
-
     import os
+
+    print("[Icmpsh] Setuping apt to build linux client...")
+    os.system("apt install build-essential")
+
+    print("[Icmpsh] Installing base ...")
     os.chdir("/var/lib/mkt/Tools/Source/Tools/")
     os.system("git clone https://github.com/bdamele/icmpsh.git Icmpsh")
+    
     Setup()
+
+    from pathlib import Path
+
+    path = Path("/var/lib/mkt/Tools/Source/Tools/LinuxClient")
+    path.mkdir(parents=True, exist_ok=True)
+
+    print("[Icmpsh] Compiling linux client ...")
+    os.chdir("/tmp/")
+    os.system("git clone https://github.com/ewilded/icmpsh-s-linux.git icmpshlinux")
+    os.chdir("/tmp/icmpshlinux")
+    os.system("gcc icmpsh-s-linux.c -o icmp-s-linux-static -static")
+    os.system("gcc icmpsh-s-linux.c -o icmp-s-linux")
+    os.system("cp icmp-s-linux* /var/lib/mkt/Tools/Source/Tools/LinuxClient")
+    os.chdir("/tmp")
+    os.system("rm -rf /tmp/icmpshlinux")    
+
+    print("[!] Install done.")
+    print("Usage: sudo ./run.sh")
+    print("Note: Linux client need sudo permissions!")
 
 def Uninstall():
     print("[Icmpsh] Uninstalling ...")
@@ -13,14 +36,7 @@ def Uninstall():
     os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Icmpsh")
 
 def Upgrade():
-    print("[Icmpsh] Upgrading ...")
-
-    import os
-    os.chdir("/var/lib/mkt/Tools/Source/Tools/Icmpsh")
-    
-    Branches = "master"
-    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
-    Setup()
+    print("[Icmpsh] Icmpsh not support to upgrade, you can uninstall and install it again.")
 
 def Setup():
     import os
@@ -30,4 +46,7 @@ def Setup():
     os.system("wget https://bootstrap.pypa.io/pip/2.7/get-pip.py -O /tmp/get-pip.py")
     os.system("python2.7 /tmp/get-pip.py")
     os.system("python2.7 -m pip install impacket")
-    
+
+    print("Patching to python2.7 on run.sh ...")
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Icmpsh")
+    os.system("sed -i 's/python /python2.7 /g' run.sh")
