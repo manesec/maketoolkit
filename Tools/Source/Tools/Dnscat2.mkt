@@ -1,0 +1,84 @@
+def Install():
+    print("[Dnscat2] Download the Client ...")
+
+    Download_Version = "v0.07"
+
+    import os
+    os.system("apt install ruby-dev")
+
+    from pathlib import Path
+
+    path = Path("/var/lib/mkt/Tools/Source/Tools/Dnscat2/Client")
+    path.mkdir(parents=True, exist_ok=True)
+
+    path = Path("/var/lib/mkt/Tools/Source/Tools/Dnscat2/Server")
+    path.mkdir(parents=True, exist_ok=True)
+
+    path = Path("/tmp/Dnscat2")
+    path.mkdir(parents=True, exist_ok=True)
+
+    os.chdir("/tmp/Dnscat2")
+
+    # Download win32
+    print("[Dnscat] Download dnscat2-%s-client-win32.zip" % (Download_Version))
+    WgetDownloadFile("https://downloads.skullsecurity.org/dnscat2/dnscat2-%s-client-win32.zip" % (Download_Version),"/tmp/Dnscat2/win32.zip")
+
+    os.system("unzip -P password win32.zip")
+    os.system("mv *.exe /var/lib/mkt/Tools/Source/Tools/Dnscat2/Client/")
+
+    os.system("rm -rf /tmp/Dnscat2/*")
+
+    # Download linux 64
+    print("[Dnscat] Download dnscat2-%s-client-x64.tar.bz2" % (Download_Version))
+    WgetDownloadFile("https://downloads.skullsecurity.org/dnscat2/dnscat2-%s-client-x64.tar.bz2" % (Download_Version),"/tmp/Dnscat2/linux64.tar.bz2")
+
+    os.system("tar -xf linux64.tar.bz2")
+    os.system("rm -rf linux64.tar.bz2")
+    os.system("mv * /var/lib/mkt/Tools/Source/Tools/Dnscat2/Client/dnscat2-linux-64")
+
+    os.system("rm -rf /tmp/Dnscat2/*")
+
+    # Download linux
+    print("[Dnscat] Download dnscat2-%s-client-x86.tar.bz2" % (Download_Version))
+    WgetDownloadFile("https://downloads.skullsecurity.org/dnscat2/dnscat2-%s-client-x86.tar.bz2" % (Download_Version),"/tmp/Dnscat2/linux.tar.bz2")
+
+    os.system("tar -xf linux.tar.bz2")
+    os.system("rm -rf linux.tar.bz2")
+    os.system("mv * /var/lib/mkt/Tools/Source/Tools/Dnscat2/Client/dnscat2-linux-86")
+
+    os.system("rm -rf /tmp/Dnscat2/")
+
+    print("[Dnscat] Download the server ...")
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Dnscat2/")
+    os.system("git clone https://github.com/iagox86/dnscat2.git Server")
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Dnscat2/Server/server")
+    os.system("gem install bundler")
+    os.system("bundle install")
+
+    print("[!] Install done.")
+    print("Usage: sudo ruby ./dnscat2.rb")
+
+
+def Uninstall():
+    print("[Dnscat] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Dnscat2")
+
+def Upgrade():
+    print("[Dnscat] Dnscat Client no support update, please uninstall and install again.")
+    print("[Dnscat] Updating the server ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Dnscat2/Server/")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+
+
+def WgetDownloadFile(url,local_path,quiet = False):
+    import os
+    if os.path.exists(local_path):
+        os.remove(local_path)
+    quiet = "--quiet" if quiet else ""
+    os.system('wget "%s" %s -O "%s"' % (url,quiet,local_path))
