@@ -12,7 +12,7 @@ def Install():
 
     from pathlib import Path
 
-    path = Path("/var/lib/mkt/Tools/Source/Tools/LinuxClient")
+    path = Path("/var/lib/mkt/Tools/Source/Tools/Icmpsh/LinuxClient")
     path.mkdir(parents=True, exist_ok=True)
 
     print("[Icmpsh] Compiling linux client ...")
@@ -21,7 +21,7 @@ def Install():
     os.chdir("/tmp/icmpshlinux")
     os.system("gcc icmpsh-s-linux.c -o icmp-s-linux-static -static")
     os.system("gcc icmpsh-s-linux.c -o icmp-s-linux")
-    os.system("cp icmp-s-linux* /var/lib/mkt/Tools/Source/Tools/LinuxClient")
+    os.system("cp icmp-s-linux* /var/lib/mkt/Tools/Source/Tools/Icmpsh/LinuxClient")
     os.chdir("/tmp")
     os.system("rm -rf /tmp/icmpshlinux")    
 
