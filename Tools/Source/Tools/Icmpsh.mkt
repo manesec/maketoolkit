@@ -1,0 +1,33 @@
+def Install():
+    print("[Icmpsh] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+    os.system("git clone https://github.com/bdamele/icmpsh.git Icmpsh")
+    Setup()
+
+def Uninstall():
+    print("[Icmpsh] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Icmpsh")
+
+def Upgrade():
+    print("[Icmpsh] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Icmpsh")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    Setup()
+
+def Setup():
+    import os
+    print("[*] Setting up python 2.7 ...")
+    os.system("apt install -y python2.7")
+    os.chdir("/tmp")
+    os.system("wget https://bootstrap.pypa.io/pip/2.7/get-pip.py -O /tmp/get-pip.py")
+    os.system("python2.7 /tmp/get-pip.py")
+    os.system("python2.7 -m pip install impacket")
+    

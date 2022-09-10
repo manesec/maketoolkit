@@ -41,4 +41,4 @@ def Uninstall():
     os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/xc")
 
 def Upgrade():
-    print("[XC] XC no support update, please uninstall and install again ...")
+    print("[XC] XC no support update, please uninstall and install again.")
