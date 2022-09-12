@@ -23,6 +23,7 @@ You can setup it on `kali` or `parrot os` in those command.
 
 ```bash
 cd ~
+rm -rf ~/maketoolkit
 git clone https://github.com/manesec/maketoolkit.git
 cd maketoolkit ; chmod u+x *.sh; sudo ./reinstall.sh
 # Install some tools.
