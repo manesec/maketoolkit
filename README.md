@@ -6,9 +6,11 @@ Quick to install some pen-testing tools on python and debian like os.
 
 # Warning
 
-This is **BETA** version, which mean it need to very unstable, if you find a bug just feel free to submit the issue. you need to update before to use.
+This is **BETA** version, which mean it need to very unstable, also still updating. If you find a bug just feel free to submit the issue, you need to update before to use.
 
-## Install
+## Base Installation
+
+This command only install `mkt` command, not any search db or tools, you can install it manualy by using `mkt db install` or `mkt install` command.
 
 ```bash
 git clone https://github.com/manesec/maketoolkit.git
@@ -19,19 +21,37 @@ cd maketoolkit; chmod u+x *.sh; sudo ./install.sh
 
 ## Structure
 
-There are 3 main structure, `Tools` , `Search db` and `Script`.
+There are 3 main structure, `Tools` , `Search DB` and `Script`.
 
-`Tools` use to install the pen-test tools.
+`Tools` is use to install the pen-test tools.
 
-`Search DB` use to search local document. It mean you need to download search db before to use.
+`Search DB` is use to search local document. It mean you need to download search db before to use.
 
 `Script` is some script, use to install some tools or setup the env.
 
 ## Update
 
-Just type `sudo mkt-update` to update the tools, **But all tools will be delete it and reinstall the source**.
+Just type `sudo mkt-update` to update the tools, **But all tools will be delete it Because it need to reinstall the source**, which mean you need to install the tools again.
 
-## Example
+## Fast Script
+
+You can setup it on `kali` or `parrot os` in those command.
+
+```bash
+cd ~
+git clone https://github.com/manesec/maketoolkit.git
+cd maketoolkit ; chmod u+x *.sh; sudo ./reinstall.sh
+# Install some tools.
+sudo mkt script InstallBasicTools
+# Install search db.
+sudo mkt db install BaseDB
+sudo mkt db install HackTricks
+sudo mkt db install TheHackerRecipes
+sudo mkt db install Priv2Admin
+sudo mkt db install PayloadsAllTheThings
+```
+
+## Tutorial about the command.
 
 ```bash
 # ========== Tools ==========
@@ -112,144 +132,6 @@ Other:
 
     # Remove all "__pycache__" in tools
     mkt clearup 
-```
-
-## Collection Tools List
-
-```bash
-$ sudo mkt list installable               
-[*] Installable Tools List:
-    Binary/Ghidra
-    Linux/DDexec
-    Linux/LES
-    Linux/LES2
-    Linux/LinEnum
-    Linux/LinPEAS
-    Linux/Pspy
-    Linux/Sudo_killer
-    Tools/ApacheDirectoryStudio
-    Tools/AutoRecon
-    Tools/Chisel
-    Tools/Deepce
-    Tools/EyeWitness
-    Tools/Gitjacker
-    Tools/Godzilla
-    Tools/GrepForOSINT
-    Tools/HackBrowserData
-    Tools/Htshells
-    Tools/JSPWebShellCollection
-    Tools/Legion
-    Tools/LinkFinder
-    Tools/NmapAutomator
-    Tools/Phpsploit
-    Tools/Rapidscan
-    Tools/ReconScan
-    Tools/ReverseSSH
-    Tools/Tools4mane
-    Tools/URLFinder
-    Tools/URO
-    Tools/Webshells_BlackArch
-    Tools/xc
-    Windows/ADenum
-    Windows/BloodHoundpy
-    Windows/Boodhound
-    Windows/Certipy
-    Windows/Coercer
-    Windows/DomainUsersToXLSX
-    Windows/Gosecretsdump
-    Windows/Hoaxshell
-    Windows/IOXIDResolver
-    Windows/KaliWinBinary
-    Windows/KrbCredExport
-    Windows/Krbrelayx
-    Windows/Mimikatz
-    Windows/Nullinux
-    Windows/PHPReverseShell
-    Windows/PKINITtools
-    Windows/Potato/Juicypotato
-    Windows/Potato/RoguePotato
-    Windows/Potato/RottenPotato
-    Windows/Powershell/ADACLScanner
-    Windows/Powershell/ADEssentials
-    Windows/Powershell/ADLab
-    Windows/Powershell/ADModule
-    Windows/Powershell/ADPeas
-    Windows/Powershell/ADRecon
-    Windows/Powershell/AdsiPS
-    Windows/Powershell/BadBlood
-    Windows/Powershell/NetSPI
-    Windows/Powershell/Nishang
-    Windows/Powershell/PSHTML
-    Windows/Powershell/PowerShellSuite
-    Windows/Powershell/PowerSploit_Dev
-    Windows/Powershell/PowerSploit_Master
-    Windows/Powershell/PowerUpSQL
-    Windows/Powershell/Privesc
-    Windows/Powershell/PrivescCheck
-    Windows/Powershell/RedTeamPowershellEnum
-    Windows/Powershell/RedTeamPowershellScripts
-    Windows/Powershell/Sherlock
-    Windows/Powershell/VulnerableAD
-    Windows/Powershell/WinPWN
-    Windows/PrintSpoofer
-    Windows/Rev
-    Windows/SeLoadDriverPrivilege
-    Windows/SharpCollection
-    Windows/WCAM
-    Windows/Wesng
-    Windows/WinPEAS
-    Windows/gMSADumper
-    Wordlists/AutoWordlists
-    Wordlists/DOC
-    Wordlists/Kkrypt0nn
-    Wordlists/Rockyou
-    Wordlists/SecLists
-```
-
-## Search Document DB
-
-```bash
-$ sudo mkt db installable     
-[*] List all installable db ...
-    ADCheatsheet_S1ckB0y1337
-    ADCheatsheet_drak3hft7
-    ADExploitation
-    AtomicRedTeam
-    BaseDB
-    Burmat
-    Cheatsheet
-    GTFOBin
-    HackTricks
-    IRedTeam
-    KaliDocs
-    LOLBAS
-    MSRPCtoATTACK
-    PWKCheatsheet
-    PayloadsAllTheThings
-    PenetrationTestingGrimoire
-    PentestBook
-    PentestCheatSheets
-    RedTeamWiki
-    Ruuand
-    TheHackerRecipes
-    TheHackerTools
-    Tools/BloodHound
-    Tools/Mimikatz
-    WADComs
-    XapaxSecurity
-```
-
-## Script
-
-```bash
-$ sudo mkt script info
-[*] Available scripts:
-    InstallAllDB
-    InstallBasicTools
-    InstallGlow
-    InstallNTH
-    InstallRaccon
-    SetupNeo4j
 ```
 
 ## Still Updating ...
