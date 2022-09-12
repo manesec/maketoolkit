@@ -6,11 +6,11 @@ Quick to install some pen-testing tools on python and debian like os.
 
 # Warning
 
-This is **BETA** version, which mean it need to very unstable, also still updating. If you find a bug just feel free to submit the issue, you need to update before to use.
+This is **BETA** version, which mean it need to very unstable, also still updating. If you find a bug just feel free to submit the issue, you may need to update before to use.
 
 ## Base Installation
 
-This command only install `mkt` command, not any search db or tools, you can install it manualy by using `mkt db install` or `mkt install` command.
+This command only install `mkt` command, not any search db or tools, but you can install it manualy by using `mkt db install` or `mkt install` command.
 
 ```bash
 git clone https://github.com/manesec/maketoolkit.git
@@ -18,22 +18,6 @@ cd maketoolkit; chmod u+x *.sh; sudo ./install.sh
 ```
 
 **Note**: All tools will be locate in `/var/lib/mkt/Tools/Source` which soft link to `/Tools`.
-
-## Structure
-
-There are 3 main structure, `Tools` , `Search DB` and `Script`.
-
-`Tools` is use to install the pen-test tools.
-
-`Search DB` is use to search local document. It mean you need to download search db before to use.
-
-`Script` is some script, use to install some tools or setup the env.
-
-## Update
-
-Just type `sudo mkt-update` to update the tools, **But all tools will be delete it Because it need to reinstall the source**, which mean you need to install the tools again.
-
-## Fast Script
 
 You can setup it on `kali` or `parrot os` in those command.
 
@@ -50,6 +34,22 @@ sudo mkt db install TheHackerRecipes
 sudo mkt db install Priv2Admin
 sudo mkt db install PayloadsAllTheThings
 ```
+
+Just copy and paste in your terminal, after finished, just type `mkt` command to verify if it install seccessful.
+
+## Structure
+
+There are 3 main structure, `Tools` , `Search DB` and `Script` ,
+
++ `Tools` is use to install the pen-test tools.
+
++ `Search DB` is use to search local document. It mean you need to download search db before to use.
+
++ `Script` is some script, use to install some tools or setup the env.
+
+## Update
+
+Just type `sudo mkt-update` to update the tools, **but all tools will be delete it Because it need to reinstall the source**, which mean you need to install the tools again.
 
 ## Tutorial about the command.
 
@@ -133,5 +133,6 @@ Other:
     # Remove all "__pycache__" in tools
     mkt clearup 
 ```
+Hope you love this.
 
 ## Still Updating ...
