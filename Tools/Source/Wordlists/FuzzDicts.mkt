@@ -1,0 +1,22 @@
+def Install():
+    print("[FuzzDicts] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Wordlists")
+    os.system("git clone https://github.com/TheKingOfDuck/fuzzDicts.git FuzzDicts")
+
+def Uninstall():
+    print("[FuzzDicts] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Wordlists/FuzzDicts")
+
+def Upgrade():
+    print("[FuzzDicts] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Wordlists/FuzzDicts")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    

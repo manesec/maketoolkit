@@ -1,6 +1,6 @@
 # maketoolkit
 
-Quick to install some pen-testing tools on python and debian like os.
+Quick to install some pen-testing tools on python env and debian like os.
 
 ![Logo](Picture/main.png)
 
@@ -10,7 +10,7 @@ This is **BETA** version, which mean it need to very unstable, also still updati
 
 ## Base Installation
 
-This command only install `mkt` command, not any search db or tools, but you can install it manualy by using `mkt db install` or `mkt install` command.
+This command only install `mkt` command, not include any search db or tools, but you can install it manualy by using `mkt db install` or `mkt install` command.
 
 ```bash
 git clone https://github.com/manesec/maketoolkit.git
@@ -19,7 +19,7 @@ cd maketoolkit; chmod u+x *.sh; sudo ./install.sh
 
 **Note**: All tools will be locate in `/var/lib/mkt/Tools/Source` which soft link to `/Tools`.
 
-You can setup it on `kali` or `parrot os` in those command.
+You can setup it on `kali` or `parrot os` in those command : 
 
 ```bash
 cd ~
@@ -47,6 +47,54 @@ There are 3 main structure, `Tools` , `Search DB` and `Script` ,
 + `Search DB` is use to search local document. It mean you need to download search db before to use.
 
 + `Script` is some script, use to install some tools or setup the env.
+
+## Config file
+Config file will be locate in `/etc/mkt.conf`.
+
+## Search DB
+
+Search DB now support grep, ripgrep, whoosh to search the document.
+
+```bash
+# using ripgrep search engine
+sudo apt install ripgrep
+
+# using whoosh search engine
+sudo pip3 install whoosh
+sudo mkt db reindex # only whoosh need to index
+```
+
+You can choose what search engine you need, change on config file:
+
+```bash
+# Define what search engine you want to use.
+# Available: grep, ripgrep, whoosh
+SearchEngine = grep
+```
+
+Default is using `grep` to search, it's slow.
+
+### Example to using whoosh search engine:
+
+You can change it to using whoosh engine to speed up your search.
+
+Before to using whoosh just type:
+
+```bash
+sudo pip3 install whoosh
+```
+
+and change the config `/etc/mkt.conf` like :
+
+```bash
+SearchEngine = whoosh
+```
+
+finally, update the index.
+
+```bash
+sudo mkt db reindex
+```
 
 ## Update
 
@@ -136,4 +184,5 @@ Other:
 ```
 Hope you love this.
 
+## Please give me some time to update ...
 ## Still Updating ...

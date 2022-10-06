@@ -1,8 +1,5 @@
 #! /bin/python3
 import sys,os,shutil
-from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED
-
-max_worker = 20
 
 # mkt update
 def MKT_UPDATE():
@@ -18,7 +15,7 @@ def MKT_HELP():
 |  Y Y  \    <  |  | (  <_> |  <_> )  |__\___ \ 
 |__|_|  /__|_ \ |__|  \____/ \____/|____/____  >
       \/     \/                              \/ 
-       By @manesec, Version: 20220828 Beta
+       By @manesec, Version: 20221006 Beta
       https://github.com/manesec/maketoolkit
 
 Usage:
@@ -27,6 +24,8 @@ Usage:
     mkt   uninstall/remove    <tools name>
     mkt      reinstall        <tools name>
     mkt      upgrade          <tools name>
+    
+    # upgrade all will have bug ... Fixing ... chdir problem
     mkt      upgrade          all
 
 List:
@@ -52,6 +51,7 @@ Search DB and res:
 
 Other:
     # Update all the source include mkt.
+    # But you need to reinstall all the tools ;(
     mkt-update""")
 
 def MKT_CLEARUP():
@@ -374,8 +374,15 @@ def MKT_DB():
         MKT_DB_LIST()
     elif (sys.argv[2] == "installable"):
         MKT_DB_INSTALL_ABLE()
+    elif (sys.argv[2] == "reindex"):
+        MKT_DB_REINDEX()
     else:
-        print("    Usage: mkt db <list, installable, install <db_name>, uninstall <db_name> >")
+        print("    Usage: mkt db <list, installable, install <db_name>, uninstall <db_name>, reindex>")
+
+def MKT_DB_REINDEX():
+    from importlib.machinery import SourceFileLoader
+    search_bin = "/var/lib/mkt/Bin/search_whoosh.py"
+    SourceFileLoader("search_whoosh",search_bin).load_module().ReIndex()
 
 def MKT_DB_INSTALL():
     import os
@@ -526,254 +533,21 @@ def MKT_DB_UPGRADE_TOOLS():
     SourceFileLoader("manesec",abs_paths).load_module().Upgrade()
     MKT_CLEARUP()
 
-def MKT_CHECK_COMMAND(command):
-    import subprocess
-    code,_ =  subprocess.getstatusoutput("command -v " + command)
-    if code == 0:
-        return True
-    else:
-        return False
-
 # ==========================================================================
 #                             Search Module
 # ==========================================================================
-
-def CHECK_TEXT_FILE(InputList):
-    import subprocess
-    OutputList = ()
-    for file in InputList:
-        out = subprocess.getoutput("file '%s'" % (file.replace("'","\'")))
-        if (out.find("text")!=-1):
-            OutputList += (file,)
-    return OutputList
-
-# mkt search mane
 def MKT_DB_SEARCH():
-    import subprocess
-    if (len(sys.argv) < 3):
-        print("[ERROR] Invalid parameter")
-        print("    Usage: mkt search <string>")
-        sys.exit(0)
-    print("[*] Searching LocalDB ...")
+    from importlib.machinery import SourceFileLoader
+    search_bin = "/var/lib/mkt/Bin/search.py"
+    SourceFileLoader("mkt_search",search_bin).load_module().MKT_DB_SEARCH()
 
-    searchWorldList = sys.argv[2:]
-    searchWorldList = sorted(searchWorldList,key=len)
-    searchWorldList.reverse()
-
-    out_stdout_list = ()
-
-    rg_command_exist = MKT_CHECK_COMMAND("rg")
-    if (rg_command_exist):
-        print("[*] Using ripgrep to search ...")
-    frist_search = True
-    for searchstr in searchWorldList:
-        if frist_search:
-            searchstr = searchstr.replace("'","\'")
-
-            print("[*] Frist search with %s ..." % (searchstr))
-            command = ""
-            if (rg_command_exist):
-                command = "rg --color never -m 1 -F -iLl '%s' '/var/lib/mkt/Res/Data/'" %(searchstr)
-            else:
-                command = "grep -m 1 -Rnil /var/lib/mkt/Res/Data/ -e '%s' --exclude-dir='.[^.]*'" % searchstr
-            status,output_str = subprocess.getstatusoutput(command)
-
-            if (status == 0) :
-                for l in output_str.split('\n'):
-                    if (l.strip() == ""):
-                        continue
-                    out_stdout_list += (l,)
-
-            command = "find /var/lib/mkt/Res/Data/ -type f -iname '*%s*'" % searchstr
-            status,output_str = subprocess.getstatusoutput(command)
-
-            for l in output_str.split('\n'):
-                if (l.find("/.")!=-1):
-                    continue
-                if (l.strip() == ""):
-                    continue                
-                if l not in out_stdout_list:
-                    out_stdout_list += (l,)
-
-            out_stdout_list = CHECK_TEXT_FILE(out_stdout_list)
-            if (len(out_stdout_list)==0):
-                print("[!] No found on db.")
-
-            frist_search = False
-            continue
-
-        print("[*] Filtering %s ..." % (searchstr))
-
-        new_stdout_list = ()
-        def sub_search_thread (f,searchstr):
-            global __search_list
-            command = ""
-            if (rg_command_exist):
-                command = "rg --color never -m 1 -iLl -F '%s' '%s'"  % (searchstr,f)
-            else:
-                command = "grep -m 1 -il '%s' -e '%s' " % (f,searchstr)
-            status,output_str = subprocess.getstatusoutput(command)
-            if (status == 0) :
-                return (f,True)
-            return (f,False)
-
-        executor = ThreadPoolExecutor(max_workers=max_worker)
-        all_task = []
-        for f in out_stdout_list:
-            all_task.append(executor.submit(sub_search_thread,f,searchstr))
-        
-        wait(all_task,return_when=ALL_COMPLETED)
-        for task in all_task:
-            taskname,result = task.result()
-            if (result):
-                if (taskname not in new_stdout_list):
-                    new_stdout_list += (taskname,)
-                    continue
-            
-            if (taskname.lower().find(searchstr.lower()) !=-1):
-                if result not in new_stdout_list:
-                    new_stdout_list += (taskname,)
-                    continue
-
-        out_stdout_list = new_stdout_list
-        out_stdout_list = CHECK_TEXT_FILE(out_stdout_list)
-
-    if (len(out_stdout_list) == 0):
-        print("[!] No found on Local DB.")
-        sys.exit(0)
-
-    print("\n[*] Found that in the file: ")
-
-    history_stack = []
-    history_stack.append(out_stdout_list)
-
-    def listoutput():
-        print("-"*50)
-        for file in history_stack[-1]:
-            print("[%s] %s" % (history_stack[-1].index(file),file.replace("/var/lib/mkt/Res/Data/","")))
-    listoutput()
-
-    while (True):
-        input_str = input("  (h)elp :")
-        input_str = input_str.strip().lower()
-        if (input_str.isdigit()):
-            input_number = int(input_str)
-            if (input_number > len(history_stack[-1])-1):
-                print("[ERROR] Out of range.")
-            else:
-                doc_path = history_stack[-1][input_number]
-                print("[*] Opening %s ..." % (doc_path.replace("/var/lib/mkt/Res/Data/","")))
-                if ((os.path.basename(doc_path).lower().find(".md")!= -1) and (MKT_CHECK_COMMAND("glow"))):
-                    os.system("glow -p '%s'" % (doc_path))
-                    listoutput()
-                else:
-                    less_param = "/"
-                    for searchstr in sys.argv[2:]:
-                        less_param += "%s|" % (searchstr.strip())
-                    less_param = less_param[:-1]
-                    os.system("less +1 +'%s'  '%s'" % (less_param, doc_path) )
-                    listoutput()
-            continue
-
-        # Reading command
-        if (input_str.strip() == ""):
-            continue
-
-        if (input_str == "l"):
-            listoutput()
-            continue
-
-        if (input_str == "q"):
-            sys.exit()
-
-        if (input_str[0] == "f"):
-            input_array = input_str.strip().split(" ")
-            if (len(input_array) <2):
-                print("[ERROR] Please input key words.")
-                continue
-
-            def sub_search_thread (f,searchstr):
-                global __search_list
-                command = ""
-                if (rg_command_exist):
-                    command = "rg --color never -m 1 -iLl '%s' '%s'"  % (searchstr,f)               
-                else: 
-                    command = "grep -m 1 -il '%s' -e '%s' " % (f,searchstr)
-                status,output_str = subprocess.getstatusoutput(command)
-                if (status == 0) :
-                    return (f,True)
-                return (f,False)
-
-            
-            out_stdout_list = history_stack[-1]
-            for searchstr in input_array[1:]:
-                print("[*] Filtering %s ..." % (searchstr))
-
-                new_stdout_list = ()
-
-                all_task = []
-                executor = ThreadPoolExecutor(max_workers=max_worker)
-                for f in out_stdout_list:
-                    all_task.append(executor.submit(sub_search_thread,f,searchstr))
-                    
-                wait(all_task,return_when=ALL_COMPLETED)
-                for task in all_task:
-                    taskname,result = task.result()
-                    if (result):
-                        if (taskname not in new_stdout_list):
-                            new_stdout_list += (taskname,)
-                            continue
-                        
-                    if (taskname.lower().find(searchstr.lower()) !=-1):
-                        if result not in new_stdout_list:
-                            new_stdout_list += (taskname,)
-                            continue
-
-                new_stdout_list = CHECK_TEXT_FILE(new_stdout_list)
-                out_stdout_list = new_stdout_list
-
-            if (len(out_stdout_list) == 0):
-                print("[!] No found.")
-            else:
-                history_stack.append(out_stdout_list)
-                listoutput()
-            continue
-
-        if (input_str[0] == "t"):
-            input_array = input_str.strip().split(" ")
-            if (len(input_array) <2):
-                print("[ERROR] Please input key words.")
-                continue            
-            new_stdout_list = ()
-            
-            for searchstr in input_array[1:]:
-                print("[*] Filtering title %s ..." % (searchstr))
-                for f in history_stack[-1]:
-                    if (f.lower().find(searchstr.lower()) !=-1) :
-                        if (f not in new_stdout_list):
-                            new_stdout_list += (f,)
-                        
-            if (len(new_stdout_list) == 0):
-                print("[!] No found.")
-            else:
-                history_stack.append(new_stdout_list)
-                listoutput()
-            continue
-
-        if (input_str == "b"):
-            if (len(history_stack) == 1):
-                print("[!] Already on the top.")
-            else:
-                del history_stack[-1]
-                print("[*] Back to %s ..." % (len(history_stack) -1 ))
-                listoutput()
-            continue
-
-        if (input_str == "h"):
-            os.system("less /var/lib/mkt/Data/SearchHelp.txt")
-            continue
-
-        print("[ERROR] Unknow command: %s" % (input_str.split(" ")[0]))
+# ==========================================================================
+#                                Cli-menu
+# ==========================================================================
+def MKT_CLI_MENU():
+    from importlib.machinery import SourceFileLoader
+    search_bin = "/var/lib/mkt/Bin/cmenu.py"
+    SourceFileLoader("mkt_search",search_bin).load_module().run()
 
 # ==========================================================================
 #                                 Main
@@ -804,6 +578,8 @@ if __name__ == "__main__" :
         "s":MKT_DB_SEARCH,
         "search": MKT_DB_SEARCH,
 
+        # Cli-menu function
+        "menu" : MKT_CLI_MENU
     }
 
     SelectFunction.get(sys.argv[1],MKT_HELP)()

@@ -18,7 +18,3 @@ Search command:
     f <string>    Filter by key word.
     t <string>    Filter by title.
     b <string>    Back to Previous search.
-
-
-
-

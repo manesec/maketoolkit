@@ -12,23 +12,43 @@ def Uninstall():
     import os
     print("[Juicypotato] Uninstalling ...")
     os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Potato/Juicypotato")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/JuicyPotato*")
+     
 
 def Upgrade():
     print("[Juicypotato] Upgrading ...")
     UpdateFromGithub()
     
 def UpdateFromGithub():
-    print("[Juicypotato 1/2] Checking and Upgrading ...")
+    print("[Juicypotato 1/3] Checking and Upgrading ...")
     Files = [
         ["JuicyPotato.exe","/var/lib/mkt/Tools/Source/Windows/Potato/Juicypotato/Juicypotatox64.exe"]
     ]
-    UpdateFromGithubReleaseFiles("https://api.github.com/repos/ohpe/juicy-potato/releases/latest",Files)
+    UpdateFromGithubReleaseFiles("https://api.github.com/repos/ohpe/juicy-potato/releases/latest",Files,"JuicyPotato")
 
-    print("[Juicypotato 2/2] Checking and Upgrading ...")
+    print("[Juicypotato 2/3] Checking and Upgrading ...")
     Files = [
         ["Juicy.Potato.x86.exe","/var/lib/mkt/Tools/Source/Windows/Potato/Juicypotato/Juicypotato.exe"]
     ]
-    UpdateFromGithubReleaseFiles("https://api.github.com/repos/ivanitlearning/Juicy-Potato-x86/releases/latest",Files)
+    UpdateFromGithubReleaseFiles("https://api.github.com/repos/ivanitlearning/Juicy-Potato-x86/releases/latest",Files,"JuicyPotato")
+
+    print("[JuicypotatoNG 3/3] Checking and Upgrading ...")
+
+    import os
+    from pathlib import Path
+    path = Path("/tmp/JuicypotatoNG/")
+    path.mkdir(parents=True, exist_ok=True)
+
+    Files = [
+        ["JuicyPotatoNG.zip","/tmp/JuicypotatoNG/JuicyPotatoNG.zip"]
+    ]
+    UpdateFromGithubReleaseFiles("https://api.github.com/repos/antonioCoco/JuicyPotatoNG/releases/latest",Files,"JuicyPotato")
+
+    if (os.path.exists("/tmp/JuicypotatoNG/JuicyPotatoNG.zip")):
+        os.chdir("/tmp/JuicypotatoNG")
+        os.system("unzip JuicyPotatoNG.zip")
+        os.system("cp *.exe /var/lib/mkt/Tools/Source/Windows/Potato/Juicypotato/JuicyPotatoNG.exe")
+    os.system("rm -rf /tmp/JuicypotatoNG")
 
     CheckGithubAPIQuta()
 
@@ -37,12 +57,14 @@ def UpdateFromGithubReleaseFiles(URL,Files,sign_prefix=""):
     import json,re,os
     import requests
 
-    CONFIG_JSON = json.load(open('/etc/mkt.json','r'))
+    import configparser
+    config = configparser.ConfigParser()
+    config.read('/etc/mkt.conf')
     print(" *  Searching Github Repo ...")
     
     Return_json = ""
-    if CONFIG_JSON["GithubToken"].strip() != "":
-        Return_json = requests.get(URL,headers={"Authorization":"token %s" % (CONFIG_JSON["GithubToken"].strip())}).text
+    if config['Github']["GithubToken"].strip() != "":
+        Return_json = requests.get(URL,headers={"Authorization":"token %s" % (config['Github']["GithubToken"].strip())}).text
     else:
         Return_json = requests.get(URL).text
     Return_json = json.loads(Return_json)
@@ -76,11 +98,13 @@ def CheckGithubAPIQuta():
     from datetime import datetime
     import time
 
-    CONFIG_JSON = json.load(open('/etc/mkt.json','r'))
+    import configparser
+    config = configparser.ConfigParser()
+    config.read('/etc/mkt.conf')
 
     Return_json = ""
-    if CONFIG_JSON["GithubToken"].strip() != "":
-        Return_json = requests.get("https://api.github.com/rate_limit",headers={"Authorization":"token %s" % (CONFIG_JSON["GithubToken"].strip())}).text
+    if config['Github']["GithubToken"].strip() != "":
+        Return_json = requests.get("https://api.github.com/rate_limit",headers={"Authorization":"token %s" % (config['Github']["GithubToken"].strip())}).text
     else:
         Return_json = requests.get("https://api.github.com/rate_limit").text
     Return_json = json.loads(Return_json)

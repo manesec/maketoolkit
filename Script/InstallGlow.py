@@ -24,12 +24,14 @@ def UpdateFromGithubReleaseFiles(URL,Files):
     import json,re
     import requests
 
-    CONFIG_JSON = json.load(open('/etc/mkt.json','r'))
+    import configparser
+    config = configparser.ConfigParser()
+    config.read('/etc/mkt.conf')
     print(" *  Searching Github Repo ...")
     
     Return_json = ""
-    if CONFIG_JSON["GithubToken"].strip() != "":
-        Return_json = requests.get(URL,headers={"Authorization":"token %s" % (CONFIG_JSON["GithubToken"].strip())}).text
+    if config['Github']["GithubToken"].strip() != "":
+        Return_json = requests.get(URL,headers={"Authorization":"token %s" % (config['Github']["GithubToken"].strip())}).text
     else:
         Return_json = requests.get(URL).text
     Return_json = json.loads(Return_json)
@@ -47,11 +49,13 @@ def CheckGithubAPIQuta():
     from datetime import datetime
     import time
 
-    CONFIG_JSON = json.load(open('/etc/mkt.json','r'))
+    import configparser
+    config = configparser.ConfigParser()
+    config.read('/etc/mkt.conf')
 
     Return_json = ""
-    if CONFIG_JSON["GithubToken"].strip() != "":
-        Return_json = requests.get("https://api.github.com/rate_limit",headers={"Authorization":"token %s" % (CONFIG_JSON["GithubToken"].strip())}).text
+    if config['Github']["GithubToken"].strip() != "":
+        Return_json = requests.get("https://api.github.com/rate_limit",headers={"Authorization":"token %s" % (config['Github']["GithubToken"].strip())}).text
     else:
         Return_json = requests.get("https://api.github.com/rate_limit").text
     Return_json = json.loads(Return_json)

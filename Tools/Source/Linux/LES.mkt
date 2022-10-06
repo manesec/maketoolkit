@@ -23,13 +23,15 @@ def ProjectGetFilesAndUpdate(repoaddr,branches,files):
     import json,os,sys,subprocess
     import requests
 
-    CONFIG_JSON = json.load(open('/etc/mkt.json','r'))
+    import configparser
+    config = configparser.ConfigParser()
+    config.read('/etc/mkt.conf')
 
     api_url = "https://api.github.com/repos/%s/git/trees/%s?recursive=1" % (repoaddr,branches)
     import requests
     Return_json = ""
-    if CONFIG_JSON["GithubToken"].strip() != "":
-        Return_json = requests.get(api_url,headers={"Authorization":"token %s" % (CONFIG_JSON["GithubToken"].strip())}).text
+    if config['Github']["GithubToken"].strip() != "":
+        Return_json = requests.get(api_url,headers={"Authorization":"token %s" % (config['Github']["GithubToken"].strip())}).text
     else:
         Return_json = requests.get(api_url).text
     Return_json = json.loads(Return_json)["tree"]
@@ -62,17 +64,20 @@ def WgetDownloadFile(url,local_path,quiet = False):
     quiet = "--quiet" if quiet else ""
     os.system('wget "%s" %s -O "%s"' % (url,quiet,local_path))
 
+
 def CheckGithubAPIQuta():
     import json
     import requests
     from datetime import datetime
     import time
 
-    CONFIG_JSON = json.load(open('/etc/mkt.json','r'))
+    import configparser
+    config = configparser.ConfigParser()
+    config.read('/etc/mkt.conf')
 
     Return_json = ""
-    if CONFIG_JSON["GithubToken"].strip() != "":
-        Return_json = requests.get("https://api.github.com/rate_limit",headers={"Authorization":"token %s" % (CONFIG_JSON["GithubToken"].strip())}).text
+    if config['Github']["GithubToken"].strip() != "":
+        Return_json = requests.get("https://api.github.com/rate_limit",headers={"Authorization":"token %s" % (config['Github']["GithubToken"].strip())}).text
     else:
         Return_json = requests.get("https://api.github.com/rate_limit").text
     Return_json = json.loads(Return_json)

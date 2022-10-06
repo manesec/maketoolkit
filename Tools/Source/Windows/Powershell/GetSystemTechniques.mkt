@@ -1,0 +1,22 @@
+def Install():
+    print("[GetSystemTechniques] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell")
+    os.system("git clone https://github.com/S3cur3Th1sSh1t/Get-System-Techniques.git GetSystemTechniques")
+
+def Uninstall():
+    print("[GetSystemTechniques] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Powershell/GetSystemTechniques")
+
+def Upgrade():
+    print("[GetSystemTechniques] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell/GetSystemTechniques")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    

@@ -40,7 +40,7 @@ fi
 echo "Installing mkt ..."
 mkdir -p /var/lib/mkt/
 
-cp mkt.json /etc/mkt.json
+cp mkt.conf /etc/mkt.conf
 cp mkt /bin/mkt
 cp mkt-update /bin/mkt-update
 
@@ -61,8 +61,8 @@ mkdir -p /var/lib/mkt/Tools/Version
 
 chmod -R 755 /var/lib/mkt/
 
-ln -s /var/lib/mkt/Tools/Source/ /Tools
+ln -s /var/lib/mkt/Tools/Source /Tools
 echo "All the tools will be install in /var/lib/mkt/Tools/Source/"
-echo "Config will be in /etc/mkt.json"
+echo "Config will be in /etc/mkt.conf"
 echo "Soft link will be create: /var/lib/mkt/Tools/Source/ -->  /Tools"
 
