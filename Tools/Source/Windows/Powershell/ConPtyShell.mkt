@@ -1,0 +1,22 @@
+def Install():
+    print("[ConPtyShell] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell")
+    os.system("git clone https://github.com/antonioCoco/ConPtyShell.git ConPtyShell")
+
+def Uninstall():
+    print("[ConPtyShell] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Powershell/ConPtyShell")
+
+def Upgrade():
+    print("[ConPtyShell] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell/ConPtyShell")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    

@@ -1,5 +1,6 @@
 def Install():
     print("[PHP Magic hashes] Downloading db ...")
+
     import os
     os.chdir("/var/lib/mkt/Res/Data/")
     os.system("git clone https://github.com/spaze/hashes.git PHPMagicHashes")
