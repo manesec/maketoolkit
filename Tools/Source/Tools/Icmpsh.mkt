@@ -45,6 +45,7 @@ def Setup():
     os.chdir("/tmp")
     os.system("wget https://bootstrap.pypa.io/pip/2.7/get-pip.py -O /tmp/get-pip.py")
     os.system("python2.7 /tmp/get-pip.py")
+    os.system("pip2 install --upgrade setuptools")
     os.system("python2.7 -m pip install impacket")
 
     print("Patching to python2.7 on run.sh ...")

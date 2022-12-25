@@ -5,7 +5,10 @@ def Install():
     os.chdir("/var/lib/mkt/Tools/Source/Tools/")
     os.system("git clone https://github.com/Tib3rius/AutoRecon.git AutoRecon")
     os.system("apt update")
-    os.system("apt install seclists curl enum4linux feroxbuster gobuster impacket-scripts nbtscan nikto nmap onesixtyone oscanner redis-tools smbclient smbmap snmp sslscan sipvicious tnscmd10g whatweb wkhtmltopdf")
+    os.system("apt install -y seclists curl enum4linux feroxbuster gobuster impacket-scripts nbtscan nikto nmap onesixtyone oscanner redis-tools smbclient smbmap snmp sslscan sipvicious tnscmd10g whatweb wkhtmltopdf")
+    
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/AutoRecon")
+    os.system("pip3 install -r requirements.txt")
 
 def Uninstall():
     print("[AutoRecon] Uninstalling ...")

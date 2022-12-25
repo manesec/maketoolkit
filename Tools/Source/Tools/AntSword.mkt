@@ -1,22 +1,29 @@
 def Install():
-    print("[Gitjacker] Downloading base ...")
+    print("[AntSword] Downloading base ...")
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Tools/AntSword")
+    path.mkdir(parents=True, exist_ok=True)
+
     UpdateFromGithub()
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/AntSword/")
+    os.system("unzip AntSword-Loader.zip")
 
 def Uninstall():
     import os
-    print("[Gitjacker] Uninstalling ...")
-    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Gitjacker")
-    os.system("rm -rf /var/lib/mkt/Tools/Version/Gitjacker_*")
+    print("[AntSword] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/AntSword/")
 
 def Upgrade():
-    print("[Gitjacker] Upgrading ...")
-    UpdateFromGithub()
+    print("This is not support to upgrade.")
     
 def UpdateFromGithub():
     Files = [
-        ["gitjacker-linux-amd64","/var/lib/mkt/Tools/Source/Tools/Gitjacker"],
+        ["AntSword-Loader-v4.0.3-linux-x64.zip","/var/lib/mkt/Tools/Source/Tools/AntSword/AntSword-Loader.zip"]
     ]
-    UpdateFromGithubReleaseFiles("https://api.github.com/repos/liamg/gitjacker/releases/latest",Files,sign_prefix="Gitjacker_")
+    UpdateFromGithubReleaseFiles("https://api.github.com/repos/AntSwordProject/AntSword-Loader/releases/latest",Files,sign_prefix="")
     CheckGithubAPIQuta()
 
 def UpdateFromGithubReleaseFiles(URL,Files,sign_prefix=""):
@@ -77,7 +84,6 @@ def CheckGithubAPIQuta():
     Limit = Return_json["rate"]["limit"]
     Reset = (datetime.utcfromtimestamp(Return_json["rate"]["reset"]) - datetime.utcfromtimestamp(time.time())).seconds / 60
     print("[!] Github API: Remaining %s/%s, Reset in %s minutes later." % (Remaining,Limit,round(Reset,2)))
-    
 
 def WgetDownloadFile(url,local_path,quiet = False):
     import os

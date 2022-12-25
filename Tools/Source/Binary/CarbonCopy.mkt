@@ -1,0 +1,23 @@
+def Install():
+    print("[CarbonCopy] Installing base ...")
+
+    import os
+    os.system("apt install -y osslsigncode")
+    os.system("python3 install pyopenssl")
+    os.chdir("/var/lib/mkt/Tools/Source/Binary/")
+    os.system("git clone https://github.com/paranoidninja/CarbonCopy.git CarbonCopy")
+
+def Uninstall():
+    print("[CarbonCopy] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Binary/CarbonCopy")
+
+def Upgrade():
+    print("[CarbonCopy] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Binary/CarbonCopy")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

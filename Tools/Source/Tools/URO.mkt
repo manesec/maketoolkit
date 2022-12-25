@@ -4,6 +4,7 @@ def Install():
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Tools/")
     os.system("git clone https://github.com/s0md3v/uro.git URO")
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/URO")
     os.system("python3 setup.py install")
 
 def Uninstall():

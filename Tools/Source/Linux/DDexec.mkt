@@ -2,20 +2,20 @@ def Install():
     print("[DDexec] Installing base ...")
 
     import os
-    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+    os.chdir("")
     os.system("git clone https://github.com/arget13/DDexec.git DDexec")
 
 def Uninstall():
     print("[DDexec] Uninstalling ...")
 
     import os
-    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/DDexec")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Linux/DDexec")
 
 def Upgrade():
     print("[DDexec] Upgrade ...")
 
     import os
-    os.chdir("/var/lib/mkt/Tools/Source/Tools/DDexec")
+    os.chdir("/var/lib/mkt/Tools/Source/Linux/DDexec")
     
     Branches = "main"
     os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

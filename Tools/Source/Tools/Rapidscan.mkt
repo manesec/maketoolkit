@@ -8,6 +8,10 @@ def Install():
     os.system("apt update")    
     os.system("apt-get -yq --allow-downgrades install python3  host   whois   sslyze   wapiti   nmap   dmitry   dnsenum   dnsmap   dnsrecon   dnswalk   dirb   wafw00f   whatweb   nikto   lbd   xsser   fierce   theharvester   davtest   uniscan   amass   wget")
 
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/rapidscan")
+    os.system("python3 setup.py install")
+    
+
 def Uninstall():
     print("[rapidscan] Uninstalling ...")
 

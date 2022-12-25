@@ -29,8 +29,9 @@ def Setup():
     import os
     os.system("chmod 777 -R /var/lib/mkt/Tools/Source/Tools/Crackmapexec")
     os.system("apt update")
-    os.system("apt-get install -y libssl-dev libkrb5-dev libffi-dev python-dev build-essential")
-    os.system("pip3 install -r requirements.txt")  
+    os.system("apt-get install -y libssl-dev libffi-dev python-dev-is-python3 build-essential curl")
+    os.system("curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh")  
+    os.system("pip3 install setuptools_rust")
 
     print("[Crackmapexec] Running poetry ...")
     norootuser = os.getenv("SUDO_USER")

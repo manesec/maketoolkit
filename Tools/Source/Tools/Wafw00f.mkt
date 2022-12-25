@@ -1,0 +1,25 @@
+def Install():
+    print("[Wafw00f] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+    os.system("git clone https://github.com/EnableSecurity/Wafw00f.git Wafw00f")
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Wafw00f")
+    os.system("python3 setup.py install")
+
+def Uninstall():
+    print("[Wafw00f] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Wafw00f")
+
+def Upgrade():
+    print("[Wafw00f] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Wafw00f")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    os.system("pip3 install -r requirements.txt")
+    os.system("python3 setup.py install")

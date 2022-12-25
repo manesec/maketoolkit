@@ -56,7 +56,7 @@ def Install():
     os.system("bundle install")
 
     print("[!] Install done.")
-    print("Usage: sudo ruby ./dnscat2.rb")
+    print("Usage: Running server: sudo ruby ./Server/server/dnscat2.rb")
 
 
 def Uninstall():
