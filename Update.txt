@@ -2,6 +2,7 @@
 - Add `PyLAPS`
 - Add `SCShell`
 - Add `DetectSecrets`
+- Fix `ddexec`
 
 [ 20221225 ]
 - Add ConPtyShell.

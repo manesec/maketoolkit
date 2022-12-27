@@ -2,7 +2,7 @@ def Install():
     print("[DDexec] Installing base ...")
 
     import os
-    os.chdir("")
+    os.chdir("/var/lib/mkt/Tools/Source/Linux/")
     os.system("git clone https://github.com/arget13/DDexec.git DDexec")
 
 def Uninstall():
