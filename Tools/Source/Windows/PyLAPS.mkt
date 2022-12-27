@@ -1,0 +1,21 @@
+def Install():
+    print("[PyLAPS] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/p0dalirius/pyLAPS.git PyLAPS")
+
+def Uninstall():
+    print("[PyLAPS] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/PyLAPS")
+
+def Upgrade():
+    print("[PyLAPS] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/PyLAPS")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

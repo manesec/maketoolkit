@@ -1,0 +1,21 @@
+def Install():
+    print("[SCShell] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/Mr-Un1k0d3r/SCShell.git SCShell")
+
+def Uninstall():
+    print("[SCShell] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/SCShell")
+
+def Upgrade():
+    print("[SCShell] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/SCShell")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

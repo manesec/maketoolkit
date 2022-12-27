@@ -1,3 +1,8 @@
+[ 20221227 ]
+- Add `PyLAPS`
+- Add `SCShell`
+- Add `DetectSecrets`
+
 [ 20221225 ]
 - Add ConPtyShell.
 - Fix incorrect location with `linux/ddexec`.
@@ -14,7 +19,7 @@
 - Add PrintNotifyPotato.
 - Add AntSword back.
 
-Know Issue:
+[ Know Issue ]
 There are some Package problem, but work in old version python.
 
 - Crackmapexec
