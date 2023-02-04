@@ -1,0 +1,24 @@
+def Install():
+    print("[Cewl] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Wordlists")
+    os.system("git clone https://github.com/digininja/CeWL.git Cewl")
+
+    print("Usage: $ruby -W0 ./cewl.rb --help")
+
+def Uninstall():
+    print("[Cewl] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Wordlists/Cewl")
+
+def Upgrade():
+    print("[Cewl] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Wordlists/Cewl")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    

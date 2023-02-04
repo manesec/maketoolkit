@@ -1,0 +1,21 @@
+def Install():
+    print("[AntSwordWebshell] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+    os.system("git clone https://github.com/AntSwordProject/AwesomeScript.git AntSwordWebshell")
+
+def Uninstall():
+    print("[AntSwordWebshell] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/AntSwordWebshell")
+
+def Upgrade():
+    print("[AntSwordWebshell] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/AntSwordWebshell")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

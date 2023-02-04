@@ -4,13 +4,21 @@ Quick to install some pen-testing tools on python env and debian like os.
 
 ![Logo](Picture/main.png)
 
+Some of the tools are integrated by [@manesec](https://github.com/manesec).
+
+This tool has part of the script to make it easier for you to use it without the need for frequent download tools, just like the apt package manager.
+
 # Warning
 
 This is **BETA** version, which mean it need to very unstable, also still updating. If you find a bug just feel free to submit the issue, you may need to update before to use.
 
-## Base Installation
+Some tools maybe not working on your system due to system environment, We are try one's best to fix it.
 
-This command only install `mkt` command, not include any search db or tools, but you can install it manualy by using `mkt db install` or `mkt install` command.
+Recommend use it on kali system.
+
+## Quick Start
+
+For install `mkt` command just: 
 
 ```bash
 git clone https://github.com/manesec/maketoolkit.git
@@ -19,24 +27,21 @@ cd maketoolkit; chmod u+x *.sh; sudo ./install.sh
 
 **Note**: All tools will be locate in `/var/lib/mkt/Tools/Source` which soft link to `/Tools`.
 
-You can setup it on `kali` or `parrot os` in those command : 
+When you finished to install, you can install search db (Optional) or install a tools from `/Tools` : 
 
 ```bash
-cd ~
-rm -rf ~/maketoolkit
-git clone https://github.com/manesec/maketoolkit.git
-cd maketoolkit ; chmod u+x *.sh; sudo ./reinstall.sh
-# Install some tools.
-sudo mkt script InstallBasicTools
 # Install search db.
 sudo mkt db install BaseDB
 sudo mkt db install HackTricks
 sudo mkt db install TheHackerRecipes
 sudo mkt db install Priv2Admin
 sudo mkt db install PayloadsAllTheThings
-```
+# or run `mkt db list installable` to see a full list.
 
-Just copy and paste in your terminal, after finished, just type `mkt` command to verify if it install seccessful.
+# Running some script.
+sudo mkt script InstallBasicTools
+# or run `mkt script list` to see a full list.
+```
 
 ## Structure
 
@@ -48,8 +53,7 @@ There are 3 main structure, `Tools` , `Search DB` and `Script` ,
 
 + `Script` is some script, use to install some tools or setup the env.
 
-## Config file
-Config file will be locate in `/etc/mkt.conf`.
+A Config file will be locate in `/etc/mkt.conf`.
 
 ## Search DB
 

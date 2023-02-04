@@ -1,0 +1,21 @@
+def Install():
+    print("[ContainerEscapeCheck] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Linux/")
+    os.system("git clone https://github.com/teamssix/container-escape-check.git ContainerEscapeCheck")
+
+def Uninstall():
+    print("[ContainerEscapeCheck] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Linux/ContainerEscapeCheck")
+
+def Upgrade():
+    print("[ContainerEscapeCheck] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Linux/ContainerEscapeCheck")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

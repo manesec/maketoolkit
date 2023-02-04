@@ -1,0 +1,21 @@
+def Install():
+    print("[Chfs] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+    os.system("git clone https://github.com/manesec/backup-chfs.git Chfs")
+
+def Uninstall():
+    print("[Chfs] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Chfs")
+
+def Upgrade():
+    print("[Chfs] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Chfs")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

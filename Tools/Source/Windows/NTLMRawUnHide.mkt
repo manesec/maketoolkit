@@ -1,0 +1,21 @@
+def Install():
+    print("[NTLMRawUnHide] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/mlgualtieri/NTLMRawUnHide.git NTLMRawUnHide")
+
+def Uninstall():
+    print("[NTLMRawUnHide] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/NTLMRawUnHide")
+
+def Upgrade():
+    print("[NTLMRawUnHide] Upgrade ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/NTLMRawUnHide")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

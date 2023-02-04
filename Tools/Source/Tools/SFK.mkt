@@ -1,0 +1,21 @@
+def Install():
+    print("[SFK] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+    os.system("git clone https://github.com/manesec/Backup-sfk.git SFK")
+
+def Uninstall():
+    print("[SFK] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/SFK")
+
+def Upgrade():
+    print("[SFK] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/SFK")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
