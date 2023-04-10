@@ -1,3 +1,6 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
 def Install():
     print("[HashSpray2] Installing base ...")
 
@@ -6,6 +9,16 @@ def Install():
     os.system("git clone https://github.com/manesec/HashSpray2.py.git HashSpray2")
     os.chdir("/var/lib/mkt/Tools/Source/Windows/HashSpray2")
 
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/HashSpray2/README.md")):
+        import sys
+        module_name = "Windows/HashSpray2.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")  
 
 def Uninstall():
     print("[HashSpray2] Uninstalling ...")

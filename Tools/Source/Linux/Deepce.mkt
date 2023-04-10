@@ -1,9 +1,23 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
 def Install():
     print("[Deepce] Installing base ...")
 
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Linux/")
     os.system("git clone https://github.com/stealthcopter/deepce.git Deepce")
+
+    # check if installed 
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Linux/Deepce/deepce.sh")):
+        import sys
+        module_name = "Linux/Deepce.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")
+
 
 def Uninstall():
     print("[Deepce] Uninstalling ...")

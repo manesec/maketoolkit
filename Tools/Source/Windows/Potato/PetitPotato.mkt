@@ -1,0 +1,41 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
+def Install():
+    print("[PetitPotato] Downloading base ...")
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Windows/Potato/PetitPotato")
+    path.mkdir(parents=True, exist_ok=True)
+
+    UpdateFromGithub()
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/Potato/PetitPotato/PetitPotato.exe")):
+        import sys
+        module_name = "Windows/Potato/PetitPotato.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")    
+
+def Uninstall():
+    import os
+    print("[PetitPotato] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Potato/PetitPotato")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/PetitPotato*")
+
+def Upgrade():
+    print("[PetitPotato] Upgrading ...")
+    UpdateFromGithub()
+    
+def UpdateFromGithub():
+    print("[Downloading ...")
+    Files = [
+        ["PetitPotato.exe","/var/lib/mkt/Tools/Source/Windows/Potato/PetitPotato/PetitPotato.exe"]
+    ]
+    Github.UpdateFromGithubReleaseFiles("wh0amitz/PetitPotato",Files,"PetitPotatox64")
+    Github.CheckGithubAPIQuta()

@@ -1,8 +1,22 @@
-# A example
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
 def Install():
     print("[NmapAutomator] Install ...")
     GithubProject()
-    CheckGithubAPIQuta()
+    Github.CheckGithubAPIQuta()
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/nmapAutomator.sh")):
+        import sys
+        module_name = "Tools/NmapAutomator.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")
 
 def Uninstall():
     print("[NmapAutomator] Uninstall ...")
@@ -18,70 +32,4 @@ def GithubProject():
     file = [
         ["nmapAutomator.sh","/var/lib/mkt/Tools/Source/Tools/nmapAutomator.sh"]
     ]
-    ProjectGetFilesAndUpdate("21y4d/nmapAutomator","master",file)    
-
-def ProjectGetFilesAndUpdate(repoaddr,branches,files):
-    import json,os,sys,subprocess
-    import requests
-
-    import configparser
-    config = configparser.ConfigParser()
-    config.read('/etc/mkt.conf')
-
-    api_url = "https://api.github.com/repos/%s/git/trees/%s?recursive=1" % (repoaddr,branches)
-    import requests
-    Return_json = ""
-    if config['Github']["GithubToken"].strip() != "":
-        Return_json = requests.get(api_url,headers={"Authorization":"token %s" % (config['Github']["GithubToken"].strip())}).text
-    else:
-        Return_json = requests.get(api_url).text
-    Return_json = json.loads(Return_json)["tree"]
-    
-    for afile in files:
-        RemotePath,LocalPath = afile
-        print(" *  Checking %s ..." % RemotePath)
-        if os.path.exists(LocalPath):
-            LocalPathSha = subprocess.getoutput("git hash-object %s" % (LocalPath))
-            RemotePathSha = ""
-            for RemoteFileObj in Return_json:
-                if (RemoteFileObj["path"].strip() == RemotePath) : 
-                    RemotePathSha = RemoteFileObj["sha"]
-                    break
-            if (RemotePathSha == ""):
-                print("[ERR] %s was not found on github repo!" % (RemotePath))
-                sys.exit(0)
-            if (LocalPathSha == RemotePathSha):
-                print(" !  Already up to date.")
-                continue
-        print(" *  Updating %s ..." % (RemotePath))
-        WgetDownloadFile("https://raw.githubusercontent.com/%s/%s/%s" % (repoaddr,branches,RemotePath),LocalPath,True)
-        print(" +  Finish.")
-        continue
-
-def WgetDownloadFile(url,local_path,quiet = False):
-    import os
-    if os.path.exists(local_path):
-        os.remove(local_path)
-    quiet = "--quiet" if quiet else ""
-    os.system('wget "%s" %s -O "%s"' % (url,quiet,local_path))
-
-def CheckGithubAPIQuta():
-    import json
-    import requests
-    from datetime import datetime
-    import time
-
-    import configparser
-    config = configparser.ConfigParser()
-    config.read('/etc/mkt.conf')
-
-    Return_json = ""
-    if config['Github']["GithubToken"].strip() != "":
-        Return_json = requests.get("https://api.github.com/rate_limit",headers={"Authorization":"token %s" % (config['Github']["GithubToken"].strip())}).text
-    else:
-        Return_json = requests.get("https://api.github.com/rate_limit").text
-    Return_json = json.loads(Return_json)
-    Remaining = Return_json["rate"]["remaining"]
-    Limit = Return_json["rate"]["limit"]
-    Reset = (datetime.utcfromtimestamp(Return_json["rate"]["reset"]) - datetime.utcfromtimestamp(time.time())).seconds / 60
-    print("[!] Github API: Remaining %s/%s, Reset in %s minutes later." % (Remaining,Limit,round(Reset,2)))
+    Github.ProjectGetFilesAndUpdate("21y4d/nmapAutomator","master",file)    

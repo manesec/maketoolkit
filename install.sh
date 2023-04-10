@@ -27,7 +27,7 @@ fi
 
 command -v wget > /dev/null
 if [ "$?" -ne 0 ]; then
-    echo "ERROR: zip not found on your system."
+    echo "ERROR: wget not found on your system."
     exit
 fi
 

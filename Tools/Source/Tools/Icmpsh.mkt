@@ -1,3 +1,6 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
 def Install():
     import os
 
@@ -28,6 +31,17 @@ def Install():
     print("[!] Install done.")
     print("Usage: sudo ./run.sh")
     print("Note: Linux client need sudo permissions!")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/Icmpsh/LinuxClient")):
+        import sys
+        module_name = "Tools/Icmpsh.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")    
 
 def Uninstall():
     print("[Icmpsh] Uninstalling ...")

@@ -1,3 +1,7 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
+
 def Install():
     print("[Wafw00f] Installing base ...")
 
@@ -6,6 +10,17 @@ def Install():
     os.system("git clone https://github.com/EnableSecurity/Wafw00f.git Wafw00f")
     os.chdir("/var/lib/mkt/Tools/Source/Tools/Wafw00f")
     os.system("python3 setup.py install")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/Wafw00f/setup.py")):
+        import sys
+        module_name = "Tools/Wafw00f.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")
 
 def Uninstall():
     print("[Wafw00f] Uninstalling ...")

@@ -1,4 +1,5 @@
-
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
 def Install():
     print("[RedTeamPowershellScripts] Installing base ...")
@@ -6,6 +7,16 @@ def Install():
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell")
     os.system("git clone https://github.com/Mr-Un1k0d3r/RedTeamPowershellScripts.git RedTeamPowershellScripts")
+
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/Powershell/RedTeamPowershellScripts/README.md")):
+        import sys
+        module_name = "Windows/Powershell/RedTeamPowershellScripts.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")    
 
 def Uninstall():
     print("[RedTeamPowershellScripts] Uninstalling ...")

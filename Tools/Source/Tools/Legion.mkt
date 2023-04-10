@@ -1,3 +1,6 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
 def Install():
     print("[Legion] Installing base ...")
 
@@ -6,6 +9,18 @@ def Install():
     os.system("git clone https://github.com/carlospolop/legion.git Legion")
     os.chdir("/var/lib/mkt/Tools/Source/Tools/Legion/git")
     os.system("bash install.sh")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/Legion/legion.py")):
+        import sys
+        module_name = "Tools/Legion.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")
+
 
 def Uninstall():
     print("[Legion] Uninstalling ...")

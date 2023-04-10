@@ -1,0 +1,54 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
+def Install():
+    print("[LocalPotato] Downloading base ...")
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Windows/Potato/LocalPotato")
+    path.mkdir(parents=True, exist_ok=True)
+
+    UpdateFromGithub()
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/Potato/LocalPotato/LocalPotato.exe")):
+        import sys
+        module_name = "Windows/Potato/LocalPotato.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")
+
+def Uninstall():
+    import os
+    print("[LocalPotato] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Potato/LocalPotato")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/JuicyPotato*")
+     
+
+def Upgrade():
+    print("[LocalPotato] Upgrading ...")
+    UpdateFromGithub()
+    
+def UpdateFromGithub():
+    import os
+    from pathlib import Path
+    path = Path("/tmp/LocalPotato/")
+    path.mkdir(parents=True, exist_ok=True)
+
+    Files = [
+        ["LocalPotato.zip","/tmp/LocalPotato/LocalPotato.zip"]
+    ]
+    Github.UpdateFromGithubReleaseFiles("decoder-it/LocalPotato",Files,"JuicyPotato")
+
+    if (os.path.exists("/tmp/LocalPotato/LocalPotato.zip")):
+        os.chdir("/tmp/LocalPotato")
+        os.system("unzip LocalPotato.zip")
+        os.system("cp *.exe /var/lib/mkt/Tools/Source/Windows/Potato/LocalPotato/")
+    os.chdir("/tmp")
+    os.system("rm -rf /tmp/LocalPotato")
+
+    Github.CheckGithubAPIQuta()

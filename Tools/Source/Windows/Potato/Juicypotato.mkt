@@ -1,3 +1,7 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
 
 def Install():
     print("[Juicypotato] Downloading base ...")
@@ -7,6 +11,18 @@ def Install():
     path.mkdir(parents=True, exist_ok=True)
 
     UpdateFromGithub()
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/Potato/Juicypotato/Juicypotato.exe")):
+        import sys
+        module_name = "Windows/Potato/Juicypotato.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")
+
 
 def Uninstall():
     import os
@@ -24,13 +40,13 @@ def UpdateFromGithub():
     Files = [
         ["JuicyPotato.exe","/var/lib/mkt/Tools/Source/Windows/Potato/Juicypotato/Juicypotatox64.exe"]
     ]
-    UpdateFromGithubReleaseFiles("https://api.github.com/repos/ohpe/juicy-potato/releases/latest",Files,"JuicyPotato")
+    Github.UpdateFromGithubReleaseFiles("ohpe/juicy-potato",Files,"JuicyPotato")
 
     print("[Juicypotato 2/3] Checking and Upgrading ...")
     Files = [
         ["Juicy.Potato.x86.exe","/var/lib/mkt/Tools/Source/Windows/Potato/Juicypotato/Juicypotato.exe"]
     ]
-    UpdateFromGithubReleaseFiles("https://api.github.com/repos/ivanitlearning/Juicy-Potato-x86/releases/latest",Files,"JuicyPotato")
+    Github.UpdateFromGithubReleaseFiles("ivanitlearning/Juicy-Potato-x86",Files,"JuicyPotato")
 
     print("[JuicypotatoNG 3/3] Checking and Upgrading ...")
 
@@ -42,80 +58,13 @@ def UpdateFromGithub():
     Files = [
         ["JuicyPotatoNG.zip","/tmp/JuicypotatoNG/JuicyPotatoNG.zip"]
     ]
-    UpdateFromGithubReleaseFiles("https://api.github.com/repos/antonioCoco/JuicyPotatoNG/releases/latest",Files,"JuicyPotato")
+    Github.UpdateFromGithubReleaseFiles("antonioCoco/JuicyPotatoNG",Files,"JuicyPotato")
 
     if (os.path.exists("/tmp/JuicypotatoNG/JuicyPotatoNG.zip")):
         os.chdir("/tmp/JuicypotatoNG")
         os.system("unzip JuicyPotatoNG.zip")
         os.system("cp *.exe /var/lib/mkt/Tools/Source/Windows/Potato/Juicypotato/JuicyPotatoNG.exe")
+    os.chdir("/tmp")
     os.system("rm -rf /tmp/JuicypotatoNG")
 
-    CheckGithubAPIQuta()
-
-
-def UpdateFromGithubReleaseFiles(URL,Files,sign_prefix=""):
-    import json,re,os
-    import requests
-
-    import configparser
-    config = configparser.ConfigParser()
-    config.read('/etc/mkt.conf')
-    print(" *  Searching Github Repo ...")
-    
-    Return_json = ""
-    if config['Github']["GithubToken"].strip() != "":
-        Return_json = requests.get(URL,headers={"Authorization":"token %s" % (config['Github']["GithubToken"].strip())}).text
-    else:
-        Return_json = requests.get(URL).text
-    Return_json = json.loads(Return_json)
-
-    for filereg,savelink in Files:
-        for f in Return_json["assets"]:
-            if (re.search(filereg,f["name"])):
-                print(" +  Found %s " % (f["name"]))
-                sign_file = "/var/lib/mkt/Tools/Version/" + sign_prefix + os.path.basename(savelink) +".gitid"
-
-                if (os.path.exists(savelink)):
-                    if (os.path.exists(sign_file)):
-                        save_id = open(sign_file,"r")
-                        localid = save_id.read().strip()
-                        save_id.close()
-                        if (localid == str(f["id"])):
-                            print(" !  Already up to date")
-                            break
-
-                print(" *  Downloading %s ..." % (f["name"]))
-                WgetDownloadFile(f['browser_download_url'],savelink,quiet=True)
-                if (os.path.exists(savelink)):
-                    save_id = open(sign_file,"w")
-                    save_id.write(str(f["id"]))
-                    save_id.close()
-                break
-
-def CheckGithubAPIQuta():
-    import json
-    import requests
-    from datetime import datetime
-    import time
-
-    import configparser
-    config = configparser.ConfigParser()
-    config.read('/etc/mkt.conf')
-
-    Return_json = ""
-    if config['Github']["GithubToken"].strip() != "":
-        Return_json = requests.get("https://api.github.com/rate_limit",headers={"Authorization":"token %s" % (config['Github']["GithubToken"].strip())}).text
-    else:
-        Return_json = requests.get("https://api.github.com/rate_limit").text
-    Return_json = json.loads(Return_json)
-    Remaining = Return_json["rate"]["remaining"]
-    Limit = Return_json["rate"]["limit"]
-    Reset = (datetime.utcfromtimestamp(Return_json["rate"]["reset"]) - datetime.utcfromtimestamp(time.time())).seconds / 60
-    print("[!] Github API: Remaining %s/%s, Reset in %s minutes later." % (Remaining,Limit,round(Reset,2)))
-
-def WgetDownloadFile(url,local_path,quiet = False):
-    import os
-    if os.path.exists(local_path):
-        os.remove(local_path)
-    quiet = "--quiet" if quiet else ""
-    os.system('wget "%s" %s -O "%s"' % (url,quiet,local_path))
+    Github.CheckGithubAPIQuta()

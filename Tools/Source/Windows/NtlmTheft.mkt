@@ -1,3 +1,7 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
+
 def Install():
     print("[NtlmTheft] Installing base ...")
 
@@ -5,6 +9,18 @@ def Install():
     os.chdir("/var/lib/mkt/Tools/Source/Windows/")
     os.system("pip3 install xlsxwriter")
     os.system("git clone https://github.com/Greenwolf/ntlm_theft.git NtlmTheft")
+
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/NtlmTheft/README.md")):
+        import sys
+        module_name = "Windows/NtlmTheft.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")  
 
 def Uninstall():
     print("[NtlmTheft] Uninstalling ...")

@@ -1,3 +1,6 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
 def Install():
     print("[Crackmapexec] Installing base ...")
 
@@ -6,6 +9,17 @@ def Install():
     os.system("git clone https://github.com/Porchetta-Industries/CrackMapExec Crackmapexec")
     os.chdir("/var/lib/mkt/Tools/Source/Tools/Crackmapexec")
     Setup()
+
+    # simple check
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/Crackmapexec/README.md")):
+        import sys
+        module_name = "Tools/Crackmapexec.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")
 
 def Uninstall():
     print("[Crackmapexec] Uninstalling ...")
@@ -42,7 +56,7 @@ def Setup():
     print("[Crackmapexec] Writing run.sh ...")
     start_script = open("run.sh",'w')
     start_script.writelines("""#! /bin/bash
-poetry run crackmapexec "$@"
+$HOME/.local/bin/poetry run crackmapexec "$@"
 """)
     start_script.close()
 

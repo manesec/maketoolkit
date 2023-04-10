@@ -1,3 +1,7 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
+
 def Install():
     print("[Phpsploit] Installing base ...")
 
@@ -6,6 +10,17 @@ def Install():
     os.system("git clone https://github.com/nil0x42/phpsploit.git Phpsploit")
     os.chdir("/var/lib/mkt/Tools/Source/Tools/Phpsploit")
     os.system("pip3 install -r requirements.txt")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/Phpsploit/requirements.txt")):
+        import sys
+        module_name = "Tools/Phpsploit.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")
 
 def Uninstall():
     print("[Phpsploit] Uninstalling ...")

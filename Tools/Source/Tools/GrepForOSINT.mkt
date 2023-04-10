@@ -1,9 +1,21 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
 def Install():
     print("[GrepForOSINT] Installing base ...")
 
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Tools/")
     os.system("git clone https://github.com/cipher387/grep_for_osint.git GrepForOSINT")
+
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/GrepForOSINT/IPv4_from_text.sh")):
+        import sys
+        module_name = "Tools/GrepForOSINT.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")
 
 def Uninstall():
     print("[GrepForOSINT] Uninstalling ...")

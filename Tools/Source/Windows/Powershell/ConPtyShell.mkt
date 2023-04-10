@@ -1,9 +1,23 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
 def Install():
     print("[ConPtyShell] Installing base ...")
 
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell")
     os.system("git clone https://github.com/antonioCoco/ConPtyShell.git ConPtyShell")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/Powershell/ConPtyShell/README.md")):
+        import sys
+        module_name = "Windows/Powershell/ConPtyShell.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")        
 
 def Uninstall():
     print("[ConPtyShell] Uninstalling ...")

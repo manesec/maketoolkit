@@ -1,3 +1,6 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
 def Install():
     print("[Dnscat2] Download the Client ...")
 
@@ -21,7 +24,7 @@ def Install():
 
     # Download win32
     print("[Dnscat] Download dnscat2-%s-client-win32.zip" % (Download_Version))
-    WgetDownloadFile("https://downloads.skullsecurity.org/dnscat2/dnscat2-%s-client-win32.zip" % (Download_Version),"/tmp/Dnscat2/win32.zip")
+    Unit.WgetDownloadFile("https://downloads.skullsecurity.org/dnscat2/dnscat2-%s-client-win32.zip" % (Download_Version),"/tmp/Dnscat2/win32.zip")
 
     os.system("unzip -P password win32.zip")
     os.system("mv *.exe /var/lib/mkt/Tools/Source/Tools/Dnscat2/Client/")
@@ -30,7 +33,7 @@ def Install():
 
     # Download linux 64
     print("[Dnscat] Download dnscat2-%s-client-x64.tar.bz2" % (Download_Version))
-    WgetDownloadFile("https://downloads.skullsecurity.org/dnscat2/dnscat2-%s-client-x64.tar.bz2" % (Download_Version),"/tmp/Dnscat2/linux64.tar.bz2")
+    Unit.WgetDownloadFile("https://downloads.skullsecurity.org/dnscat2/dnscat2-%s-client-x64.tar.bz2" % (Download_Version),"/tmp/Dnscat2/linux64.tar.bz2")
 
     os.system("tar -xf linux64.tar.bz2")
     os.system("rm -rf linux64.tar.bz2")
@@ -40,7 +43,7 @@ def Install():
 
     # Download linux
     print("[Dnscat] Download dnscat2-%s-client-x86.tar.bz2" % (Download_Version))
-    WgetDownloadFile("https://downloads.skullsecurity.org/dnscat2/dnscat2-%s-client-x86.tar.bz2" % (Download_Version),"/tmp/Dnscat2/linux.tar.bz2")
+    Unit.WgetDownloadFile("https://downloads.skullsecurity.org/dnscat2/dnscat2-%s-client-x86.tar.bz2" % (Download_Version),"/tmp/Dnscat2/linux.tar.bz2")
 
     os.system("tar -xf linux.tar.bz2")
     os.system("rm -rf linux.tar.bz2")
@@ -55,9 +58,19 @@ def Install():
     os.system("gem install bundler")
     os.system("bundle install")
 
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/Dnscat2/Server/server/dnscat2.rb")):
+        import sys
+        module_name = "Tools/Dnscat2.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")
+
     print("[!] Install done.")
     print("Usage: Running server: sudo ruby ./Server/server/dnscat2.rb")
-
 
 def Uninstall():
     print("[Dnscat] Uninstalling ...")
@@ -74,11 +87,3 @@ def Upgrade():
     
     Branches = "master"
     os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
-
-
-def WgetDownloadFile(url,local_path,quiet = False):
-    import os
-    if os.path.exists(local_path):
-        os.remove(local_path)
-    quiet = "--quiet" if quiet else ""
-    os.system('wget "%s" %s -O "%s"' % (url,quiet,local_path))

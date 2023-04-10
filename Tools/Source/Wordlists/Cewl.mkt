@@ -1,3 +1,6 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
 def Install():
     print("[Cewl] Installing base ...")
 
@@ -6,6 +9,18 @@ def Install():
     os.system("git clone https://github.com/digininja/CeWL.git Cewl")
 
     print("Usage: $ruby -W0 ./cewl.rb --help")
+
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Wordlists/Cewl/README.md")):
+        import sys
+        module_name = "Wordlists/Cewl.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")  
 
 def Uninstall():
     print("[Cewl] Uninstalling ...")

@@ -1,32 +1,52 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
 def Install():
+    try:
+        import os
+        print("[RoguePotato] Downloading base ...")
+        GetListsFromGithub = Github.ReleasesFileGetFromGithubRepo("antonioCoco/RoguePotato",["RoguePotato.zip"])
+        GetListsFromGithub = GetListsFromGithub[0]
+        
+        from pathlib import Path
+        path = Path("/var/lib/mkt/Tools/Source/Windows/Potato/RoguePotato/")
+        path.mkdir(parents=True, exist_ok=True)
+
+        from pathlib import Path
+        path = Path("/tmp/RoguePotato/")
+        path.mkdir(parents=True, exist_ok=True)
+
+        Unit.WgetDownloadFile(GetListsFromGithub[3],"/tmp/RoguePotato/main.zip")
+
+        print("[RoguePotato] Copying the base ...")
+        os.chdir("/tmp/RoguePotato/")
+        os.system("unzip main.zip")
+        os.system("mv *.exe /var/lib/mkt/Tools/Source/Windows/Potato/RoguePotato/")
+
+        save_id = open("/var/lib/mkt/Tools/Version/RoguePotato.gitid","w")
+        save_id.write(GetListsFromGithub[2])
+        save_id.close()
+
+        os.chdir("/tmp")
+        os.system("rm -rf /tmp/RoguePotato/")
+        Github.CheckGithubAPIQuta()
+    except:
+        print("[ERROR]")
+
+    # check if installed 
     import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/Potato/RoguePotato/RoguePotato.exe")):
+        import sys
+        module_name = "Windows/Potato/RoguePotato.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
 
-    print("[RoguePotato] Downloading base ...")
-    CheckGithubAPIQuta()
-    GetListsFromGithub = ReleasesFileGetFromGithubRepo("https://api.github.com/repos/antonioCoco/RoguePotato/releases/latest",["RoguePotato.zip"])
-    GetListsFromGithub = GetListsFromGithub[0]
-    
-    from pathlib import Path
-    path = Path("/var/lib/mkt/Tools/Source/Windows/Potato/RoguePotato/")
-    path.mkdir(parents=True, exist_ok=True)
+    print("OK")    
 
-    from pathlib import Path
-    path = Path("/tmp/RoguePotato/")
-    path.mkdir(parents=True, exist_ok=True)
 
-    WgetDownloadFile(GetListsFromGithub[3],"/tmp/RoguePotato/main.zip")
 
-    print("[RoguePotato] Copying the base ...")
-    os.chdir("/tmp/RoguePotato/")
-    os.system("unzip main.zip")
-    os.system("mv *.exe /var/lib/mkt/Tools/Source/Windows/Potato/RoguePotato/")
-
-    save_id = open("/var/lib/mkt/Tools/Version/RoguePotato.gitid","w")
-    save_id.write(GetListsFromGithub[2])
-    save_id.close()
-
-    os.chdir("/tmp")
-    os.system("rm -rf /tmp/RoguePotato/")
 
 def Uninstall():
     import os
@@ -35,9 +55,8 @@ def Uninstall():
     os.system("rm -rf /var/lib/mkt/Tools/Version/RoguePotato.gitid")
 
 def Upgrade():
-    CheckGithubAPIQuta()
 
-    GetListsFromGithub = ReleasesFileGetFromGithubRepo("https://api.github.com/repos/antonioCoco/RoguePotato/releases/latest",["RoguePotato.zip"])
+    GetListsFromGithub = Github.ReleasesFileGetFromGithubRepo("antonioCoco/RoguePotato",["RoguePotato.zip"])
     GetListsFromGithub = GetListsFromGithub[0]
 
     save_id = open("/var/lib/mkt/Tools/Version/RoguePotato.gitid","r")
@@ -50,62 +69,4 @@ def Upgrade():
         Install()
     else:
         print("[!] Already up to date.")
-
-def CheckGithubAPIQuta():
-    import json
-    import requests
-    from datetime import datetime
-    import time
-
-    import configparser
-    config = configparser.ConfigParser()
-    config.read('/etc/mkt.conf')
-
-    Return_json = ""
-    if config['Github']["GithubToken"].strip() != "":
-        Return_json = requests.get("https://api.github.com/rate_limit",headers={"Authorization":"token %s" % (config['Github']["GithubToken"].strip())}).text
-    else:
-        Return_json = requests.get("https://api.github.com/rate_limit").text
-    Return_json = json.loads(Return_json)
-    Remaining = Return_json["rate"]["remaining"]
-    Limit = Return_json["rate"]["limit"]
-    Reset = (datetime.utcfromtimestamp(Return_json["rate"]["reset"]) - datetime.utcfromtimestamp(time.time())).seconds / 60
-    print("[!] Github API: Remaining %s/%s, Reset in %s minutes later." % (Remaining,Limit,round(Reset,2)))
-
-def ReleasesFileGetFromGithubRepo(URL,Names):
-    import json,re,sys
-    import requests
-
-    import configparser
-    config = configparser.ConfigParser()
-    config.read('/etc/mkt.conf')
-
-    print(" *  Searching Github Repo ...")
-
-    Return_list = []
-    Return_json = ""
-
-    if config['Github']["GithubToken"].strip() != "":
-        Return_json = requests.get(URL,headers={"Authorization":"token %s" % (config['Github']["GithubToken"].strip())}).text
-    else:
-        Return_json = requests.get(URL).text
-
-    Return_json = json.loads(Return_json)
-
-    for f in Return_json["assets"]:
-        for name in Names:
-            if (re.search(name,f["name"])):
-                print(" +  Found %s " % (f["name"]))
-                Return_list.append([f["name"],f["id"],f["updated_at"],f['browser_download_url']])
-
-    if len(Return_list) == 0:
-        print("[ERROR] No found on github repo!")
-        sys.exit(0)
-    return Return_list
-
-def WgetDownloadFile(url,local_path,quiet = False):
-    import os
-    if os.path.exists(local_path):
-        os.remove(local_path)
-    quiet = "--quiet" if quiet else ""
-    os.system('wget "%s" %s -O "%s"' % (url,quiet,local_path))
+    Github.CheckGithubAPIQuta()

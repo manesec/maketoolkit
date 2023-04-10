@@ -1,38 +1,57 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
 def Install():
     import shutil
     import os
+    try:
+        print("[XC] Checking go env ...")
+        os.system("apt update && apt -y install golang-go rlwrap upx")
 
-    print("[XC] Checking go env ...")
-    os.system("apt update && apt -y install golang-go rlwrap upx")
+        print("[XC] Installing base ...")
 
-    print("[XC] Installing base ...")
+        from pathlib import Path
+        path = Path("/var/lib/mkt/Tools/Source/Tools/xc")
+        path.mkdir(parents=True, exist_ok=True)
 
-    from pathlib import Path
-    path = Path("/var/lib/mkt/Tools/Source/Tools/xc")
-    path.mkdir(parents=True, exist_ok=True)
+        norootuser = os.getenv("SUDO_USER")
 
-    norootuser = os.getenv("SUDO_USER")
+        if (os.path.exists("/tmp/xc")):
+            os.system("rm -rf /tmp/xc")
 
-    if (os.path.exists("/tmp/xc")):
+        os.system("sudo -u %s mkdir /tmp/xc" % norootuser)
+
+        os.chdir("/tmp/xc")
+
+        print("[XC] Compiling ...")
+        
+        os.system("sudo -u %s git clone --recurse-submodules https://github.com/xct/xc.git xc" % (norootuser))
+        os.system("sudo -u %s bash -c \"GO111MODULE=off go get golang.org/x/sys/...; GO111MODULE=off go get golang.org/x/text/encoding/unicode ; GO111MODULE=off go get github.com/hashicorp/yamux; GO111MODULE=off go get github.com/libp2p/go-reuseport ; cd xc ; python3 build.py\"" % norootuser)
+        os.chdir("/tmp/xc/xc")
+
+        print("[XC] Copying ...")
+        shutil.copy("/tmp/xc/xc/xc","/var/lib/mkt/Tools/Source/Tools/xc/xc")
+        shutil.copy("/tmp/xc/xc/xc.exe","/var/lib/mkt/Tools/Source/Tools/xc/xc.exe")
+        
+        print("[XC] Clearing up ...")
+        os.chdir("/tmp")
         os.system("rm -rf /tmp/xc")
 
-    os.system("sudo -u %s mkdir /tmp/xc" % norootuser)
+    except:
+        print("ERROR")
 
-    os.chdir("/tmp/xc")
 
-    print("[XC] Compiling ...")
-    
-    os.system("sudo -u %s git clone --recurse-submodules https://github.com/xct/xc.git xc" % (norootuser))
-    os.system("sudo -u %s bash -c \"GO111MODULE=off go get golang.org/x/sys/...; GO111MODULE=off go get golang.org/x/text/encoding/unicode ; GO111MODULE=off go get github.com/hashicorp/yamux; GO111MODULE=off go get github.com/libp2p/go-reuseport ; cd xc ; python3 build.py\"" % norootuser)
-    os.chdir("/tmp/xc/xc")
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/xc/xc")):
+        import sys
+        module_name = "Tools/xc.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
 
-    print("[XC] Copying ...")
-    shutil.copy("/tmp/xc/xc/xc","/var/lib/mkt/Tools/Source/Tools/xc/xc")
-    shutil.copy("/tmp/xc/xc/xc.exe","/var/lib/mkt/Tools/Source/Tools/xc/xc.exe")
-    
-    print("[XC] Clearing up ...")
-    os.chdir("/tmp")
-    os.system("rm -rf /tmp/xc")
+    print("OK")
+
 
 def Uninstall():
     print("[XC] Uninstalling ...")

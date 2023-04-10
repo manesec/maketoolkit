@@ -1,9 +1,25 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
+
 def Install():
     print("[SCShell] Installing base ...")
 
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Windows/")
     os.system("git clone https://github.com/Mr-Un1k0d3r/SCShell.git SCShell")
+
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/SCShell/README.md")):
+        import sys
+        module_name = "Windows/SCShell.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")      
 
 def Uninstall():
     print("[SCShell] Uninstalling ...")

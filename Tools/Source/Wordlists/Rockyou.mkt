@@ -1,6 +1,22 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
+
 def Install():
     print("[Rockyou] Download the base ...")
-    WgetDownloadFile("https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt","/var/lib/mkt/Tools/Source/Wordlists/rockyou.txt")
+    Unit.WgetDownloadFile("https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt","/var/lib/mkt/Tools/Source/Wordlists/rockyou.txt")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Wordlists/rockyou.txt")):
+        import sys
+        module_name = "Wordlists/Rockyou.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")  
+
 
 def Uninstall():
     print("[Rockyou] Uninstalling ...")
@@ -11,9 +27,3 @@ def Uninstall():
 def Upgrade():
     print("[Rockyou] This script can not be update.")
 
-def WgetDownloadFile(url,local_path,quiet = False):
-    import os
-    if os.path.exists(local_path):
-        os.remove(local_path)
-    quiet = "--quiet" if quiet else ""
-    os.system('wget "%s" %s -O "%s"' % (url,quiet,local_path))

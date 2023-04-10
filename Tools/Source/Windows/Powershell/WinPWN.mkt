@@ -1,21 +1,37 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
+
 def Install():
     print("[WinPWN] Installing base ...")
 
     import os
-    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell/")
     os.system("git clone https://github.com/S3cur3Th1sSh1t/WinPwn.git WinPWN")
+
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/Powershell/WinPWN/README.md")):
+        import sys
+        module_name = "Windows/Powershell/WinPWN.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")    
 
 def Uninstall():
     print("[WinPWN] Uninstalling ...")
 
     import os
-    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/WinPWN")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Powershell/WinPWN")
 
 def Upgrade():
     print("[WinPWN] Upgrading ...")
 
     import os
-    os.chdir("/var/lib/mkt/Tools/Source/Windows/WinPWN")
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell/WinPWN")
     
     Branches = "master"
     os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

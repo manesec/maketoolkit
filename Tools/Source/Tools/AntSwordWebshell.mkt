@@ -1,9 +1,24 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
 def Install():
     print("[AntSwordWebshell] Installing base ...")
 
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Tools/")
     os.system("git clone https://github.com/AntSwordProject/AwesomeScript.git AntSwordWebshell")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/AntSwordWebshell/README.md")):
+        import sys
+        module_name = "Tools/AntSwordWebshell.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")
+
 
 def Uninstall():
     print("[AntSwordWebshell] Uninstalling ...")
@@ -17,5 +32,5 @@ def Upgrade():
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Tools/AntSwordWebshell")
     
-    Branches = "main"
+    Branches = "master"
     os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

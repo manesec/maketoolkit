@@ -1,3 +1,9 @@
+[ 20230410 ]
+- Fix some bug in Windows/Powershell/WinPWN.
+- Add build for testing script.
+- Add module and change all script with module.
+- Add simple roll back.
+
 [ 20230205 ]
 - Add SearchDB `BypassApplocker`.
 - Update `Readme.md`

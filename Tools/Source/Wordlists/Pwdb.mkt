@@ -1,37 +1,36 @@
+
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
-
 def Install():
-    print("[SecLists] Installing base ...")
+    print("[Pwdb] Installing base ...")
 
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Wordlists")
-    os.system("git clone https://github.com/danielmiessler/SecLists.git SecLists")
+    os.system("git clone https://github.com/ignis-sec/Pwdb-Public.git Pwdb")
 
     # check if installed 
     import os
-    if not (os.path.exists("/var/lib/mkt/Tools/Source/Wordlists/SecLists/README.md")):
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Wordlists/Pwdb/README.md")):
         import sys
-        module_name = "Wordlists/SecLists.mkt"
+        module_name = "Wordlists/Pwdb.mkt"
         print("[ERROR]: Failed to install " + module_name +" ...")
         Unit.RollBack(module_name)
         sys.exit(1)
 
     print("OK")  
 
-
 def Uninstall():
-    print("[SecLists] Uninstalling ...")
+    print("[Pwdb] Uninstalling ...")
 
     import os
-    os.system("rm -rf /var/lib/mkt/Tools/Source/Wordlists/SecLists")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Wordlists/Pwdb")
 
 def Upgrade():
-    print("[SecLists] Upgrading ...")
+    print("[Pwdb] Upgrading ...")
 
     import os
-    os.chdir("/var/lib/mkt/Tools/Source/Wordlists/SecLists")
+    os.chdir("/var/lib/mkt/Tools/Source/Wordlists/Pwdb")
     
     Branches = "master"
     os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

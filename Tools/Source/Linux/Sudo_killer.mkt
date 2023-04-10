@@ -1,4 +1,5 @@
-# please run as: sudo mkt install <path/name>
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
 def Install():
     print("[sudo_killer] installing base ...")
@@ -16,6 +17,16 @@ def Install():
     os.system("ln -s /var/lib/mkt/Tools/Source/Linux/Sudo_Killer/exploits /var/lib/mkt/Res/Data/Sudo_Killer/exploits")
     os.system("ln -s /var/lib/mkt/Tools/Source/Linux/Sudo_Killer/notes /var/lib/mkt/Res/Data/Sudo_Killer/notes")
 
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Linux/Sudo_Killer/Dockerfile")):
+        import sys
+        module_name = "Linux/Sudo_killer.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+    print("OK")
 
 def Uninstall():
     print("[sudo_killer] uninstall ...")
