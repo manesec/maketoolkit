@@ -1,4 +1,4 @@
 #! /bin/bash
 
 ./uninstall.sh
-./install.sh
+python3 install.py

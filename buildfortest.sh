@@ -13,7 +13,7 @@ pip3 install --upgrade pip
 pip3 install requests
 
 echo [Step 4] Install MKT ...
-bash install.sh
+python3 install.py
 
 echo [Step 5] Run mkt command ...
 mkt 

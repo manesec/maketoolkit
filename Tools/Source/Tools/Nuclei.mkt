@@ -1,0 +1,67 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
+def Install():
+    print("[Nuclei] Downloading base ...")
+
+    # mkdir 
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Tools/Nuclei")
+    path.mkdir(parents=True, exist_ok=True)
+
+    path = Path("/tmp/mktools")
+    path.mkdir(parents=True, exist_ok=True)
+
+    # download
+    UpdateFromGithub()
+
+    import os
+    os.chdir("/tmp/mktools/")
+    os.system("unzip *.zip")
+    os.system("mv /tmp/mktools/nuclei /var/lib/mkt/Tools/Source/Tools/Nuclei/nuclei")
+    
+    os.chdir("/var/lib/mkt/Tools/")
+    os.system("rm -rf /tmp/mktools/")
+    
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/Nuclei/nuclei")):
+        import sys
+        module_name = "Tools/Nuclei.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    FetchSubmodule()
+
+    print("OK")
+
+
+def Uninstall():
+    import os
+    print("[Nuclei] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Nuclei")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/nuclei_*")
+
+def Upgrade():
+    print("[Nuclei] Upgrading ...")
+    UpdateFromGithub()
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Nuclei/juicyinfo-nuclei-templates")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    
+def UpdateFromGithub():
+    Files = [
+        ["nuclei_(.){0,}_linux_amd64.zip","/tmp/mktools/neclei.zip"],
+    ]
+    Github.UpdateFromGithubReleaseFiles("projectdiscovery/nuclei",Files,sign_prefix="nuclei")
+    Github.CheckGithubAPIQuta()
+
+def FetchSubmodule():
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Nuclei/")
+    os.system("git clone https://github.com/cipher387/juicyinfo-nuclei-templates juicyinfo-nuclei-templates")

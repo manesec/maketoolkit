@@ -1,3 +1,8 @@
+[ 20230412 ]
+- Add `Nuclei.mkt`
+- Update `URLFinder.mkt`
+- Add `GodPotato.mkt`
+
 [ 20230410 ]
 - Fix some bug in Windows/Powershell/WinPWN.
 - Add build for testing script.
@@ -41,8 +46,6 @@
 
 [ Know Issue ]
 There are some Package problem, but work in old version python.
-
-- Crackmapexec
 - EyeWitness
 - ReconScan
 - ADenum.py

@@ -25,7 +25,7 @@ Usage:
     mkt      reinstall        <tools name>
     mkt      upgrade          <tools name>
     
-    # upgrade all will have bug ... Fixing ... chdir problem
+    # Uhm, No Recommand.
     mkt      upgrade          all
 
 List:
@@ -37,6 +37,7 @@ Script:
     # List build-in script
     mkt      script           list
     mkt      script           info
+
     # Run the script 
     mkt      script           <script_name>
 
@@ -50,9 +51,9 @@ Search DB and res:
     mkt     s(earch)          <string>
 
 Other:
-    # Update all the source include mkt.
-    # But you need to reinstall all the tools ;(
-    mkt-update""")
+    # Update the mkt core, but it will delete all the tools, 
+    # You need to reinstall all the tools ;(
+    sudo mkt-update""")
 
 def MKT_CLEARUP():
     CheckUID()
@@ -542,12 +543,10 @@ def MKT_DB_SEARCH():
     SourceFileLoader("mkt_search",search_bin).load_module().MKT_DB_SEARCH()
 
 # ==========================================================================
-#                                Cli-menu
+#                                FUZZ - TODO
 # ==========================================================================
-def MKT_CLI_MENU():
-    from importlib.machinery import SourceFileLoader
-    search_bin = "/var/lib/mkt/Bin/cmenu.py"
-    SourceFileLoader("mkt_search",search_bin).load_module().run()
+
+
 
 # ==========================================================================
 #                                 Main
@@ -578,8 +577,6 @@ if __name__ == "__main__" :
         "s":MKT_DB_SEARCH,
         "search": MKT_DB_SEARCH,
 
-        # Cli-menu function
-        "menu" : MKT_CLI_MENU
     }
 
     SelectFunction.get(sys.argv[1],MKT_HELP)()

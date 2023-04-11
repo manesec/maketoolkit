@@ -22,7 +22,7 @@ For install `mkt` command just:
 
 ```bash
 git clone https://github.com/manesec/maketoolkit.git
-cd maketoolkit; chmod u+x *.sh; sudo ./install.sh
+cd maketoolkit; chmod u+x *.sh; sudo python3 install.py
 ```
 
 **Note**: All tools will be locate in `/var/lib/mkt/Tools/Source` which soft link to `/Tools`.

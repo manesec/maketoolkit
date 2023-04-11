@@ -7,8 +7,8 @@ if [ "$(id -u)" != "0" ]; then
 fi
 
 echo "Uninstalling mkt ..."
+unlink /bin/mkt
+unlink /bin/mkt-update
 unlink /Tools
 
-rm -rf /bin/mkt
-rm -rf /bin/mkt-update
 rm -rf /var/lib/mkt/

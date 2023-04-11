@@ -1,21 +1,53 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
 def Install():
-    print("[URLFinder] Installing base ...")
+    print("[URLFinder] Downloading base ...")
+
+    # mkdir 
+    from pathlib import Path
+
+    path = Path("/tmp/mktools")
+    path.mkdir(parents=True, exist_ok=True)
+
+    # download
+    UpdateFromGithub()
 
     import os
-    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
-    os.system("git clone https://github.com/pingc0y/URLFinder.git URLFinder")
+    os.chdir("/tmp/mktools/")
+    os.system("unzip *.zip")
+    os.system("mv *-amd64 /var/lib/mkt/Tools/Source/Tools/URLFinder")
+    
+    os.chdir("/var/lib/mkt/Tools/")
+    os.system("rm -rf /tmp/mktools/")
+    
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/URLFinder")):
+        import sys
+        module_name = "Tools/URLFinder.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")
+
 
 def Uninstall():
-    print("[URLFinder] Uninstalling ...")
-
     import os
+    print("[JSPWebShellCollection] Uninstalling ...")
     os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/URLFinder")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/URLFinder*")
 
 def Upgrade():
-    print("[URLFinder] Upgrading ...")
+    print("[JSPWebShellCollection] Upgrading ...")
+    UpdateFromGithub()
 
-    import os
-    os.chdir("/var/lib/mkt/Tools/Source/Tools/URLFinder")
     
-    Branches = "master"
-    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+def UpdateFromGithub():
+    Files = [
+        ["(.){0,}-linux-amd64.zip","/tmp/mktools/URLFinder.zip"],
+    ]
+    Github.UpdateFromGithubReleaseFiles("pingc0y/URLFinder",Files,sign_prefix="URLFinder")
+    Github.CheckGithubAPIQuta()
