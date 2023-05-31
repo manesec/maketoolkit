@@ -13,7 +13,7 @@ def Run():
 
 def InstallGlow():
     Files = [
-        ["glow_(.){0,}_linux_amd64.deb","/tmp/glow.deb"]
+        ["glow_(.){0,}_amd64.deb","/tmp/glow.deb"]
     ]
     UpdateFromGithubReleaseFiles("https://api.github.com/repos/charmbracelet/glow/releases/latest",Files)
     import os

@@ -1,3 +1,7 @@
+[ 20230531 ]
+- Add `Fuzz_dic.mkt`
+- Fix script `InstallBasicTools`
+
 [ 20230412 ]
 - Add `Nuclei.mkt`
 - Update `URLFinder.mkt`
