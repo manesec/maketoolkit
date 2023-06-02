@@ -15,7 +15,7 @@ def MKT_HELP():
 |  Y Y  \    <  |  | (  <_> |  <_> )  |__\___ \ 
 |__|_|  /__|_ \ |__|  \____/ \____/|____/____  >
       \/     \/                              \/ 
-       By @manesec, Version: 20230410 Beta
+       By @manesec, Version: 20230602 Beta
       https://github.com/manesec/maketoolkit
 
 Usage:
@@ -37,9 +37,11 @@ Script:
     # List build-in script
     mkt      script           list
     mkt      script           info
+    mkt      script           help
 
     # Run the script 
     mkt      script           <script_name>
+    mkt      script           <script_index>
 
 DB and res:
     mkt        db         installable
@@ -299,10 +301,13 @@ def MKT_LIST_INSTALLABLE():
 def MKT_SCRIPT():
     if (len(sys.argv) != 3):
         print("[ERROR] Invalid parameter")
-        print("    Usage: mkt script <list,info, <string> >")
+        print("    Usage: mkt script <help,list,info, <string> , <script index> > \n")
+        MKT_SCRIPT_LIST()
         sys.exit(1)
     
-    if (sys.argv[2] == "list") :
+    if (sys.argv[2] == "help") :
+        MKT_SCRIPT_HELP()
+    elif (sys.argv[2] == "list") :
         MKT_SCRIPT_LIST()
     elif (sys.argv[2] == "info"):
         MKT_SCRIPT_INFO()
@@ -310,17 +315,32 @@ def MKT_SCRIPT():
         CheckUID()
         MKT_SCRIPT_USE()
 
+def MKT_SCRIPT_HELP():
+    print("""Example for using mkt script command: 
+
+# List available script:
+    $ mkt script list
+    $ mkt script info
+
+# Use the script:
+    $ mkt script Install/GoSpider.py
+    $ mkt script 3""")
+
 def MKT_SCRIPT_LIST():
-    print("[*] Available scripts:")
-    nolist = True
+    all_module = []
+    print("There are available scripts: ")
+    print("-"*50)
     for path,subpaths,files in os.walk("/var/lib/mkt/Script"):
         for file in files:
             if file[-3:] == ".py":
                 module_name = (path + "/"+ file)[:-3]
                 module_name = module_name.replace("/var/lib/mkt/Script/","")
-                print("    %s" %module_name )
-                nolist = False
-    if (nolist):
+                all_module.append(module_name)
+    all_module.sort()
+    if (len(all_module) != 0):
+        for (index,module) in enumerate(all_module,start=0):
+            print("[%s] " %(index) + module)
+    else:
         print("[*] There are no any script can be use.")
 
 def MKT_SCRIPT_USE():
@@ -329,13 +349,34 @@ def MKT_SCRIPT_USE():
         print("[ERROR] Input can not be null.")
         sys.exit(1)
 
+    # emun all module
+    all_module = []
+    for path,subpaths,files in os.walk("/var/lib/mkt/Script"):
+        for file in files:
+            if file[-3:] == ".py":
+                module_name = (path + "/"+ file)[:-3]
+                module_name = module_name.replace("/var/lib/mkt/Script/","")
+                all_module.append(module_name)
+    all_module.sort()
+    
     abs_paths = os.path.abspath("/var/lib/mkt/Script/" + input_str + ".py")
-    if not (os.path.exists(abs_paths) and (abs_paths.startswith("/var/lib/mkt/Script/"))):
+    if (os.path.exists(abs_paths) and (abs_paths.startswith("/var/lib/mkt/Script/"))):
+        print("[*] Running %s ..." % (input_str))
+        from importlib.machinery import SourceFileLoader
+        SourceFileLoader("manesec",abs_paths).load_module().Run()
+    elif input_str.isdigit():
+        input_index = int(input_str)
+        if (input_index >= 0) and (input_index < len(all_module)):
+            print("[*] Running %s ..." % (all_module[input_index]))
+            from importlib.machinery import SourceFileLoader
+            SourceFileLoader("manesec",os.path.abspath("/var/lib/mkt/Script/" + all_module[input_index] + ".py")).load_module().Run()            
+        else:
+            print("[ERROR] Out of range.")
+            sys.exit(1)
+    else:
         print("[ERROR] No such script.")
         sys.exit(1)
 
-    from importlib.machinery import SourceFileLoader
-    SourceFileLoader("manesec",abs_paths).load_module().Run()
     MKT_CLEARUP()
 
 def MKT_SCRIPT_INFO():
@@ -349,6 +390,7 @@ def MKT_SCRIPT_INFO():
                 print("[%s]" %module_name )
                 nolist = False
 
+                print("  ",end='')
                 from importlib.machinery import SourceFileLoader
                 SourceFileLoader("manesec",abs_path).load_module().Info()
 

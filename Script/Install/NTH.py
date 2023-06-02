@@ -3,7 +3,6 @@ def Info():
 
 def Run():
     import os
-    print("[Name that hash] Running ...")
     os.system("pip3 install name-that-hash")
     print("Install done. Example:")
     print("    $ nth -t <hash>")

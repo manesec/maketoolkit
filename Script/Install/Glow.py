@@ -1,10 +1,9 @@
 def Info():
     print("This is script will be install glow.")
-    print(" - Markdown viewer on terminal.")
+    print("    - Markdown viewer on terminal.")
 
 def Run():
     import os
-    print("[InstallGlow] Running ...")
     Info()
     InstallGlow()
 

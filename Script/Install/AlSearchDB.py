@@ -3,7 +3,6 @@ def Info():
 
 def Run():
     import os
-    print("[InstallAllDB] Running ...")
     for dirpath,_,filenames in os.walk("/var/lib/mkt/Res/Source"):
         for file in filenames:
             dbName = (dirpath + "/" +file)

@@ -39,7 +39,7 @@ sudo mkt db install PayloadsAllTheThings
 # or run `mkt db list installable` to see a full list.
 
 # Running some script.
-sudo mkt script InstallBasicTools
+sudo mkt script Install/BasicTools
 # or run `mkt script list` to see a full list.
 ```
 
@@ -107,7 +107,7 @@ Just type `sudo mkt-update` to update the tools, **but all tools will be delete 
 ## Tutorial about the command.
 
 ```bash
-# ========== Tools ==========
+# ========== Install some Tools ==========
 # If you need to see what tools can be install: 
 sudo mkt list installable
 
@@ -135,9 +135,11 @@ mkt search reverse shell
 # ========== Script ==========
 # List all the script
 sudo mkt script list
+sudo mkt script info
 
 # use the script
 sudo mkt script <script_name> 
+sudo mkt script <script_index>
 
 # ========== Other ==========
 # Update mkt tools and the source just type:

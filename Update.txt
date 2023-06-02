@@ -1,3 +1,9 @@
+[ 20230602 ]
+- Add script index features
+- Change script run location
+- Add `OnlyOffice`
+- Add `GoSpider`
+
 [ 20230531 ]
 - Add `Fuzz_dic.mkt`
 - Fix script `InstallBasicTools`
