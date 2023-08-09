@@ -6,7 +6,7 @@ def Install():
 
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Tools/")
-    os.system("git clone https://github.com/Porchetta-Industries/CrackMapExec Crackmapexec")
+    os.system("git clone https://github.com/mpgn/CrackMapExec Crackmapexec")
     os.chdir("/var/lib/mkt/Tools/Source/Tools/Crackmapexec")
     Setup()
 

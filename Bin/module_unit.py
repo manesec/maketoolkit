@@ -9,7 +9,7 @@ def WgetDownloadFile(url,local_path,quiet = False):
 
     quiet = "--quiet" if quiet else ""
     os.system('wget "%s" %s -O "%s"' % (url,quiet,local_path + ".tmp"))
-    os.rename(local_path + ".tmp",local_path)
+    os.rename(local_path + ".tmp", local_path)
 
 def RollBack(module_name):
     import os
