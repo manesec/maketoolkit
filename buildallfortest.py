@@ -12,9 +12,6 @@ RunAsWhileList = True
 WhileList = ["Windows/Potato/GodPotato"]
 blacklist = ["Tools/xc" , "Tools/Crackmapexec", "Windows/Wesng"]
 
-
-
-
 def Run(command):
     for x in range (1,10):
         code = os.WEXITSTATUS(os.system(command))

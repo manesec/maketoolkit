@@ -1,0 +1,38 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
+def Install():
+    print("[Villain] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/t3l3machus/Villain.git Villain")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/Villain/README.md")):
+        import sys
+        module_name = "Windows/Villain.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Villain")
+    os.system("pip3 install -r requirements.txt")
+    os.system("apt install -y gnome-terminal")
+    print("OK")      
+
+def Uninstall():
+    print("[Villain] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Villain")
+
+def Upgrade():
+    print("[Villain] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Villain")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

@@ -1,0 +1,54 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
+def Install():
+    print("[Gost] Downloading base ...")
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Tools/Gost")
+    path.mkdir(parents=True, exist_ok=True)
+
+    UpdateFromGithub()
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Gost/")
+    os.system("gzip -d *.gz")
+    os.system("unzip gost-windows-386.zip")
+    os.system("unzip gost-windows-amd64.zip")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/Gost/gost-windows-386.zip")):
+        import sys
+        module_name = "Tools/Gost.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    os.system("rm gost-windows-386.zip")
+    os.system("rm gost-windows-amd64.zip")
+
+    print("OK")
+
+
+def Uninstall():
+    import os
+    print("[Gost] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Gost")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/Gost_*")
+    
+
+def Upgrade():
+    print("[Gost] Upgrading ...")
+    UpdateFromGithub()
+    
+def UpdateFromGithub():
+    Files = [
+        ["(.){0,}-linux-amd64-(.){0,}","/var/lib/mkt/Tools/Source/Tools/Gost/gost-linux-amd64.gz"],
+        ["(.){0,}-linux-386-(.){0,}","/var/lib/mkt/Tools/Source/Tools/Gost/gost-linux-386.gz"],
+        ["(.){0,}-windows-386-(.){0,}","/var/lib/mkt/Tools/Source/Tools/Gost/gost-windows-386.zip"],
+        ["(.){0,}-windows-amd64-(.){0,}","/var/lib/mkt/Tools/Source/Tools/Gost/gost-windows-amd64.zip"],
+    ]
+    Github.UpdateFromGithubReleaseFiles("ginuerzh/gost",Files,sign_prefix="Gost_")
+    Github.CheckGithubAPIQuta()

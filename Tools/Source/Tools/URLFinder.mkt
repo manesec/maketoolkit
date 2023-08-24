@@ -16,8 +16,8 @@ def Install():
 
     import os
     os.chdir("/tmp/mktools/")
-    os.system("unzip *.zip")
-    os.system("mv *-amd64 /var/lib/mkt/Tools/Source/Tools/URLFinder")
+    os.system("tar -xf /tmp/mktools/URLFinder.tar.gz")
+    os.system("mv URLFinder /var/lib/mkt/Tools/Source/Tools/URLFinder")
     
     os.chdir("/var/lib/mkt/Tools/")
     os.system("rm -rf /tmp/mktools/")
@@ -36,18 +36,18 @@ def Install():
 
 def Uninstall():
     import os
-    print("[JSPWebShellCollection] Uninstalling ...")
+    print("[URLFinder] Uninstalling ...")
     os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/URLFinder")
     os.system("rm -rf /var/lib/mkt/Tools/Version/URLFinder*")
 
 def Upgrade():
-    print("[JSPWebShellCollection] Upgrading ...")
+    print("[URLFinder] Upgrading ...")
     UpdateFromGithub()
 
     
 def UpdateFromGithub():
     Files = [
-        ["(.){0,}-linux-amd64.zip","/tmp/mktools/URLFinder.zip"],
+        ["(.){0,}-Linux_x86_64.tar.gz","/tmp/mktools/URLFinder.tar.gz"],
     ]
     Github.UpdateFromGithubReleaseFiles("pingc0y/URLFinder",Files,sign_prefix="URLFinder")
     Github.CheckGithubAPIQuta()
