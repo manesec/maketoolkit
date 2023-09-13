@@ -47,7 +47,7 @@ def Upgrade():
     
 def UpdateFromGithub():
     Files = [
-        ["(.){0,}-Linux_x86_64.tar.gz","/tmp/mktools/URLFinder.tar.gz"],
+        ["URLFinder_Linux_x86_64.tar.gz","/tmp/mktools/URLFinder.tar.gz"],
     ]
     Github.UpdateFromGithubReleaseFiles("pingc0y/URLFinder",Files,sign_prefix="URLFinder")
     Github.CheckGithubAPIQuta()
