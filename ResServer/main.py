@@ -75,13 +75,7 @@ def getfile(q:str):
             return "File no exists."
 
         file = open(query_file, "r")
-
-        import markdown
-        extens = ['codehilite','extra', 'admonition','toc','wikilinks','sane_lists','nl2br','smarty','legacy_attrs','legacy_em','meta','toc'
-        ]
-        return_html = markdown.markdown(file.read(),extensions=extens)
-
-        return PlainTextResponse(return_html)
+        return PlainTextResponse(file.read())
     except Exception as err:
         return "File can no be preview. Please see the raw files."
 

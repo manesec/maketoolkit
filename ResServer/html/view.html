@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width">
   <title>Viewer - MKT Documents Server</title>
   <link rel="stylesheet" href="css/mdui.min.css"/>
+  <link rel="stylesheet" href="css/atom-one-light.css">
 </head>
 
 <body class="mdui-appbar-with-toolbar">
@@ -37,9 +38,21 @@
       color: #3F51B5;
       cursor: pointer;
     }
+    code:not(pre code) {
+      background:  #ffffcc;
+      line-height: 1.4;
+      border-radius: 3px;
+      padding-left: 3px;
+      padding-right: 3px;
+      font-size: 13px;
+    }
+    pre code{
+      font-size: 13px;
+      line-height: 1.4;
+    }
     pre {
       white-space:pre-wrap;
-      background: #f5f5f5;
+      background: #fafafa;
       color: black;
       padding: 20px 20px 20px 20px;
     }
@@ -69,8 +82,10 @@
   </style>
 
   <script src="js/mdui.min.js"></script>
+  <script src="js/marked.min.js"></script>
+  <script src="js/highlight.min.js"></script>
   <script>
-
+    var current_lang = []
     function opendirclick(){
       var new_location = ""
       listobj = path.split("/")
@@ -88,11 +103,34 @@
       fetch("/api/read?q=" + path).then(
         function (response) { return response.text(); }).then(
         function(response){
-           document.getElementById("mainHtmlDiv").innerHTML = response; 
+           document.getElementById("mainHtmlDiv").innerHTML = marked.parse(response);
+           try{ FetchLang(); } catch{}
+           setTimeout(() => { hljs.highlightAll(); document.querySelectorAll("pre code").forEach(elem => {  hljs.highlightElement(elem)  }) }, 1000);
            mdui.mutation();
         }
       );
     }
+
+    function LangLoad(Lang){
+      var script = document.createElement('script');
+      script.src = "js/lang/" + Lang + ".min.js";
+      document.head.appendChild(script);
+    }
+
+    function FetchLang(){
+      document.querySelectorAll("pre code").forEach(elem => {  
+        var classname = (elem.getAttribute("class"));
+        if (classname.indexOf("language") != -1){
+          var lang = classname.substring(classname.indexOf("-")+1,classname.length);
+          if (current_lang.indexOf(lang) == -1){
+            current_lang.push(lang);
+          }
+        }
+      });
+      current_lang.forEach(elem => { LangLoad(elem) });
+    }
+
+
 
     // Check input url
     var url_string = window.location.href;
