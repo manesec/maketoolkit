@@ -917,21 +917,30 @@ def MKT_DB_INSTALL():
         sys.exit(0)
 
 
-    abs_paths = Parser_DB_String(input_str)
-    Debug("abs_paths =>" + abs_paths)
+    abs_file = Parser_DB_String(input_str)
 
-    relative_path = os.path.dirname(abs_paths).replace("/var/lib/mkt/Res/Source/","")
+    relative_full_path = abs_file.replace("/var/lib/mkt/Res/Source/","")
+    relative_path = relative_full_path.replace(os.path.basename(abs_file),"")
+
+
+    Debug("abs_file =>" + abs_file)
+    Debug("relative_full_path =>" + relative_full_path)
+    Debug("relative_path =>" + relative_path)
+
     if (relative_path.strip() == ""):
         relative_path = "."
+    
     Debug("relative_path =>" + relative_path)
 
     from pathlib import Path
-    path = Path("/var/lib/mkt/Res/Install/" + relative_path)
+    path = Path( os.path.abspath( "/var/lib/mkt/Res/Install/" + relative_path ) )
+    Debug("Check and mkdir =>" + str(path))
     path.mkdir(parents=True, exist_ok=True)
 
-    new_path = "/var/lib/mkt/Res/Install/" + relative_path +"/" + os.path.basename(abs_paths)
-    Debug("Move %s -> %s" % (abs_paths,new_path))
-    shutil.move(abs_paths,new_path)
+    new_path = "/var/lib/mkt/Res/Install/" + relative_path + "/" +  os.path.basename(abs_file)
+    new_path = os.path.abspath(new_path)
+    Debug("Move %s -> %s" % (abs_file,new_path))
+    shutil.move(abs_file,new_path)
 
     from importlib.machinery import SourceFileLoader
     SourceFileLoader("manesec",new_path).load_module().Install()    
@@ -949,19 +958,32 @@ def MKT_DB_UNINSTALL():
         print("[ERROR] Input can not be null.")
         sys.exit(1)
 
-    abs_paths = Parser_DB_String_When_Installed(input_str)
+    abs_file = Parser_DB_String_When_Installed(input_str)
 
-    relative_path = os.path.dirname(abs_paths).replace("/var/lib/mkt/Res/Install/","")
+    relative_full_path = abs_file.replace("/var/lib/mkt/Res/Install/","")
+    relative_path = relative_full_path.replace(os.path.basename(abs_file),"")
+
+
+    Debug("abs_file =>" + abs_file)
+    Debug("relative_full_path =>" + relative_full_path)
+    Debug("relative_path =>" + relative_path)
+
     if (relative_path.strip() == ""):
         relative_path = "."
+    
+    Debug("relative_path =>" + relative_path)
 
     from pathlib import Path
-    path = Path("/var/lib/mkt/Res/Source/" + relative_path)
+    path = Path( os.path.abspath( "/var/lib/mkt/Res/Source/" + relative_path ) )
+    Debug("Check and mkdir =>" + str(path))
     path.mkdir(parents=True, exist_ok=True)
 
-    new_path = "/var/lib/mkt/Res/Source/" + relative_path + "/" + os.path.basename(abs_paths)
-    shutil.move(abs_paths,new_path)
 
+    new_path = "/var/lib/mkt/Res/Source/" + relative_path + "/" +  os.path.basename(abs_file)
+    new_path = os.path.abspath(new_path)
+    Debug("Move %s -> %s" % (abs_file,new_path))
+    shutil.move(abs_file,new_path)
+ 
     from importlib.machinery import SourceFileLoader
     SourceFileLoader("manesec",new_path).load_module().Uninstall()        
     MKT_CLEARUP()
