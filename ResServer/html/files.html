@@ -134,6 +134,12 @@
     }
 
     function UpwardFolder(){
+      var new_location = ""
+      listobj = current_location.split("/")
+      listLength = listobj.length;
+      for (var i = 0; i< listLength-2 ; i++){
+        new_location += listobj[i] + "/"
+      }
 
       setLocation(new_location)
       BrowserPath()
