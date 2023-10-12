@@ -19,7 +19,7 @@ def Search_single(file,searchstr) -> bool:
     return (file,False)
 
 def Search_mult(searchstr):
-    print("[*] Using ripgrep search engine...")
+    #print("[*] Using ripgrep search engine...")
     import subprocess,sys
     if not MKT_CHECK_COMMAND("rg"):
         print("[ERROR] rg command not exits on your system, please check your PATH.")

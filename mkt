@@ -1,6 +1,8 @@
 #! /bin/python3
 import sys,os,shutil
 
+isDebug = False
+
 # mkt update
 def MKT_UPDATE():
     import os
@@ -15,7 +17,7 @@ def MKT_HELP():
 |  Y Y  \    <  |  | (  <_> |  <_> )  |__\___ \ 
 |__|_|  /__|_ \ |__|  \____/ \____/|____/____  >
       \/     \/                              \/ 
-       By @manesec, Version: 20230602 Beta
+       By @manesec, Version: 20231012 Beta
       https://github.com/manesec/maketoolkit
 
 Usage:
@@ -43,43 +45,331 @@ Script:
     mkt      script           <script_name>
     mkt      script           <script_index>
 
+Virtual Env:
+    mkt      docker    list
+    mkt      docker    run       <name>    <option>
+    mkt      docker    build     <name>
+    mkt      docker    rebuild   <name>
+    mkt      venv      list
+    mkt      venv      run       <name>
+    mkt      venv      remove    <name>
+    mkt      venv      rebuild   <name>
+
 DB and res:
     mkt        db         installable
     mkt        db         install       <db_name>
     mkt        db         uninstall     <db_name>
     mkt        db         upgrade       <db_name> / all
+    mkt        db         reindex
 
 Search DB and res:
     mkt     s(earch)          <string>
 
 Other:
-    # Update the mkt core, but it will delete all the tools, 
+    # Update the mkt core, will delete all the tools, 
     # You need to reinstall all the tools ;(
     sudo mkt-update""")
 
 def MKT_CLEARUP():
+    """ delete all `__pycache__` files """
     CheckUID()
     os.system("find /var/lib/mkt/Tools/ -type d -name '__pycache__' | xargs -I $ rm -rf $")
     os.system("chmod -R 755 /var/lib/mkt/")
 
 # ==========================================================================
-#                                 Base
+#                                 Parser
 # ==========================================================================
+def Debug(mess):
+    """ simple Debug Options """
+    if isDebug:
+        print(mess)
 
-# mkt Install module
-def MKT_INSTALL():
-    if (len(sys.argv) != 3):
-        print("[ERROR] Invalid parameter")
-        print("    Usage: mkt install [ <tools name>, <.mkt files> ]")
+
+def Parser_DB_String(inputString):
+    """ parser user input to db """
+    input_str = inputString.strip()
+
+    # pre-load installed tools
+    toolsList = []
+    for path,subpaths,files in os.walk("/var/lib/mkt/Res/Source"):
+        for file in files:
+            if file[-3:] == ".py":
+                module_name = (path + "/"+ file)[:-3]
+                module_name = module_name.replace("/var/lib/mkt/Res/Source/","")
+                toolsList.append(module_name)
+    Debug("toolsList => " + str(toolsList))
+
+    finded_Tools = []
+    for tools in toolsList:
+        if (input_str.lower() in tools.lower()):
+            Debug("Hit => " + tools)
+            finded_Tools.append(tools)
+
+    if (len(finded_Tools) == 0): 
+        print("[ERROR] No found !")
         sys.exit(1)
-    CheckUID()
 
-    # find the mkt file
-    input_str = sys.argv[2] 
+    if (len(finded_Tools) > 1):
+        # When more than one
+        Debug(finded_Tools)
+        def show_list():
+            print(" Found more than one db, please select.")
+            print("--------------------------------------------------------")
+            for index,tools in enumerate(finded_Tools):
+                print("[%s] %s" % (index,tools))
+        read_input = None
+        show_list()
+        print("Tips: input 'l' can list again")
+        while True:
+            user_input = input("  Select number to install : ").strip()
+            if user_input == "l" : show_list()
+            if user_input.isdigit(): 
+                if (int(user_input) >= 0) and (int(user_input) <= len(finded_Tools) - 1):
+                    print ("[*] Selected: %s" % (finded_Tools[int(user_input)]))
+                    abs_file = "/var/lib/mkt/Res/Source/" + finded_Tools[int(user_input)] + ".py"
+                    break
+
+    elif (len(finded_Tools) == 1):
+        # When have one
+        Debug("Return => " + finded_Tools[0])
+        abs_file = "/var/lib/mkt/Res/Source/" + finded_Tools[0] + ".py"
+
+    Debug("abs_file =>" + abs_file)
+    return abs_file
+
+def Parser_DB_String_When_Installed(inputString):
+    """ parser user input to db """
+    input_str = inputString.strip()
+
+    # pre-load installed tools
+    toolsList = []
+    for path,subpaths,files in os.walk("/var/lib/mkt/Res/Install"):
+        for file in files:
+            if file[-3:] == ".py":
+                module_name = (path + "/"+ file)[:-3]
+                module_name = module_name.replace("/var/lib/mkt/Res/Install/","")
+                toolsList.append(module_name)
+    Debug("toolsList => " + str(toolsList))
+
+    finded_Tools = []
+    for tools in toolsList:
+        if (input_str.lower() in tools.lower()):
+            Debug("Hit => " + tools)
+            finded_Tools.append(tools)
+
+    if (len(finded_Tools) == 0): 
+        print("[ERROR] No found !")
+        sys.exit(1)
+
+    if (len(finded_Tools) > 1):
+        # When more than one
+        Debug(finded_Tools)
+        def show_list():
+            print(" Found more than one db, please select.")
+            print("--------------------------------------------------------")
+            for index,tools in enumerate(finded_Tools):
+                print("[%s] %s" % (index,tools))
+        read_input = None
+        show_list()
+        print("Tips: input 'l' can list again")
+        while True:
+            user_input = input("  Select number to install : ").strip()
+            if user_input == "l" : show_list()
+            if user_input.isdigit(): 
+                if (int(user_input) >= 0) and (int(user_input) <= len(finded_Tools) - 1):
+                    print ("[*] Selected: %s" % (finded_Tools[int(user_input)]))
+                    abs_file = "/var/lib/mkt/Res/Install/" + finded_Tools[int(user_input)] + ".py"
+                    break
+
+    elif (len(finded_Tools) == 1):
+        # When have one
+        Debug("Return => " + finded_Tools[0])
+        abs_file = "/var/lib/mkt/Res/Install/" + finded_Tools[0] + ".py"
+
+    Debug("abs_file =>" + abs_file)
+    return abs_file
+
+
+def Parser_Python_Venv_String(inputString):
+    """ parser user input to python venv """
+    input_str = inputString.strip()
+
+    # pre-load installed tools
+    toolsList = []
+    for path,subpaths,files in os.walk("/var/lib/mkt/Env/Python/"):
+        for file in files:
+            if file[-6:] == ".mktpy":
+                module_name = (path + "/"+ file)[:-6]
+                module_name = module_name.replace("/var/lib/mkt/Env/Python/","")
+                toolsList.append(module_name)
+    Debug("toolsList => " + str(toolsList))
+
+    finded_Tools = []
+    for tools in toolsList:
+        if (input_str.lower() in tools.lower()):
+            Debug("Hit => " + tools)
+            finded_Tools.append(tools)
+
+    if (len(finded_Tools) == 0): 
+        print("[ERROR] No found !")
+        sys.exit(1)
+
+    if (len(finded_Tools) > 1):
+        # When more than one tools
+        Debug(finded_Tools)
+        def show_list():
+            print(" Found more than one python venv, please select.")
+            print("--------------------------------------------------------")
+            for index,tools in enumerate(finded_Tools):
+                print("[%s] %s" % (index,tools))
+        read_input = None
+        show_list()
+        print("Tips: input 'l' can list again")
+        while True:
+            user_input = input("  Select number to install : ").strip()
+            if user_input == "l" : show_list()
+            if user_input.isdigit(): 
+                if (int(user_input) >= 0) and (int(user_input) <= len(finded_Tools) - 1):
+                    print ("[*] Selected: %s" % (finded_Tools[int(user_input)]))
+                    abs_file = "/var/lib/mkt/Env/Python/" + finded_Tools[int(user_input)] + ".mktpy"
+                    break
+
+    elif (len(finded_Tools) == 1):
+        # When have one tools
+        Debug("Return => " + finded_Tools[0])
+        abs_file = "/var/lib/mkt/Env/Python/" + finded_Tools[0] + ".mktpy"
+
+    Debug("abs_file =>" + abs_file)
+    return abs_file
+
+
+def Parser_Docker_String(inputString):
+    input_str = inputString.strip()
+
+    # pre-load installed tools
+    toolsList = []
+    for path,subpaths,files in os.walk("/var/lib/mkt/Env/Docker/"):
+        for file in files:
+            if file[-6:] == ".mktdk":
+                module_name = (path + "/"+ file)[:-6]
+                module_name = module_name.replace("/var/lib/mkt/Env/Docker/","")
+                toolsList.append(module_name)
+    Debug("toolsList => " + str(toolsList))
+
+    finded_Tools = []
+    for tools in toolsList:
+        if (input_str.lower() in tools.lower()):
+            Debug("Hit => " + tools)
+            finded_Tools.append(tools)
+
+    if (len(finded_Tools) == 0): 
+        print("[ERROR] No found !")
+        sys.exit(1)
+
+    if (len(finded_Tools) > 1):
+        # When more than one tools
+        Debug(finded_Tools)
+        def show_list():
+            print(" Found more than one docker container, please select.")
+            print("--------------------------------------------------------")
+            for index,tools in enumerate(finded_Tools):
+                print("[%s] %s" % (index,tools))
+        read_input = None
+        show_list()
+        print("Tips: input 'l' can list again")
+        while True:
+            user_input = input("  Select number to install : ").strip()
+            if user_input == "l" : show_list()
+            if user_input.isdigit(): 
+                if (int(user_input) >= 0) and (int(user_input) <= len(finded_Tools) - 1):
+                    print ("[*] Selected: %s" % (finded_Tools[int(user_input)]))
+                    abs_file = "/var/lib/mkt/Env/Docker/" + finded_Tools[int(user_input)] + ".mktdk"
+                    break
+
+    elif (len(finded_Tools) == 1):
+        # When have one tools
+        Debug("Return => " + finded_Tools[0])
+        abs_file = "/var/lib/mkt/Env/Docker/" + finded_Tools[0] + ".mktdk"
+
+    Debug("abs_file =>" + abs_file)
+    return abs_file
+
+def Parser_Tools_String_When_Installed(inputString):
+    abs_file = None
+    module_name = None
+
+    input_str = inputString
     if (len(input_str)<=4) or (input_str[-4:] != ".mkt"):
         input_str += ".mkt"
 
-    # fix bug for unknow path
+    # pre-load installed tools
+    toolsList = []
+    for path,subpaths,files in os.walk("/var/lib/mkt/Tools/Install/"):
+        for file in files:
+            if file[-4:] == ".mkt":
+                module_name = (path + "/"+ file)[:-4]
+                module_name = module_name.replace("/var/lib/mkt/Tools/Install/","")
+                toolsList.append(module_name)
+    Debug("toolsList => " + str(toolsList))
+
+    finded_Tools = []
+    for tools in toolsList:
+        if (input_str[:-4].lower() in tools.lower()):
+            Debug("Hit => " + tools)
+            finded_Tools.append(tools)
+
+    if (len(finded_Tools) == 0): 
+        print("[ERROR] No found !")
+        sys.exit(1)
+
+    if (len(finded_Tools) > 1):
+        # When more than one tools
+        Debug(finded_Tools)
+        def show_list():
+            print(" Found more than one tools, select tools to uninstall.")
+            print("---------------------------------------------------------")
+            for index,tools in enumerate(finded_Tools):
+                print("[%s] %s" % (index,tools))
+        read_input = None
+        show_list()
+        print("Tips: input 'l' can list again")
+        while True:
+            user_input = input("  Select number to install : ").strip()
+            if user_input == "l" : show_list()
+            if user_input.isdigit(): 
+                if (int(user_input) >= 0) and (int(user_input) <= len(finded_Tools) - 1):
+                    print ("[*] Selected: %s" % (finded_Tools[int(user_input)]))
+                    abs_file = "/var/lib/mkt/Tools/Install/" + finded_Tools[int(user_input)] + ".mkt"
+                    module_name = finded_Tools[int(user_input)] + ".mkt"
+                    break
+
+    elif (len(finded_Tools) == 1):
+        # When have one tools
+        Debug("Return => " + finded_Tools[0])
+        abs_file = "/var/lib/mkt/Tools/Install/" + finded_Tools[0] + ".mkt"
+        module_name = finded_Tools[0] + ".mkt"
+
+    Debug("abs_file =>" + abs_file)
+    Debug("module_name =>" + module_name)
+    return abs_file, module_name
+
+def Parser_Tools_String_When_Install(inputString):
+    # pre-load the tools list
+    toolsList = []
+    for path,subpaths,files in os.walk("/var/lib/mkt/Tools/Source/"):
+        for file in files:
+            if file[-4:] == ".mkt":
+                module_name = (path + "/"+ file)[:-4]
+                module_name = module_name.replace("/var/lib/mkt/Tools/Source/","")
+                toolsList.append(module_name)
+    Debug("toolsList => " + str(toolsList))
+
+    # add if not extension
+    input_str = inputString.strip()
+    if (len(input_str)<=4) or (input_str[-4:] != ".mkt"):
+        input_str += ".mkt"
+
+    # fix bug for deleted folder path
     systempwd = "/tmp"
     try:
         if (os.path.isabs(input_str)):
@@ -90,30 +380,71 @@ def MKT_INSTALL():
     except:
         pass
 
+    # input file detect
     find_mkt = False
-
     abs_file = None
     relative_file = None
 
     if (os.path.exists("/var/lib/mkt/Tools/Source/" + input_str)):
+        Debug("Detected Method => 1")
         abs_file = "/var/lib/mkt/Tools/Source/" + input_str
         relative_file = input_str
         find_mkt = True
 
     if (systempwd.startswith("/var/lib/mkt/Tools/Source/") and (find_mkt == False)):
         if ((os.path.exists(systempwd))):
+            Debug("Detected Method => 2")
             abs_file = systempwd
             relative_file = systempwd.replace("/var/lib/mkt/Tools/Source/","")
             find_mkt = True
 
     if (systempwd.startswith("/Tools/") and (find_mkt == False)):
         if ((os.path.exists(systempwd))):
+            Debug("Detected Method => 3")
             abs_file = systempwd
             relative_file = systempwd.replace("/Tools/","")
             find_mkt = True
 
+    # Find in tools list
     if (find_mkt == False):
-        print("[ERROR] No such file or name.")
+        Debug("Detected Method => 4")
+        finded_Tools = []
+        for tools in toolsList:
+            if (input_str[:-4].lower() in tools.lower()):
+                Debug("Hit => " + tools)
+                finded_Tools.append(tools)
+
+        if (len(finded_Tools) > 1):
+            # When more than one tools
+            Debug(finded_Tools)
+            def show_list():
+                print(" Found more than one tools, select tools to install.")
+                print("---------------------------------------------------------")
+                for index,tools in enumerate(finded_Tools):
+                    print("[%s] %s" % (index,tools))
+            read_input = None
+            show_list()
+            print("Tips: input 'l' can list again")
+            while True:
+                user_input = input("  Select number to install : ").strip()
+                if user_input == "l" : show_list()
+                if user_input.isdigit(): 
+                    if (int(user_input) >= 0) and (int(user_input) <= len(finded_Tools) - 1):
+                        print ("[*] Selected: %s" % (finded_Tools[int(user_input)]))
+                        abs_file = "/var/lib/mkt/Tools/Source/" + finded_Tools[int(user_input)] + ".mkt"
+                        relative_file = finded_Tools[int(user_input)]
+                        find_mkt = True
+                        break
+
+        elif (len(finded_Tools) == 1):
+            # When have one tools
+            Debug("Return => " + finded_Tools[0])
+            abs_file = "/var/lib/mkt/Tools/Source/" + finded_Tools[0] + ".mkt"
+            relative_file = finded_Tools[0]
+            find_mkt = True
+
+    if (find_mkt == False):
+        print("[ERROR] Can not find the tools, No such file.")
         sys.exit(1)
 
     relative_path = None
@@ -131,8 +462,30 @@ def MKT_INSTALL():
         sys.exit(1)
 
     if not (os.path.exists(abs_file)):
-        print("[ERROR] No such file or name.")
+        print("[ERROR] Can not find the tools, No such file.")
         sys.exit(1)
+
+    Debug("relative_path => " + relative_path)
+    Debug("relative_file => " + relative_file)
+    Debug("abs_file => " + abs_file)
+
+    return relative_path,relative_file,abs_file
+
+
+# ==========================================================================
+#                                 Base
+# ==========================================================================
+# mkt install <module>
+def MKT_INSTALL():
+    if (len(sys.argv) != 3):
+        print("[ERROR] Invalid parameter")
+        print("    Usage: mkt install [ <tools name>, <.mkt files> ]")
+        sys.exit(1)
+    CheckUID()
+
+    # find the tools
+    input_str = sys.argv[2] 
+    relative_path, relative_file, abs_file = Parser_Tools_String_When_Install(input_str)
 
     from pathlib import Path
     path = Path("/var/lib/mkt/Tools/Install/" + relative_path)
@@ -143,44 +496,29 @@ def MKT_INSTALL():
     SourceFileLoader("manesec","/var/lib/mkt/Tools/Install/" + relative_path + "/" +relative_file).load_module().Install()
     MKT_CLEARUP()
 
-# mkt Uninstall module
+# mkt uninstall <module>
 def MKT_UNINSTALL():
     if (len(sys.argv) != 3):
         print("[ERROR] Invalid parameter")
         print("    Usage: mkt uninstall <tools name>")
         sys.exit(1)
-    if (os.path.isabs(sys.argv[2])):
-        print("[ERROR] Please input tools name no abs path.")
-        sys.exit(1)
 
     CheckUID()
+
     input_str = sys.argv[2] 
-    if (len(input_str)<=4) or (input_str[-4:] != ".mkt"):
-        input_str += ".mkt"
-
-    abs_file = os.path.abspath("/var/lib/mkt/Tools/Install/" + input_str)
-    module_name = abs_file.replace("/var/lib/mkt/Tools/Install/","")
-
-    if not (os.path.exists(abs_file)):
-        print("[ERROR] Unable to find the tools name.")
-        sys.exit(1)
+    abs_file,module_name = Parser_Tools_String_When_Installed(input_str.strip())
 
     shutil.move(abs_file,"/var/lib/mkt/Tools/Source/" + module_name)
 
     from importlib.machinery import SourceFileLoader
     SourceFileLoader("manesec","/var/lib/mkt/Tools/Source/" + module_name).load_module().Uninstall()
-
     MKT_CLEARUP()
 
-# mkt Reinstall module
+# mkt reinstall <module>
 def MKT_REINSTALL():
     if (len(sys.argv) != 3):
         print("[ERROR] Invalid parameter")
         print("    Usage: mkt reinstall <tools name>")
-        sys.exit(1)
-
-    if (os.path.isabs(sys.argv[2])):
-        print("[ERROR] Please input tools name no abs path.")
         sys.exit(1)
 
     input_str = sys.argv[2] 
@@ -192,7 +530,7 @@ def MKT_REINSTALL():
     MKT_INSTALL()
     MKT_CLEARUP()
 
-# mkt Upgrade 
+# mkt upgrade routing
 def MKT_UPGRADE():
     if (len(sys.argv) != 3):
         print("[ERROR] Invalid parameter")
@@ -205,6 +543,7 @@ def MKT_UPGRADE():
     else:
         MKT_UPGRADE_TOOLS()
 
+# mkt upgrade all
 def MKT_UPGRADE_ALL():
     print("[*] Upgrade all the tools ...")
     nolist = True
@@ -223,19 +562,16 @@ def MKT_UPGRADE_ALL():
     if (nolist):
         print("[!] There are no tools installed.")
 
+# mkt upgrade <module>
 def MKT_UPGRADE_TOOLS():
     input_str = sys.argv[2] 
     if (input_str.strip() == ""):
         print("[ERROR] Input can not be null.")
         sys.exit(1)
 
-    abs_paths = os.path.abspath("/var/lib/mkt/Tools/Install/" + input_str + ".mkt")
-    if not (os.path.exists(abs_paths) and (abs_paths.startswith("/var/lib/mkt/Tools/Install/"))):
-        print("[ERROR] No such tools.")
-        sys.exit(1)
-
+    abs_file,module_name = Parser_Tools_String_When_Installed(input_str.strip())
     from importlib.machinery import SourceFileLoader
-    SourceFileLoader("manesec",abs_paths).load_module().Upgrade()
+    SourceFileLoader("manesec",abs_file).load_module().Upgrade()
     MKT_CLEARUP()
 
 # ==========================================================================
@@ -244,17 +580,21 @@ def MKT_UPGRADE_TOOLS():
 
 # mkt list install module
 def MKT_LIST():
-    if (len(sys.argv) != 3):
+    
+    def functionHelp():
         print("[ERROR] Invalid parameter")
         print("    Usage: mkt list <install,installable>")
         sys.exit(1)
-    
-    if (sys.argv[2] == "install"):
-        MKT_LIST_INSTALLED()
-    elif (sys.argv[2] == "installable"):
-        MKT_LIST_INSTALLABLE()
-    else:
-        MKT_HELP()
+
+    if (len(sys.argv) != 3):
+        functionHelp()
+
+    SelectFunction = {
+        "install" : MKT_LIST_INSTALLED,
+        "installable": MKT_LIST_INSTALLABLE,
+    }
+
+    SelectFunction.get(sys.argv[2],functionHelp)()
 
 
 def MKT_LIST_INSTALLED():
@@ -305,15 +645,15 @@ def MKT_SCRIPT():
         MKT_SCRIPT_LIST()
         sys.exit(1)
     
-    if (sys.argv[2] == "help") :
-        MKT_SCRIPT_HELP()
-    elif (sys.argv[2] == "list") :
-        MKT_SCRIPT_LIST()
-    elif (sys.argv[2] == "info"):
-        MKT_SCRIPT_INFO()
-    else:
-        CheckUID()
-        MKT_SCRIPT_USE()
+
+    SelectFunction = {
+        "help" : MKT_SCRIPT_HELP,
+        "list" : MKT_SCRIPT_LIST,
+        "ls" : MKT_SCRIPT_LIST,
+        "info" : MKT_SCRIPT_INFO,
+    }
+
+    SelectFunction.get(sys.argv[2],MKT_SCRIPT_USE)()
 
 def MKT_SCRIPT_HELP():
     print("""Example for using mkt script command: 
@@ -349,6 +689,7 @@ def MKT_SCRIPT_USE():
         print("[ERROR] Input can not be null.")
         sys.exit(1)
 
+    CheckUID()
     # emun all module
     all_module = []
     for path,subpaths,files in os.walk("/var/lib/mkt/Script"):
@@ -397,30 +738,165 @@ def MKT_SCRIPT_INFO():
     if (nolist):
         print("[!] There are no any script can be use.")
 
+
+# ==========================================================================
+#                              Python Venv
+# ==========================================================================
+# mkt venv 
+def MKT_VENV():
+    def functionHelp():
+        print("[ERROR] Invalid parameter")
+        print("    Usage: mkt venv <run, build, list, remove> \n")
+        sys.exit(1)
+
+    if (len(sys.argv) < 3):
+        functionHelp()
+    
+    if (sys.argv[2] in ["list","ls"]):
+        MKT_VENV_LIST()
+        sys.exit(1)
+    
+    if (len(sys.argv) < 4):
+        functionHelp()
+
+    if os.getuid() == 0 :
+        print("[WARNING] You are in root premission")
+        user_input = input("[*] Are you sure to run in root premission ? (y/N): ")
+        if not ("y" in user_input.lower()):
+            sys.exit(1)
+
+    SelectFunction = {
+        "run" : MKT_VENV_RUN,
+        "rebuild": MKT_VENV_REBUILD,
+        "build": MKT_VENV_BUILD,
+        "remove": MKT_VENV_REMOVE,
+        "rm": MKT_VENV_REMOVE,
+        "delete": MKT_VENV_REMOVE,
+    }
+    SelectFunction.get(sys.argv[2],functionHelp)()
+
+
+
+def MKT_VENV_LIST():
+    print("[*] Available python venv: ")
+    for path,subpaths,files in os.walk("/var/lib/mkt/Env/Python/"):
+        for file in files:
+            if file[-6:] == ".mktpy":
+                module_name = (path + "/"+ file)[:-6]
+                module_name = module_name.replace("/var/lib/mkt/Env/Python/","")
+                print("    " + module_name)
+
+def MKT_VENV_REBUILD():
+    MKT_VENV_REMOVE()
+    MKT_VENV_BUILD()
+
+def MKT_VENV_RUN():
+    abs_file = Parser_Python_Venv_String(sys.argv[3])
+    from importlib.machinery import SourceFileLoader
+    SourceFileLoader("manesec",abs_file).load_module().Active()
+
+def MKT_VENV_BUILD():
+    abs_file = Parser_Python_Venv_String(sys.argv[3])
+    from importlib.machinery import SourceFileLoader
+    SourceFileLoader("manesec",abs_file).load_module().Build()
+
+def MKT_VENV_REMOVE():
+    abs_file = Parser_Python_Venv_String(sys.argv[3])
+    from importlib.machinery import SourceFileLoader
+    SourceFileLoader("manesec",abs_file).load_module().Remove()
+# ==========================================================================
+#                              Docker RUN
+# ==========================================================================
+# mkt docker 
+def MKT_DOCKER():
+
+    def functionHelp():
+        print("[ERROR] Invalid parameter")
+        print("    Usage: mkt docker <run, build, list, remove> \n")
+        sys.exit(1)
+
+    if (len(sys.argv) < 3):
+        functionHelp()
+
+    if (sys.argv[2] in ["list","ls"]):
+        MKT_DOCKER_LIST()
+        sys.exit(1)
+
+    if (len(sys.argv) < 4):
+        print("[ERROR] Invalid parameter")
+        print("    Usage: mkt docker <run, build, list, remove> \n")
+        sys.exit(1)
+
+    CheckUID()
+    SelectFunction = {
+        "run" : MKT_DOCKER_RUN,
+        "rebuild": MKT_DOCKER_REBUILD,
+        "build": MKT_DOCKER_BUILD,
+        "remove": MKT_DOCKER_REMOVE,
+        "rm": MKT_DOCKER_REMOVE,
+        "delete": MKT_DOCKER_REMOVE,
+    }
+    SelectFunction.get(sys.argv[2],functionHelp)()
+
+
+def MKT_DOCKER_REBUILD():
+    MKT_DOCKER_REMOVE()
+    MKT_DOCKER_BUILD()
+
+def MKT_DOCKER_REMOVE():
+    abs_file = Parser_Docker_String(sys.argv[3])
+    from importlib.machinery import SourceFileLoader
+    SourceFileLoader("manesec",abs_file).load_module().Remove()
+
+def MKT_DOCKER_LIST():
+    print("[*] Available docker containers: ")
+    for path,subpaths,files in os.walk("/var/lib/mkt/Env/Docker/"):
+        for file in files:
+            if file[-6:] == ".mktdk":
+                module_name = (path + "/"+ file)[:-6]
+                module_name = module_name.replace("/var/lib/mkt/Env/Docker/","")
+                print("    " + module_name)
+
+def MKT_DOCKER_RUN():
+    abs_file = Parser_Docker_String(sys.argv[3])
+    from importlib.machinery import SourceFileLoader
+    post_cmd = ""
+    for cmd in sys.argv[4:]:
+        post_cmd += " " + cmd
+    Debug("PostCMD => " + post_cmd)
+    SourceFileLoader("manesec",abs_file).load_module().Run(post_cmd)
+
+def MKT_DOCKER_BUILD():
+    abs_file = Parser_Docker_String(sys.argv[3])
+    from importlib.machinery import SourceFileLoader
+    SourceFileLoader("manesec",abs_file).load_module().Build()
+
+
 # ==========================================================================
 #                              Res and DB
 # ==========================================================================
 
 def MKT_DB():
-    if not ((len(sys.argv) ==3) or len(sys.argv) ==4):
+    def functionHelp():
         print("[ERROR] Invalid parameter")
-        print("    Usage: mkt db <list, installable, install <db_name>, uninstall <db_name> >")
-        sys.exit(0)
-    
-    if (sys.argv[2] == "install" ):
-        MKT_DB_INSTALL()
-    elif (sys.argv[2] == "uninstall"):
-        MKT_DB_UNINSTALL()
-    elif (sys.argv[2] == "upgrade"):
-        MKT_DB_UPGRADE()
-    elif (sys.argv[2] == "list"):
-        MKT_DB_LIST()
-    elif (sys.argv[2] == "installable"):
-        MKT_DB_INSTALL_ABLE()
-    elif (sys.argv[2] == "reindex"):
-        MKT_DB_REINDEX()
-    else:
         print("    Usage: mkt db <list, installable, install <db_name>, uninstall <db_name>, reindex>")
+        sys.exit(0)
+
+    if not ((len(sys.argv) ==3) or len(sys.argv) ==4):
+        functionHelp()
+    
+    SelectFunction = {
+        "install" : MKT_DB_INSTALL,
+        "uninstall" : MKT_DB_UNINSTALL,
+        "remove" : MKT_DB_UNINSTALL,
+        "rm" : MKT_DB_UNINSTALL,
+        "upgrade": MKT_DB_UPGRADE,
+        "list" : MKT_DB_LIST,
+        "ls" : MKT_DB_LIST,
+        "installable":MKT_DB_INSTALL_ABLE,
+        "reindex": MKT_DB_REINDEX
+    }
+    SelectFunction.get(sys.argv[2],functionHelp)()
 
 def MKT_DB_REINDEX():
     from importlib.machinery import SourceFileLoader
@@ -440,20 +916,21 @@ def MKT_DB_INSTALL():
         print("[ERROR] Input can not be null.")
         sys.exit(0)
 
-    abs_paths = os.path.abspath("/var/lib/mkt/Res/Source/" + input_str + ".py")
-    if not (os.path.exists(abs_paths) and (abs_paths.startswith("/var/lib/mkt/Res/Source/"))):
-        print("[ERROR] No such db.")
-        sys.exit(1)
-   
-    relative_path = os.path.dirname(abs_paths).replace("/var/lib/mkt/Res/Source","")
+
+    abs_paths = Parser_DB_String(input_str)
+    Debug("abs_paths =>" + abs_paths)
+
+    relative_path = os.path.dirname(abs_paths).replace("/var/lib/mkt/Res/Source/","")
     if (relative_path.strip() == ""):
         relative_path = "."
+    Debug("relative_path =>" + relative_path)
 
     from pathlib import Path
     path = Path("/var/lib/mkt/Res/Install/" + relative_path)
     path.mkdir(parents=True, exist_ok=True)
 
     new_path = "/var/lib/mkt/Res/Install/" + relative_path +"/" + os.path.basename(abs_paths)
+    Debug("Move %s -> %s" % (abs_paths,new_path))
     shutil.move(abs_paths,new_path)
 
     from importlib.machinery import SourceFileLoader
@@ -472,12 +949,9 @@ def MKT_DB_UNINSTALL():
         print("[ERROR] Input can not be null.")
         sys.exit(1)
 
-    abs_paths = os.path.abspath("/var/lib/mkt/Res/Install/" + input_str + ".py")
-    if not (os.path.exists(abs_paths) and (abs_paths.startswith("/var/lib/mkt/Res/Install/"))):
-        print("[ERROR] No such db.")
-        sys.exit(1)
+    abs_paths = Parser_DB_String_When_Installed(input_str)
 
-    relative_path = os.path.dirname(abs_paths).replace("/var/lib/mkt/Res/Install","")
+    relative_path = os.path.dirname(abs_paths).replace("/var/lib/mkt/Res/Install/","")
     if (relative_path.strip() == ""):
         relative_path = "."
 
@@ -490,7 +964,6 @@ def MKT_DB_UNINSTALL():
 
     from importlib.machinery import SourceFileLoader
     SourceFileLoader("manesec",new_path).load_module().Uninstall()        
-    MKT_CLEARUP()
     MKT_CLEARUP()
     
 def MKT_DB_LIST():
@@ -585,18 +1058,16 @@ def MKT_DB_SEARCH():
     SourceFileLoader("mkt_search",search_bin).load_module().MKT_DB_SEARCH()
 
 # ==========================================================================
-#                                FUZZ - TODO
-# ==========================================================================
-
-
-
-# ==========================================================================
 #                                 Main
 # ==========================================================================
 def CheckUID():
     if os.getuid() != 0 :
         print("[ERROR] Please run as root user.")
         sys.exit(1)
+
+def MKT_DOC_SERVER():
+    os.chdir("/var/lib/mkt/ResServer/")
+    os.system("python3 /var/lib/mkt/ResServer/main.py")
 
 if __name__ == "__main__" :
     if (len(sys.argv) == 1):
@@ -614,6 +1085,12 @@ if __name__ == "__main__" :
         "list": MKT_LIST,
         "script": MKT_SCRIPT,
         "db":MKT_DB,
+        "docker":MKT_DOCKER,
+        "venv": MKT_VENV,
+
+        "doc": MKT_DOC_SERVER,
+        "document-server": MKT_DOC_SERVER,
+        "doc-server": MKT_DOC_SERVER,
 
         # Search function
         "s":MKT_DB_SEARCH,

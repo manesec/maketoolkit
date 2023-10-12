@@ -19,7 +19,7 @@ def Search_single(file,searchstr) -> bool:
     return (file,False)
     
 def Search_mult(searchstr):
-    print("[*] Using grep search engine...")
+    #print("[*] Using grep search engine...")
     import subprocess,sys
     if not MKT_CHECK_COMMAND("grep"):
         print("[ERROR] grep command not exits on your system, please check your PATH.")

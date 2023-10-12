@@ -1,0 +1,45 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
+def Install():
+    print("[Kerbrute] Downloading base ...")
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Windows/Kerbrute")
+    path.mkdir(parents=True, exist_ok=True)
+
+    UpdateFromGithub()
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Kerbrute")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/Kerbrute/kerbrute_linux_amd64")):
+        import sys
+        module_name = "Tools/Kerbrute.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")
+
+
+def Uninstall():
+    import os
+    print("[Kerbrute] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Kerbrute")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/kerbrute_*")
+    
+
+def Upgrade():
+    print("[Kerbrute] Upgrading ...")
+    UpdateFromGithub()
+    
+def UpdateFromGithub():
+    Files = [
+        ["kerbrute_linux_amd64","/var/lib/mkt/Tools/Source/Windows/Kerbrute/kerbrute_linux_amd64"],
+    ]
+    Github.UpdateFromGithubReleaseFiles("ropnop/kerbrute",Files,sign_prefix="kerbrute_")
+    Github.CheckGithubAPIQuta()

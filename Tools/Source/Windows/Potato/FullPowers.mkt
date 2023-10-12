@@ -1,0 +1,46 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
+
+def Install():
+    print("[FullPowers] Downloading base ...")
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Windows/Potato/FullPowers")
+    path.mkdir(parents=True, exist_ok=True)
+
+    UpdateFromGithub()
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/Potato/FullPowers/FullPowers.exe")):
+        import sys
+        module_name = "Windows/Potato/FullPowers.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")
+
+
+def Uninstall():
+    import os
+    print("[FullPowers] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Potato/FullPowers")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/FullPowers*")
+     
+
+def Upgrade():
+    print("[FullPowers] Upgrading ...")
+    UpdateFromGithub()
+    
+def UpdateFromGithub():
+    print("[FullPowers] Fetching ...")
+    Files = [
+        ["FullPowers.exe","/var/lib/mkt/Tools/Source/Windows/Potato/FullPowers/FullPowers.exe"]
+    ]
+    Github.UpdateFromGithubReleaseFiles("itm4n/FullPowers",Files,"FullPowers")
+
+
+    Github.CheckGithubAPIQuta()

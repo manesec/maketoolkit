@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Browser Files - MKT Documents Server</title>
+  <link rel="stylesheet" href="css/mdui.min.css"/>
+</head>
+
+<body class="mdui-appbar-with-toolbar">
+  <!-- top bar -->
+  <div class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide">
+    <div class="mdui-toolbar mdui-color-indigo">
+      <a href="javascript:" class="mdui-typo-headline" onclick="window.location.href='files.html'">MKT</a>
+      <a href="javascript:" class="mdui-typo-title">Search</a>
+      <div class="mdui-toolbar-spacer"></div>
+      <a href="javascript:" class="mdui-btn mdui-btn-icon" onclick="window.location.href='search.html'"><i class="mdui-icon material-icons">search</i></a>
+    </div>
+  </div>
+
+  <div class="mdui-container">
+
+    <!-- search -->
+    <table style="width:100%">
+      <tr>
+        <td>
+          <div class="mdui-textfield mdui-textfield-floating-label">
+            <input class="mdui-textfield-input" id="input_location" placeholder="Search somethings ...   [xxx] will include only the file name."/>
+          </div>
+        </td>
+        <td style="width: 30px;">
+          <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" onclick="gobuttonClick()" >Search</button>
+        </td>
+      </tr>
+    </table>    
+
+    <!-- result -->
+    <ul class="mdui-list" id="file_lists"> </ul>
+  </div>
+
+  <script src="js/mdui.min.js"></script>
+  <script>
+
+    var current_location = ""
+
+    document.getElementById("input_location")
+        .addEventListener("keyup", function(event) {
+        event.preventDefault();
+        if (event.keyCode === 13) {
+            gobuttonClick();
+        }
+    });
+
+    function gobuttonClick(){
+      current_location = document.getElementById("input_location").value;
+      BrowserPath();
+    }
+
+
+    function setLocation(location){
+      current_location = location;
+    }
+
+    function addfile(filename){
+      var new_element = document.createElement("li");
+      new_element.innerHTML=`
+        <i class="mdui-list-item-icon mdui-icon material-icons">insert_drive_file</i>
+          <div class="mdui-list-item-content">`+filename+`</div>`
+      new_element.classList.add("mdui-list-item");
+      new_element.myParam = filename;
+      new_element.addEventListener("click", fileClick);
+      new_element.classList.add("mdui-ripple");
+      document.getElementById("file_lists").appendChild(new_element);
+    }
+
+
+    function fileClick(evt){
+      filename = evt.currentTarget.myParam;
+      window.open("view.html?f=" + filename, "_blank");
+    }
+
+
+    function BrowserPath() {
+      ResetList();
+      var search = document.getElementById("input_location").value;
+      fetch("/api/search?q=" + search).then(
+        function (response) { return response.json(); }).then(
+        function(response){
+            response.result.forEach(element => {
+               addfile(element); 
+            });
+            mdui.mutation();
+        }
+      );
+    }
+
+    function ResetList(){
+      document.getElementById("file_lists").innerHTML = ``;
+    }
+
+    // Check input url
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var path = url.searchParams.get("s");
+    if (path){
+      if (!path.endsWith("/")){
+        path += "/"
+      }
+      setLocation(path)
+    }
+    BrowserPath()
+  </script>
+</body>
+</html>

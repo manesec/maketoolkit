@@ -1,0 +1,48 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
+def Install():
+    print("[Donut] Downloading base ...")
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Windows/Donut")
+    path.mkdir(parents=True, exist_ok=True)
+
+    UpdateFromGithub()
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Donut")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/Donut/donut_v1.0.zip")):
+        import sys
+        module_name = "Tools/Donut.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Donut/")
+    os.system("unzip donut_v1.0.zip")
+    os.system("rm donut_v1.0.zip")
+    print("OK")
+
+
+def Uninstall():
+    import os
+    print("[Donut] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Donut")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/donut_*")
+    
+
+def Upgrade():
+    print("[Donut] Upgrading ...")
+    UpdateFromGithub()
+    
+def UpdateFromGithub():
+    Files = [
+        ["donut_v1.0.zip","/var/lib/mkt/Tools/Source/Windows/Donut/donut_v1.0.zip"],
+    ]
+    Github.UpdateFromGithubReleaseFiles("TheWover/donut",Files,sign_prefix="donut_")
+    Github.CheckGithubAPIQuta()

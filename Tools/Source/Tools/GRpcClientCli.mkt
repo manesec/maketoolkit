@@ -1,0 +1,47 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
+def Install():
+    print("[GRpcClientCli] Downloading base ...")
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Tools/GRpcClientCli")
+    path.mkdir(parents=True, exist_ok=True)
+
+    UpdateFromGithub()
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/GRpcClientCli/")
+    os.system("tar -xf *")
+    os.remove("/var/lib/mkt/Tools/Source/Tools/GRpcClientCli/grpc-client-cli_linux_x86_64.tar.gz")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/GRpcClientCli/grpc-client-cli")):
+        import sys
+        module_name = "Tools/GRpcClientCli.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")
+
+
+def Uninstall():
+    import os
+    print("[GRpcClientCli] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/GRpcClientCli")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/grpc-client-cli_*")
+    
+
+def Upgrade():
+    print("[GRpcClientCli] Upgrading ...")
+    UpdateFromGithub()
+    
+def UpdateFromGithub():
+    Files = [
+        ["grpc-client-cli_linux_x86_64.tar.gz","/var/lib/mkt/Tools/Source/Tools/GRpcClientCli/grpc-client-cli_linux_x86_64.tar.gz"],
+    ]
+    Github.UpdateFromGithubReleaseFiles("vadimi/grpc-client-cli",Files,sign_prefix="grpc-client-cli_")
+    Github.CheckGithubAPIQuta()

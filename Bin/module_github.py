@@ -112,6 +112,9 @@ def UpdateFromGithubReleaseFiles(RepoName,Files,sign_prefix=""):
         Return_json = requests.get(URL).text
     Return_json = json.loads(Return_json)
 
+    if 'message' in Return_json:
+        print("[Warning] Github return : %s" % (Return_json['message']))
+
     for filereg,savelink in Files:
         for f in Return_json["assets"]:
             if (re.search(filereg,f["name"])):

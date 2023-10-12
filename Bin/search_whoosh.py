@@ -111,7 +111,7 @@ def ReIndex():
     print("[*] Finished, take %s seconds." % (round(time.time() - begin_time,2)) )
 
 def Search_mult(searchstr):
-    print("[*] Using whoosh search engine...")
+    #print("[*] Using whoosh search engine...")
 
     tmp_searchstr = ""
     for searchs in searchstr:

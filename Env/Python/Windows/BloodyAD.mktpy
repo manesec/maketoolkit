@@ -1,0 +1,39 @@
+import os
+from importlib.machinery import SourceFileLoader
+Venv = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_venv.py").load_module()
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
+venv_name = "BloodyAD"
+
+def Remove():
+    Venv.remove(venv_name)
+
+def Active():
+    if not (os.path.exists(Venv.getVenvPath(venv_name))):
+        Build()
+    Venv.active(venv_name)
+
+def Build():
+    print("[venv-BloodAD] Building ...")    
+
+    from pathlib import Path
+    # apt suggestion
+    Unit.DebPackageSuggestInstall("libkrb5-dev")
+
+    # make ~/mkt/
+    target_path = str(Path.home()) + "/mkt/" 
+    path = Path(target_path)
+    path.mkdir(exist_ok=True,parents=True)
+
+    # exist to remove
+    if (os.path.exists(Venv.getVenvPath(venv_name))):
+        Venv.remove(venv_name)
+
+    print("[venv-BloodAD] Creating venv environments ...")    
+    Venv.create(venv_name)
+
+    os.chdir(Venv.getVenvPath(venv_name))
+    os.system("git clone https://github.com/CravateRouge/bloodyAD.git bloodyAD")
+
+    print("[venv-BloodAD] Installing requirements ...")
+    Venv.activeRunCommand(venv_name,"cd bloodyAD;pip3 install -r requirements.txt")

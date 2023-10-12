@@ -15,7 +15,10 @@ for check_command in requests_command:
         print("ERROR: %s not found on your system." % (check_command))
         sys.exit(1)
 
-# Step 2 - Copying the base
+# Step 2 - Install Library
+os.system("pip3 install -r requirements.txt")
+
+# Step 3 - Copying the base
 if (os.path.exists("/etc/mkt.conf")):
     os.remove("/etc/mkt.conf")
 shutil.copy("mkt.conf","/etc/mkt.conf")
@@ -25,7 +28,7 @@ if (os.path.exists("/var/lib/mkt")):
 os.system("mkdir -p /var/lib/mkt")
 os.system("cp -r . /var/lib/mkt")
 
-# Setp 3 - Setup the env
+# Setp 4 - Setup the env
 os.system("chmod -R 755 /var/lib/mkt/")
 os.system("ln -s /var/lib/mkt/Tools/Source /Tools")
 os.system("ln -s /var/lib/mkt/mkt /bin/mkt")
@@ -38,7 +41,9 @@ os.system("mkdir -p /var/lib/mkt/Tools/Version")
 
 print("""OK!
 
+========================  Note  ========================
 All the tools will be install in /var/lib/mkt/Tools/Source/
 Config will be in /etc/mkt.conf
 Soft link will be create: /var/lib/mkt/Tools/Source/ -->  /Tools
+========================================================
 """)

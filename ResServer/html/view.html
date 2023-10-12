@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Viewer - MKT Documents Server</title>
+  <link rel="stylesheet" href="css/mdui.min.css"/>
+</head>
+
+<body class="mdui-appbar-with-toolbar">
+  <!-- top bar -->
+  <div class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide">
+    <div class="mdui-toolbar mdui-color-indigo">
+      <a href="javascript:" class="mdui-typo-headline" onclick="window.location.href='files.html'">MKT</a>
+      <a href="javascript:" class="mdui-typo-title">Viewer</a>
+      <div class="mdui-toolbar-spacer"></div>
+      <a href="javascript:" class="mdui-btn mdui-btn-icon" onclick="window.location.href='search.html'"><i class="mdui-icon material-icons">search</i></a>
+    </div>
+  </div>
+
+  <div class="mdui-container">
+
+    <div style="height: 30px;"></div>
+    <!-- search -->
+    <div>Location : <mane id="locationTag" style="margin-right: 10px;"></mane>   <mane id="opendir" onclick="opendirclick()">[open dir]</mane>  <mane id="rawfile" onclick="rawfileclick()">[raw file]</mane> </div>
+
+    <!-- result -->
+    <div style="height: 10px;"></div>
+
+    <div id="mainHtmlDiv" style="word-break: break-all;white-space: normal;"></div>
+
+    <div style="height: 50px;"></div>
+  </div>
+
+  <style>
+    #opendir, #rawfile {
+      color: #3F51B5;
+      cursor: pointer;
+    }
+    pre {
+      white-space:pre-wrap;
+      background: #f5f5f5;
+      color: black;
+      padding: 20px 20px 20px 20px;
+    }
+    img {
+      display: block;
+      border: 1px solid rgba(0,0,0,0.2);
+      border-style: double;
+      border-radius: 2px;
+      box-shadow:0px 0px 2px gray;
+    }
+    a{
+      text-decoration: none;
+      color : #3F51B5;
+    }
+    table {
+      display: block;
+      border: 1px solid rgba(0,0,0,0);
+      border-style: double;
+      border-radius: 3px;
+      border-collapse: collapse;
+    }
+
+    td, th {
+        border: 1px solid black;
+    }
+
+  </style>
+
+  <script src="js/mdui.min.js"></script>
+  <script>
+
+    function opendirclick(){
+      var new_location = ""
+      listobj = path.split("/")
+      listLength = listobj.length;
+      for (var i = 0; i< listLength-1 ; i++){
+        new_location += listobj[i] + "/"
+      }
+      window.open("files.html?path=" + new_location, "_blank");
+     }
+
+    function rawfileclick(){ window.open("/api/download?q=" + path, "_blank"); }
+
+    function BrowserPath(path) {
+      document.getElementById ("locationTag").innerText = path;
+      fetch("/api/read?q=" + path).then(
+        function (response) { return response.text(); }).then(
+        function(response){
+           document.getElementById("mainHtmlDiv").innerHTML = response; 
+           mdui.mutation();
+        }
+      );
+    }
+
+    // Check input url
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var path = url.searchParams.get("f");
+    BrowserPath(path)
+  </script>
+</body>
+</html>

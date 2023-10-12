@@ -6,11 +6,11 @@ import time
 # Options
 TestingDB = False
 TestingTools = True
-Proxychains = True
+Proxychains = False
 
-RunAsWhileList = True
-WhileList = ["Windows/Potato/GodPotato"]
-blacklist = ["Tools/xc" , "Tools/Crackmapexec", "Windows/Wesng"]
+RunAsWhileList = False
+WhileList = []
+blacklist = []
 
 def Run(command):
     for x in range (1,10):
