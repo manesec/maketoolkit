@@ -71,29 +71,40 @@ def MKT_DB_SEARCH():
     global timeused
 
     import subprocess
-    if (len(sys.argv) < 3):
+    if (len(sys.argv) != 3):
         Debug("[ERROR] Invalid parameter")
         Debug("    Usage: mkt search <string>")
         sys.exit(0)
 
     Debug("[*] Searching LocalDB ...")
+    
 
     filter_title = ()
     searchWorldList = []
 
-    for user_input in sys.argv[2:]:
-        if user_input.startswith("[") and user_input.endswith("]") :
-            user_input = user_input[1:-1]
-            filter_title += (user_input,)
-        else:
-            searchWorldList.append(user_input)
 
-    Debug("filter_title => " + str(filter_title))
+    # A || B
+    command_or = []
+    if (sys.argv[2].find("||")):
+        Debug("input command find ||")
+        command_or = sys.argv[2].split("||")
+        Debug("command_or => " + str(command_or))
+
+        for user_input in command_or:
+            user_input = user_input.strip()
+            if user_input.startswith("[") and user_input.endswith("]") :
+                user_input = user_input[1:-1]
+                filter_title += (user_input,)
+            else:
+                searchWorldList.append(user_input)
+
+        Debug("filter_title => " + str(filter_title))
+    else:
+        searchWorldList = sys.argv[2].strip()
 
     searchWorldList = sorted(searchWorldList,key=len)
     searchWorldList.reverse()
-
-    
+    Debug("searchWorldList => " + str(searchWorldList) )
 
     ## -- Begin to search -- ##
     #  [[search_stacks,input_list]]

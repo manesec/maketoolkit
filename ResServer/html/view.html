@@ -34,6 +34,9 @@
   </div>
 
   <style>
+    img{
+      max-width: 100%;
+    }
     #opendir, #rawfile {
       color: #3F51B5;
       cursor: pointer;
@@ -44,7 +47,7 @@
       border-radius: 3px;
       padding-left: 3px;
       padding-right: 3px;
-      font-size: 13px;
+      font-size: 14px;
     }
     pre code{
       font-size: 13px;
@@ -104,7 +107,8 @@
         function (response) { return response.text(); }).then(
         function(response){
            document.getElementById("mainHtmlDiv").innerHTML = marked.parse(response);
-           try{ FetchLang(); } catch{}
+           try{ FetchLang(); } catch{};
+           PatchHref();
            setTimeout(() => { hljs.highlightAll(); document.querySelectorAll("pre code").forEach(elem => {  hljs.highlightElement(elem)  }) }, 1000);
            mdui.mutation();
         }
@@ -130,7 +134,21 @@
       current_lang.forEach(elem => { LangLoad(elem) });
     }
 
-
+    // Patch the href
+    function PatchHref(){ 
+      document.querySelectorAll("a[href]").forEach(elem => {
+          var new_location = ""
+          listobj = path.split("/")
+          listLength = listobj.length;
+          for (var i = 0; i< listLength-1 ; i++){
+            new_location += listobj[i] + "/"
+          }
+        var obj_href = elem.getAttribute("href");
+        if (!(obj_href.startsWith("http") || obj_href.startsWith("javascript:") || obj_href.startsWith("#"))){
+          elem.href = "view.html?f=" + new_location+ obj_href;
+        }
+      })
+    }
 
     // Check input url
     var url_string = window.location.href;

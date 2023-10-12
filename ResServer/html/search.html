@@ -25,7 +25,7 @@
       <tr>
         <td>
           <div class="mdui-textfield mdui-textfield-floating-label">
-            <input class="mdui-textfield-input" id="input_location" placeholder="Search somethings ...   [xxx] will include only the file name."/>
+            <input class="mdui-textfield-input" id="input_location" placeholder="Search somethings ...         sql || injection || [filter title]"/>
           </div>
         </td>
         <td style="width: 30px;">
@@ -86,10 +86,13 @@
       fetch("/api/search?q=" + search).then(
         function (response) { return response.json(); }).then(
         function(response){
-            response.result.forEach(element => {
-               addfile(element); 
-            });
-            mdui.mutation();
+          if (response.result == ""){
+            mdui.snackbar({ message: "No result" });  
+          }
+          response.result.forEach(element => {
+            addfile(element); 
+          });
+          mdui.mutation();
         }
       );
     }

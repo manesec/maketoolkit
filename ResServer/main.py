@@ -18,11 +18,11 @@ app.mount("/html", StaticFiles(directory="html"), name="html")
 def redirectHome():
     return RedirectResponse("html/files.html")
 
-def add_escape(value):
-    reserved_chars = r'''?&|!{}()^~*:\\"'+-'''
-    replace = ['\\' + l for l in reserved_chars]
-    trans = str.maketrans(dict(zip(reserved_chars, replace)))
-    return value.translate(trans)
+def replace_space(value):
+    reserved_chars = r'''?&!{}()^~*:\\"'+-'''
+    for ch in reserved_chars:
+        value = value.replace(ch,"")
+    return value
 
 # List dir
 @app.get("/api/dir")
@@ -58,7 +58,10 @@ def listdir(q:str):
 @app.get("/api/search")
 def search(q:str):
     if (q):
-        result = subprocess.getoutput("python3 /var/lib/mkt/Bin/api_search.py search " + add_escape(q))
+        result = subprocess.getoutput("python3 /var/lib/mkt/Bin/api_search.py search '" + replace_space(q) + "'")
+        if result.strip() == "" :
+            return {"result":result}
+
         result = json.loads(result)
         return {"result":result}
 
