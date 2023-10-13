@@ -1,0 +1,35 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
+def Install():
+    print("[SmtpUserEnum] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+    os.system("git clone https://github.com/cytopia/smtp-user-enum.git SmtpUserEnum")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/SmtpUserEnum/README.md")):
+        import sys
+        module_name = "Tools/SmtpUserEnum.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")
+
+def Uninstall():
+    print("[SmtpUserEnum] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/SmtpUserEnum")
+
+def Upgrade():
+    print("[SmtpUserEnum] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/SmtpUserEnum")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
