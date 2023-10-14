@@ -26,6 +26,7 @@ Usage:
     mkt   uninstall/remove    <tools name>
     mkt      reinstall        <tools name>
     mkt      upgrade          <tools name>
+    mkt      cd               <tools name>
     
     # Uhm, No Recommand.
     mkt      upgrade          all
@@ -574,6 +575,35 @@ def MKT_UPGRADE_TOOLS():
     SourceFileLoader("manesec",abs_file).load_module().Upgrade()
     MKT_CLEARUP()
 
+# mkt cd <module>
+def MKT_CD_TOOLD():
+    if (len(sys.argv) != 3):
+        print("[ERROR] Invalid parameter")
+        print("    Usage: mkt cd <tools name>")
+        sys.exit(1)
+
+    # find the tools
+    input_str = sys.argv[2] 
+
+    abs_file, _ = Parser_Tools_String_When_Installed(input_str)
+    switch_dir = (abs_file.replace(".mkt","").replace("/var/lib/mkt/Tools/Install","/Tools"))
+    if os.path.exists(switch_dir):
+        Debug("CD SWITCH 1")
+        os.chdir(switch_dir)
+        os.system("bash")
+        return
+
+    abs_file, _ = Parser_Tools_String_When_Installed(input_str)
+    switch_dir = (os.path.dirname(abs_file).replace("/var/lib/mkt/Tools/Install","/Tools"))
+    if os.path.exists(switch_dir):
+        Debug("CD SWITCH 2")
+        os.chdir(switch_dir)
+        os.system("bash")
+        return
+
+
+    print("[ERROR] No such path.")
+
 # ==========================================================================
 #                                 List
 # ==========================================================================
@@ -1109,6 +1139,8 @@ if __name__ == "__main__" :
         "db":MKT_DB,
         "docker":MKT_DOCKER,
         "venv": MKT_VENV,
+
+        "cd": MKT_CD_TOOLD,
 
         "doc": MKT_DOC_SERVER,
         "document-server": MKT_DOC_SERVER,
