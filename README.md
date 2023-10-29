@@ -12,13 +12,17 @@ This tool has part of the script to make it easier for you to use it without the
 
 This is **BETA** version, which mean it need to very unstable, also still updating. If you find a bug just feel free to submit the issue, you may need to update before to use.
 
-Some tools maybe not working on your system due to system environment, We are try one's best to fix it.
+If you upgrade `mkt` all the tools in `/Tools` will be delete, you can re-install it later.
 
-Recommend use it on kali system.
+Some tools maybe not working on your system due to system environment, I am trying to fix it.
+
+Some script may broken your system, **Please do not install on your host machine.**
+
+Recommend use it on **kali** system.
 
 ## Quick Start
 
-For install `mkt` command just: 
+To install `mkt` command just: 
 
 ```bash
 git clone https://github.com/manesec/maketoolkit.git
@@ -27,25 +31,9 @@ cd maketoolkit; chmod u+x *.sh; sudo python3 install.py
 
 **Note**: All tools will be locate in `/var/lib/mkt/Tools/Source` which soft link to `/Tools`.
 
-When you finished to install, you can install search db (Optional) or install a tools from `/Tools` : 
-
-```bash
-# Install search db.
-sudo mkt db install BaseDB
-sudo mkt db install HackTricks
-sudo mkt db install TheHackerRecipes
-sudo mkt db install Priv2Admin
-sudo mkt db install PayloadsAllTheThings
-# or run `mkt db list installable` to see a full list.
-
-# Running some script.
-sudo mkt script Install/BasicTools
-# or run `mkt script list` to see a full list.
-```
-
 ## Structure
 
-There are 3 main structure, `Tools` , `Search DB` and `Script` ,
+There are 5 main structure, `Tools` , `Search DB` and `Script` ,
 
 + `Tools` is use to install the pen-test tools.
 
@@ -53,9 +41,92 @@ There are 3 main structure, `Tools` , `Search DB` and `Script` ,
 
 + `Script` is some script, use to install some tools or setup the env.
 
++ `Docker` is use to help for automatic build custom docker image.
+
++ `Venv` is use to help for automatic build python virtual environment.
+
 A Config file will be locate in `/etc/mkt.conf`.
 
-## Search DB
+## About Tools
+
+If you finish to install `mkt`, just goto `/Tools` to look around that.
+
+all tools will be end with `.mkt`, you can list with `mkt list installable` command.
+
+```bash
+~ $ mkt list installable
+[*] Installable Tools List:
+    Binary/CarbonCopy
+    Binary/Ghidra
+
+~ $ ls /Tools
+Binary  Linux  Tools  Windows  Wordlists
+
+~ $ cd /Tools/Linux
+ContainerEscapeCheck.mkt  DDexec.mkt  Deepce.mkt  LES.mkt  LES2.mkt  LinEnum.mkt  LinPEAS.mkt  Pspy.mkt  Sudo_killer.mkt
+```
+
+To install a tools, just type `sudo mkt install <path_to_mkt>` or `sudo mkt install <name>`.
+
+```bash
+~ $ sudo mkt install LinPEAS     
+[LinPEAS] Downloading base ...
+ *  Searching Github Repo ...
+ +  Found linpeas.sh 
+
+# or
+~ $ sudo mkt install linpeas
+~ $ sudo mkt install LinPEAS.mkt
+~ $ sudo mkt install /Tools/Linux/LinPEAS.mkt
+```
+
+
+## About Search DB
+
+If you want to install an offline documents, just use those command to install it.
+
+```bash
+~ $ mkt db installable   
+[*] List all installable db ...
+    BaseDB
+    HackTricks
+    PayloadsAllTheThings
+
+# Install search db.
+sudo mkt db install BaseDB
+sudo mkt db install HackTricks
+sudo mkt db install PayloadsAllTheThings
+```
+
+If you want to use build in local web-server, just type `mkt doc` to start the server.
+
+
+## About Script
+
+Some script may help you, If you need to run just type `sudo mkt script <number>`.
+
+```bash
+~ $ mkt script list              
+There are available scripts: 
+--------------------------------------------------
+[0] Install/AllSearchDB
+[1] Install/BasicTools
+[2] Install/Glow
+[3] Install/GoSpider
+[4] Install/NTH
+[5] Install/OnlyOffice
+[6] Install/Raccon
+[7] Install/Xortool
+[8] Run/SetupNeo4j
+
+# Run Setup Neo4j without password
+~ $ sudo mkt script 8 
+
+# More information
+~ $ mkt script info  
+```
+
+## Advanced Settings: Search DB
 
 Search DB now support grep, ripgrep, whoosh to search the document.
 
@@ -104,7 +175,7 @@ sudo mkt db reindex
 
 Just type `sudo mkt-update` to update the tools, **but all tools will be delete it Because it need to reinstall the source**, which mean you need to install the tools again.
 
-## Tutorial about the command.
+## More Example for the command
 
 ```bash
 # ========== Install some Tools ==========
@@ -154,39 +225,53 @@ sudo mkt-update
 ```bash
 Usage:
     # Base install and uninstall tools.
-    mkt   install     [<tools name>, <.mkt files>]
-    mkt   uninstall    <tools name>
-    mkt   reinstall    <tools name>
-    mkt   upgrade      <tools name>
-    mkt   upgrade      all
+    mkt      install          [<tools name>, <.mkt files>]
+    mkt   uninstall/remove    <tools name>
+    mkt      reinstall        <tools name>
+    mkt      upgrade          <tools name>
+    
+    # Uhm, No Recommand.
+    mkt      upgrade          all
 
 List:
     # List install the tools name.
-    mkt   list     install
-    mkt   list     installable
+    mkt      list             install
+    mkt      list             installable
 
 Script:
     # List build-in script
-    mkt   script   list
-    mkt   script   info
+    mkt      script           list
+    mkt      script           info
+    mkt      script           help
+
     # Run the script 
-    mkt   script   <script_name>
+    mkt      script           <script_name>
+    mkt      script           <script_index>
+
+Virtual Env:
+    mkt      docker    list
+    mkt      docker    run       <name>    <option>
+    mkt      docker    build     <name>
+    mkt      docker    rebuild   <name>
+    mkt      venv      list
+    mkt      venv      run       <name>
+    mkt      venv      remove    <name>
+    mkt      venv      rebuild   <name>
 
 DB and res:
-    mkt   db   installable
-    mkt   db   list
-    mkt   db   install       <db_name>
-    mkt   db   uninstall     <db_name>
+    mkt        db         installable
+    mkt        db         install       <db_name>
+    mkt        db         uninstall     <db_name>
+    mkt        db         upgrade       <db_name> / all
+    mkt        db         reindex
 
 Search DB and res:
-    mkt   search   <string>
+    mkt     s(earch)          <string>
 
 Other:
-    # Update all the source include mkt.
-    mkt-update
-
-    # Remove all "__pycache__" in tools
-    mkt clearup 
+    # Update the mkt core, will delete all the tools, 
+    # You need to reinstall all the tools ;(
+    sudo mkt-update
 ```
 Hope you love this.
 
