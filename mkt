@@ -17,7 +17,7 @@ def MKT_HELP():
 |  Y Y  \    <  |  | (  <_> |  <_> )  |__\___ \ 
 |__|_|  /__|_ \ |__|  \____/ \____/|____/____  >
       \/     \/                              \/ 
-       By @manesec, Version: 20231012 Beta
+       By @manesec, Version: 20231020 Beta
       https://github.com/manesec/maketoolkit
 
 Usage:
@@ -582,6 +582,12 @@ def MKT_CD_TOOLD():
         print("    Usage: mkt cd <tools name>")
         sys.exit(1)
 
+    import configparser
+    config = configparser.ConfigParser()
+    config.read('/etc/mkt.conf')
+
+    default_shell = (config['Mkt']['ShellProgram']).strip()
+
     # find the tools
     input_str = sys.argv[2] 
 
@@ -590,7 +596,7 @@ def MKT_CD_TOOLD():
     if os.path.exists(switch_dir):
         Debug("CD SWITCH 1")
         os.chdir(switch_dir)
-        os.system("bash")
+        os.system(default_shell)
         return
 
     abs_file, _ = Parser_Tools_String_When_Installed(input_str)
@@ -598,7 +604,7 @@ def MKT_CD_TOOLD():
     if os.path.exists(switch_dir):
         Debug("CD SWITCH 2")
         os.chdir(switch_dir)
-        os.system("bash")
+        os.system(default_shell)
         return
 
 

@@ -1,0 +1,45 @@
+from importlib.machinery import SourceFileLoader
+import os
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
+def Install():
+    print("[CEFDebug] Downloading base ...")
+
+    # mkdir tools path
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Tools/CEFDebug")
+    path.mkdir(parents=True, exist_ok=True)
+
+    # mkdir tmp path
+    from pathlib import Path
+    path = Path("/tmp/mktools/CEFDebug")
+    path.mkdir(parents=True, exist_ok=True)
+
+    Unit.WgetDownloadFile("https://github.com/taviso/cefdebug/releases/download/v0.2/cefdebug.zip","/tmp/mktools/CEFDebug/download.zip")
+
+    os.chdir("/tmp/mktools/CEFDebug/")
+    os.system("unzip /tmp/mktools/CEFDebug/download.zip")
+    os.system('find . -iname "*.exe" -exec mv {} /var/lib/mkt/Tools/Source/Tools/CEFDebug/cefdebug.exe \;')
+    os.chdir("/tmp/")
+    os.system("rm -rf /tmp/mktools/CEFDebug/")
+
+    # check if installed 
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/CEFDebug/cefdebug.exe")):
+        import sys
+        module_name = "Tools/CEFDebug.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")
+
+
+def Uninstall():
+    print("[CEFDebug] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/CEFDebug")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/CEFDebug*")
+    
+
+def Upgrade():
+    print("No support for upgrade")

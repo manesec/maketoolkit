@@ -98,7 +98,7 @@ sudo mkt db install HackTricks
 sudo mkt db install PayloadsAllTheThings
 ```
 
-If you want to use build in local web-server, just type `mkt doc` to start the server.
+If you want to use build-in local web server, just type `mkt doc` to start the server.
 
 
 ## About Script

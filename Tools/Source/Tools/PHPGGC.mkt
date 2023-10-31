@@ -2,37 +2,34 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
 def Install():
-    print("[Dirsearch] Installing base ...")
+    print("[PHPGGC] Installing base ...")
 
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Tools/")
-    os.system("git clone https://github.com/maurosoria/dirsearch.git Dirsearch")
+    os.system("git clone https://github.com/ambionics/phpggc PHPGGC")
 
     # check if installed 
     import os
-    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/Dirsearch/requirements.txt")):
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/PHPGGC/README.md")):
         import sys
-        module_name = "Tools/Dirsearch.mkt"
+        module_name = "Tools/PHPGGC.mkt"
         print("[ERROR]: Failed to install " + module_name +" ...")
         Unit.RollBack(module_name)
         sys.exit(1)
 
-    os.chdir("/var/lib/mkt/Tools/Source/Tools/Dirsearch")
-    os.system("pip3 install -r requirements.txt")
-
     print("OK")
 
 def Uninstall():
-    print("[Dirsearch] Uninstalling ...")
+    print("[PHPGGC] Uninstalling ...")
 
     import os
-    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Dirsearch")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/PHPGGC")
 
 def Upgrade():
-    print("[Dirsearch] Upgrading ...")
+    print("[PHPGGC] Upgrading ...")
 
     import os
-    os.chdir("/var/lib/mkt/Tools/Source/Tools/Dirsearch")
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/PHPGGC")
     
     Branches = "master"
     os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

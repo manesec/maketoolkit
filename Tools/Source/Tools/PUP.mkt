@@ -1,0 +1,44 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
+def Install():
+    import os
+    print("[PUP] Downloading base ...")
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Tools/PUP")
+    path.mkdir(parents=True, exist_ok=True)
+
+    UpdateFromGithub()
+
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/PUP")
+    os.system("unzip download.zip")
+    os.system("rm download.zip")
+
+    # check if installed 
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/PUP/pup")):
+        import sys
+        module_name = "Tools/PUP.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")    
+
+def Uninstall():
+    import os
+    print("[PUP] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/PUP")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/PUP_*")
+
+def Upgrade():
+    print("[PUP] Upgrading ...")
+    UpdateFromGithub()
+    
+def UpdateFromGithub():
+    Files = [
+        ["pup_(.{0,})_linux_amd64.zip","/var/lib/mkt/Tools/Source/Tools/PUP/download.zip"],
+    ]
+    Github.UpdateFromGithubReleaseFiles("ericchiang/pup",Files,sign_prefix="PUP_")
+    Github.CheckGithubAPIQuta()

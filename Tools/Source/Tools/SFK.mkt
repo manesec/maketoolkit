@@ -10,7 +10,7 @@ def Install():
 
     # check if installed 
     import os
-    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/SFK/sfk198.exe")):
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/SFK/README.md")):
         import sys
         module_name = "Tools/SFK.mkt"
         print("[ERROR]: Failed to install " + module_name +" ...")
