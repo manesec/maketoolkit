@@ -1,0 +1,36 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
+def Install():
+    print("[Powermad] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell")
+    os.system("git clone https://github.com/Kevin-Robertson/Powermad.git Powermad")
+        
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/Powershell/Powermad/README.md")):
+        import sys
+        module_name = "Windows/Powershell/Powermad.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")    
+
+def Uninstall():
+    print("[Powermad] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Powershell/Powermad")
+
+def Upgrade():
+    print("[Powermad] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Powershell/Powermad")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    

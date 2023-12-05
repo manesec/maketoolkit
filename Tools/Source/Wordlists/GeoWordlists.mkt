@@ -1,0 +1,38 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
+
+def Install():
+    print("[GeoWordlists] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Wordlists")
+    os.system("git clone https://github.com/p0dalirius/GeoWordlists.git GeoWordlists")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Wordlists/GeoWordlists/README.md")):
+        import sys
+        module_name = "Wordlists/GeoWordlists.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")  
+
+
+def Uninstall():
+    print("[GeoWordlists] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Wordlists/GeoWordlists")
+
+def Upgrade():
+    print("[GeoWordlists] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Wordlists/GeoWordlists")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    

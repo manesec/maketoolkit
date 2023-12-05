@@ -18,7 +18,7 @@ def Install():
     import os
     if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/Kerbrute/kerbrute_linux_amd64")):
         import sys
-        module_name = "Tools/Kerbrute.mkt"
+        module_name = "Windows/Kerbrute.mkt"
         print("[ERROR]: Failed to install " + module_name +" ...")
         Unit.RollBack(module_name)
         sys.exit(1)

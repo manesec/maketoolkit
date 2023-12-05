@@ -1,0 +1,36 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
+def Install():
+    print("[UsernameAnarchy] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Wordlists")
+    os.system("git clone https://github.com/urbanadventurer/username-anarchy.git UsernameAnarchy")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Wordlists/UsernameAnarchy/README.md")):
+        import sys
+        module_name = "Wordlists/UsernameAnarchy.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")  
+
+def Uninstall():
+    print("[UsernameAnarchy] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Wordlists/UsernameAnarchy")
+
+def Upgrade():
+    print("[UsernameAnarchy] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Wordlists/UsernameAnarchy")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    

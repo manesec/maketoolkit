@@ -1,0 +1,66 @@
+from importlib.machinery import SourceFileLoader
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
+def Install():
+    import os
+
+    print("[Cutter] Downloading base ...")
+    Github.CheckGithubAPIQuta()
+    GetListsFromGithub = Github.ReleasesFileGetFromGithubRepo("rizinorg/cutter",["Linux-x86_64.AppImage"])
+
+    GetListsFromGithub = GetListsFromGithub[0]
+    
+    from pathlib import Path
+    path = Path("/tmp/Cutter/")
+    path.mkdir(parents=True, exist_ok=True)
+
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Binary/Cutter/")
+    path.mkdir(parents=True, exist_ok=True)
+
+    Unit.WgetDownloadFile(GetListsFromGithub[3],"/tmp/Cutter/main.AppImage")
+
+    print("[Cutter] Installing base ...")
+    os.system("mv /tmp/Cutter/main.AppImage /var/lib/mkt/Tools/Source/Binary/Cutter/Cutter-Linux-x86_64.AppImage")
+
+    # check if installed 
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Binary/Cutter/Cutter-Linux-x86_64.AppImage")):
+        import sys
+        print("[ERROR]: Failed to install Cutter ...")
+        Unit.RollBack("Binary/Cutter.mkt")
+        sys.exit(1)
+
+    save_id = open("/var/lib/mkt/Tools/Version/Cutter.gitid","w")
+    save_id.write(GetListsFromGithub[2])
+    save_id.close()
+
+    os.chdir("/tmp")
+    os.system("rm -rf /tmp/Cutter/")
+
+    print("OK")
+
+def Uninstall():
+    import os
+    print("[Cutter] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Binary/Cutter")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/Cutter.gitid")
+
+def Upgrade():
+    Github.CheckGithubAPIQuta()
+
+    GetListsFromGithub = Github.ReleasesFileGetFromGithubRepo("rizinorg/cutter",["Linux-x86_64.AppImage"])
+    GetListsFromGithub = GetListsFromGithub[0]
+
+    save_id = open("/var/lib/mkt/Tools/Version/Cutter.gitid","r")
+    localid = save_id.read().strip()
+    save_id.close()
+    
+    if (GetListsFromGithub[2] != localid):
+        print("[!] Cutter need to update, Updating ...")
+        Uninstall()
+        Install()
+    else:
+        print("[!] Already up to date.")
+

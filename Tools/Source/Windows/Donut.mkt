@@ -18,7 +18,7 @@ def Install():
     import os
     if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/Donut/donut_v1.0.zip")):
         import sys
-        module_name = "Tools/Donut.mkt"
+        module_name = "Windows/Donut.mkt"
         print("[ERROR]: Failed to install " + module_name +" ...")
         Unit.RollBack(module_name)
         sys.exit(1)

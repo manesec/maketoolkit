@@ -8,8 +8,8 @@ TestingDB = False
 TestingTools = True
 Proxychains = False
 
-RunAsWhileList = False
-WhileList = []
+RunAsWhileList = True
+WhileList = ["Binary/Cutter"]
 blacklist = []
 
 def Run(command):
