@@ -1,0 +1,41 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
+def Install():
+    print("[AspxSharPyShell] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/antonioCoco/SharPyShell AspxSharPyShell")
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/AspxSharPyShell")
+    os.system("python3 -m pip install -r requirements.txt")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/AspxSharPyShell/README.md")):
+        import sys
+        module_name = "Windows/AspxSharPyShell.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")  
+
+
+def Uninstall():
+    print("[AspxSharPyShell] Uninstalling ...")
+
+    import os
+    os.system("pip3 uninstall -y AspxSharPyShell")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/AspxSharPyShell")
+
+def Upgrade():
+    print("[AspxSharPyShell] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/AspxSharPyShell")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+
+    os.system("python3 -m pip install -r requirements.txt")
