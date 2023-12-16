@@ -1,0 +1,65 @@
+from importlib.machinery import SourceFileLoader
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
+def Install():
+    import os
+
+    print("[AvaloniaILSpy] Downloading base ...")
+    Github.CheckGithubAPIQuta()
+    GetListsFromGithub = Github.ReleasesFileGetFromGithubRepo("icsharpcode/AvaloniaILSpy",["Linux.x64.Release.zip"])
+
+    GetListsFromGithub = GetListsFromGithub[0]
+    
+    from pathlib import Path
+    path = Path("/tmp/AvaloniaILSpy/")
+    path.mkdir(parents=True, exist_ok=True)
+
+    Unit.WgetDownloadFile(GetListsFromGithub[3],"/tmp/AvaloniaILSpy/main.zip")
+
+    print("[AvaloniaILSpy] Installing base ...")
+    os.chdir("/tmp/AvaloniaILSpy/")
+    os.system("unzip main.zip")
+    os.system("rm main.zip")
+    os.system("unzip *.zip")
+    os.system("rm *.zip")
+    os.system("mv /tmp/AvaloniaILSpy/* /var/lib/mkt/Tools/Source/Binary/AvaloniaILSpy")
+
+    # check if installed 
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Binary/AvaloniaILSpy/linux-x64")):
+        import sys
+        print("[ERROR]: Failed to install AvaloniaILSpy ...")
+        Unit.RollBack("Binary/AvaloniaILSpy.mkt")
+        sys.exit(1)
+
+    save_id = open("/var/lib/mkt/Tools/Version/AvaloniaILSpy.gitid","w")
+    save_id.write(GetListsFromGithub[2])
+    save_id.close()
+
+    os.chdir("/tmp")
+    os.system("rm -rf /tmp/AvaloniaILSpy/")
+
+    print("OK")
+
+def Uninstall():
+    import os
+    print("[AvaloniaILSpy] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Binary/AvaloniaILSpy")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/AvaloniaILSpy.gitid")
+
+def Upgrade():
+    Github.CheckGithubAPIQuta()
+
+    GetListsFromGithub =  Github.ReleasesFileGetFromGithubRepo("icsharpcode/AvaloniaILSpy",["Linux.x64.Release.zip"])
+    GetListsFromGithub = GetListsFromGithub[0]
+
+    save_id = open("/var/lib/mkt/Tools/Version/AvaloniaILSpy.gitid","r")
+    localid = save_id.read().strip()
+    save_id.close()
+    
+    if (GetListsFromGithub[2] != localid):
+        print("[!] AvaloniaILSpy need to update, Updating ...")
+        Uninstall()
+        Install()
+    else:
+        print("[!] Already up to date.")

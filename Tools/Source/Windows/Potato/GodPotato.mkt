@@ -40,7 +40,7 @@ def UpdateFromGithub():
     Files = [
         ["GodPotato-NET2.exe","/var/lib/mkt/Tools/Source/Windows/Potato/GodPotato/GodPotato-NET2.exe"],
         ["GodPotato-NET35.exe","/var/lib/mkt/Tools/Source/Windows/Potato/GodPotato/GodPotato-NET35.exe"],
-        ["GodPotato-NET40.exe","/var/lib/mkt/Tools/Source/Windows/Potato/GodPotato/GodPotato-NET40.exe"],
+        ["GodPotato-NET4.exe","/var/lib/mkt/Tools/Source/Windows/Potato/GodPotato/GodPotato-NET4.exe"],
     ]
     Github.UpdateFromGithubReleaseFiles("BeichenDream/GodPotato",Files,"GodPotato")
 
