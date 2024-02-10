@@ -1,0 +1,77 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
+def Install():
+    import os
+
+    print("[Ripgrep] Downloading base ...")
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Tools/Ripgrep")
+    path.mkdir(parents=True, exist_ok=True)
+
+    from pathlib import Path
+    path = Path("/tmp/mkt/Ripgrep")
+    path.mkdir(parents=True, exist_ok=True)    
+
+    UpdateFromGithub()
+
+    # script begin
+    os.chdir("/tmp/mkt/Ripgrep")
+
+    os.system("unzip i686-pc-windows-msvc.zip")
+    os.system("unzip x86_64-pc-windows-gnu.zip")
+    os.system("unzip x86_64-pc-windows-msvc.zip")
+    os.system("tar -xf x86_64-unknown-linux-musl.tar.gz")
+    os.system("tar -xf i686-unknown-linux-gnu.tar.gz")
+
+    os.system('find *x86_64-pc-windows-msvc/ -iname "rg.exe" -exec mv {} /var/lib/mkt/Tools/Source/Tools/Ripgrep/x64-windows-msvc.exe \;')
+    os.system('find *x86_64-pc-windows-gnu/ -iname "rg.exe" -exec mv {} /var/lib/mkt/Tools/Source/Tools/Ripgrep/x64-windows-gnu.exe \;')
+    os.system('find *i686-pc-windows-msvc/ -iname "rg.exe" -exec mv {} /var/lib/mkt/Tools/Source/Tools/Ripgrep/x86-windows-msvc.exe \;')
+
+
+    os.system('find *i686-unknown-linux-gnu/ -iname "rg" -exec mv {} /var/lib/mkt/Tools/Source/Tools/Ripgrep/x86-linux-gnu \;')
+
+    os.system('find *x86_64-unknown-linux-musl/ -iname "rg" -exec mv {} /var/lib/mkt/Tools/Source/Tools/Ripgrep/x64-linux-musl \;')
+
+    os.chdir("/tmp/")
+    # script end
+
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/Ripgrep/x64-linux-musl")):
+        import sys
+        module_name = "Tools/Ripgrep.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    os.system("rm -rf /tmp/mkt/Ripgrep")
+
+    print("OK")    
+
+def Uninstall():
+    import os
+    print("[Ripgrep] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Ripgrep")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/Ripgrep_*")
+
+def Upgrade():
+    print("[Ripgrep] No support to check files, Uninstall and Install again ...")
+    Uninstall()
+    Install()
+
+    
+def UpdateFromGithub():
+    Files = [
+        ["(.){0,}-i686-pc-windows-msvc.zip","/tmp/mkt/Ripgrep/i686-pc-windows-msvc.zip"],
+        ["(.){0,}-x86_64-pc-windows-gnu.zip","/tmp/mkt/Ripgrep/x86_64-pc-windows-gnu.zip"],
+        ["(.){0,}-x86_64-pc-windows-msvc.zip","/tmp/mkt/Ripgrep/x86_64-pc-windows-msvc.zip"],
+
+        ["(.){0,}-x86_64-unknown-linux-musl.tar.gz","/tmp/mkt/Ripgrep/x86_64-unknown-linux-musl.tar.gz"],
+        ["(.){0,}-i686-unknown-linux-gnu.tar.gz","/tmp/mkt/Ripgrep/i686-unknown-linux-gnu.tar.gz"],
+    ]
+    Github.UpdateFromGithubReleaseFiles("BurntSushi/ripgrep",Files,sign_prefix="Ripgrep_")
+    Github.CheckGithubAPIQuta()
