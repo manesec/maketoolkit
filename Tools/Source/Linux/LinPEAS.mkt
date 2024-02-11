@@ -38,10 +38,10 @@ def UpdateFromGithub():
         ["linpeas_darwin_amd64","/var/lib/mkt/Tools/Source/Linux/LinPEAS/linpeas_darwin_amd64"],
         ["linpeas_darwin_arm64","/var/lib/mkt/Tools/Source/Linux/LinPEAS/linpeas_darwin_arm64"],
         ["linpeas_linux_386","/var/lib/mkt/Tools/Source/Linux/LinPEAS/linpeas_linux_386"],
-        ["linpeas_linux_amd64","/var/lib/mkt/Tools/Source/Linux/LinPEAS/linpeas_linux_amd64"]
-        ["linpeas_fat.sh","/var/lib/mkt/Tools/Source/Linux/LinPEAS/linpeas_fat.sh"]
-        ["linpeas_linux_arm","/var/lib/mkt/Tools/Source/Linux/LinPEAS/linpeas_linux_arm"]
-        ["linpeas_linux_arm64","/var/lib/mkt/Tools/Source/Linux/LinPEAS/linpeas_linux_arm64"]
+        ["linpeas_linux_amd64","/var/lib/mkt/Tools/Source/Linux/LinPEAS/linpeas_linux_amd64"],
+        ["linpeas_fat.sh","/var/lib/mkt/Tools/Source/Linux/LinPEAS/linpeas_fat.sh"],
+        ["linpeas_linux_arm","/var/lib/mkt/Tools/Source/Linux/LinPEAS/linpeas_linux_arm"],
+        ["linpeas_linux_arm64","/var/lib/mkt/Tools/Source/Linux/LinPEAS/linpeas_linux_arm64"],
     ]
     Github.UpdateFromGithubReleaseFiles("carlospolop/PEASS-ng",Files)
     Github.CheckGithubAPIQuta()
