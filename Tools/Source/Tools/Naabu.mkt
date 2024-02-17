@@ -1,0 +1,63 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
+def Install():
+    print("[Naabu] Downloading base ...")
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Tools/Naabu")
+    path.mkdir(parents=True, exist_ok=True)
+
+
+    from pathlib import Path
+    path = Path("/tmp/mkt/Naabu")
+    path.mkdir(parents=True, exist_ok=True)
+
+    UpdateFromGithub()
+
+    import os
+    os.chdir("/tmp/mkt/Naabu")
+    os.system("unzip -d linux linux_amd64.zip")
+    os.system("unzip -d win32 windows_386.zip")
+    os.system("unzip -d win64 windows_amd64.zip")
+
+    os.system('find linux/ -iname "*naabu*" -exec mv {} /var/lib/mkt/Tools/Source/Tools/Naabu/naabu-linux64  \;')
+    os.system('find win32/ -iname "*naabu*" -exec mv {} /var/lib/mkt/Tools/Source/Tools/Naabu/naabu-win32.exe  \;')
+    os.system('find win64/ -iname "*naabu*" -exec mv {} /var/lib/mkt/Tools/Source/Tools/Naabu/naabu-win64.exe  \;')
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/Naabu/naabu-win64.exe")):
+        import sys
+        module_name = "Tools/Naabu.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    os.chdir("/tmp/")
+    os.system("rm -rf /tmp/mkt/Naabu")
+
+    print("OK")
+
+
+def Uninstall():
+    import os
+    print("[Naabu] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Naabu")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/CHISEL_*")
+    
+
+def Upgrade():
+    print("[Naabu] Upgrading ...")
+    Uninstall()
+    Install()
+    
+def UpdateFromGithub():
+    Files = [
+        ["naabu_(.){0,}_linux_amd64.zip","/tmp/mkt/Naabu/linux_amd64.zip"],
+        ["naabu_(.){0,}_windows_386.zip","/tmp/mkt/Naabu/windows_386.zip"],
+        ["naabu_(.){0,}_windows_amd64.zip","/tmp/mkt/Naabu/windows_amd64.zip"],
+    ]
+    Github.UpdateFromGithubReleaseFiles("projectdiscovery/naabu",Files,sign_prefix="NABBU_")
+    Github.CheckGithubAPIQuta()
