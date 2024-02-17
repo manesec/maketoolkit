@@ -17,7 +17,7 @@ def MKT_HELP():
 |  Y Y  \    <  |  | (  <_> |  <_> )  |__\___ \ 
 |__|_|  /__|_ \ |__|  \____/ \____/|____/____  >
       \/     \/                              \/ 
-       By @manesec, Version: 20240210 Beta
+       By @manesec, Version: 20240217 Beta
       https://github.com/manesec/maketoolkit
 
 Usage:
@@ -63,8 +63,9 @@ DB and res:
     mkt        db         upgrade       <db_name> / all
     mkt        db         reindex
 
-Search DB and res:
+Search DB and find in file:
     mkt     s(earch)          <string>
+    mkt     f(ind)            <string>
 
 Other:
     # Update the mkt core, will delete all the tools, 
@@ -1115,6 +1116,18 @@ def MKT_DB_SEARCH():
     search_bin = "/var/lib/mkt/Bin/search.py"
     SourceFileLoader("mkt_search",search_bin).load_module().MKT_DB_SEARCH()
 
+def MKT_FIND_SEARCH():
+    if (len(sys.argv) < 3):
+        print("[ERROR] Please give a name.")
+        sys.exit(1)
+
+    input_str = sys.argv[2:]
+
+    from importlib.machinery import SourceFileLoader
+    search_bin = "/var/lib/mkt/Bin/func_find.py"
+    SourceFileLoader("mkt_search",search_bin).load_module().findinFiles(input_str)
+
+
 # ==========================================================================
 #                                 Main
 # ==========================================================================
@@ -1124,6 +1137,7 @@ def CheckUID():
         sys.exit(1)
 
 def MKT_DOC_SERVER():
+
     os.chdir("/var/lib/mkt/ResServer/")
     os.system("python3 /var/lib/mkt/ResServer/main.py")
 
@@ -1155,6 +1169,10 @@ if __name__ == "__main__" :
         # Search function
         "s":MKT_DB_SEARCH,
         "search": MKT_DB_SEARCH,
+
+        # Find in file
+        "f" : MKT_FIND_SEARCH,
+        "find" :MKT_FIND_SEARCH 
 
     }
 

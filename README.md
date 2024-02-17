@@ -265,8 +265,9 @@ DB and res:
     mkt        db         upgrade       <db_name> / all
     mkt        db         reindex
 
-Search DB and res:
+Search DB and find in file:
     mkt     s(earch)          <string>
+    mkt     f(ind)            <string>
 
 Other:
     # Update the mkt core, will delete all the tools, 
