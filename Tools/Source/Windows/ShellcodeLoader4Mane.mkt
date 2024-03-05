@@ -7,7 +7,7 @@ def Install():
 
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Windows/")
-    os.system("git clone https://github.com/manesec/shellcodeloader4mane/tree/main ShellcodeLoader4Mane")
+    os.system("git clone https://github.com/manesec/shellcodeloader4mane ShellcodeLoader4Mane")
 
     # check if installed 
     import os
@@ -31,5 +31,5 @@ def Upgrade():
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Windows/ShellcodeLoader4Mane")
     
-    Branches = "master"
+    Branches = "main"
     os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
