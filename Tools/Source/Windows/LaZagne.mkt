@@ -1,0 +1,39 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
+def Install():
+    print("[LaZagne] Downloading base ...")
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Windows/LaZagne")
+    path.mkdir(parents=True, exist_ok=True)
+
+    UpdateFromGithub()
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/LaZagne/LaZagne.exe")):
+        import sys
+        module_name = "Windows/LaZagne.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")  
+
+def Uninstall():
+    import os
+    print("[LaZagne] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/LaZagne")
+
+def Upgrade():
+    print("[LaZagne] Upgrading ...")
+    UpdateFromGithub()
+    
+def UpdateFromGithub():
+    Files = [
+        ["LaZagne.exe","/var/lib/mkt/Tools/Source/Windows/LaZagne/LaZagne.exe"],
+    ]
+    Github.UpdateFromGithubReleaseFiles("AlessandroZ/LaZagne",Files)
+    Github.CheckGithubAPIQuta()
