@@ -1,0 +1,42 @@
+
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
+def Install():
+
+    # mkdir 
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Binary/Recaf/")
+    path.mkdir(parents=True, exist_ok=True)
+
+
+    print("[Recaf] Downloading base ...")
+    UpdateFromGithub()
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Binary/Recaf/recaf.jar")):
+        import sys
+        module_name = "Binary/Recaf.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")
+
+def Uninstall():
+    import os
+    print("[Recaf] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Binary/Recaf")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/Recaf_")
+
+def Upgrade():
+    print("[Recaf] Upgrading ...")
+    UpdateFromGithub()
+    
+def UpdateFromGithub():
+    Files = [
+        ["(.){0,}-dependencies.jar","/var/lib/mkt/Tools/Source/Binary/Recaf/recaf.jar"],
+    ]
+    Github.UpdateFromGithubReleaseFiles("Col-E/Recaf",Files,sign_prefix="Recaf_")
+    Github.CheckGithubAPIQuta()

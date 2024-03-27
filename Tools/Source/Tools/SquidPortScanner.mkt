@@ -2,37 +2,34 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
 def Install():
-    print("[Gitdumper] Installing base ...")
+    print("[SquidPortScanner] Installing base ...")
 
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Tools/")
-    os.system("git clone https://github.com/arthaud/git-dumper.git Gitdumper")
+    os.system("git clone https://github.com/aancw/spose SquidPortScanner")
 
     # check if installed 
     import os
-    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/Gitdumper/git_dumper.py")):
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/SquidPortScanner/README.md")):
         import sys
-        module_name = "Tools/Gitdumper.mkt"
+        module_name = "Tools/SquidPortScanner.mkt"
         print("[ERROR]: Failed to install " + module_name +" ...")
         Unit.RollBack(module_name)
         sys.exit(1)
-    
-    os.chdir("/var/lib/mkt/Tools/Source/Tools/Gitdumper")
 
-    os.system("pip3 install -r requirements.txt")
     print("OK")
 
 def Uninstall():
-    print("[Gitdumper] Uninstalling ...")
+    print("[SquidPortScanner] Uninstalling ...")
 
     import os
-    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Gitdumper")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/SquidPortScanner")
 
 def Upgrade():
-    print("[Gitdumper] Upgrading ...")
+    print("[SquidPortScanner] Upgrading ...")
 
     import os
-    os.chdir("/var/lib/mkt/Tools/Source/Tools/Gitdumper")
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/SquidPortScanner")
     
     Branches = "master"
     os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

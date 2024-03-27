@@ -1,0 +1,40 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
+def Install():
+    print("[Ysoserial] Downloading base ...")
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Tools/Ysoserial/")
+    path.mkdir(parents=True, exist_ok=True)
+
+    UpdateFromGithub()
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/Ysoserial/ysoserial-all.jar")):
+        import sys
+        module_name = "Tools/Ysoserial.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")    
+
+def Uninstall():
+    import os
+    print("[Ysoserial] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Ysoserial")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/Ysoserial_*")
+
+def Upgrade():
+    print("[Ysoserial] Upgrading ...")
+    UpdateFromGithub()
+    
+def UpdateFromGithub():
+    Files = [
+        ["(.){0,}-all.jar","/var/lib/mkt/Tools/Source/Tools/Ysoserial/ysoserial-all.jar"],
+    ]
+    Github.UpdateFromGithubReleaseFiles("frohoff/ysoserial",Files,sign_prefix="Ysoserial_")
+    Github.CheckGithubAPIQuta()

@@ -1,0 +1,40 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
+def Install():
+    print("[JavaRMI] Downloading base ...")
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Tools/JavaRMI/")
+    path.mkdir(parents=True, exist_ok=True)
+
+    UpdateFromGithub()
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/JavaRMI/rmg.jar")):
+        import sys
+        module_name = "Tools/JavaRMI.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")    
+
+def Uninstall():
+    import os
+    print("[JavaRMI] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/JavaRMI")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/JavaRMI_*")
+
+def Upgrade():
+    print("[JavaRMI] Upgrading ...")
+    UpdateFromGithub()
+    
+def UpdateFromGithub():
+    Files = [
+        ["(.){0,}-dependencies.jar","/var/lib/mkt/Tools/Source/Tools/JavaRMI/rmg.jar"],
+    ]
+    Github.UpdateFromGithubReleaseFiles("qtc-de/remote-method-guesser",Files,sign_prefix="JavaRMI_")
+    Github.CheckGithubAPIQuta()

@@ -1,0 +1,42 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
+def Install():
+    print("[StaticBinary] Installing base ...")
+
+    # mkdir 
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Tools/StaticBinary/")
+    path.mkdir(parents=True, exist_ok=True)
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+
+    os.system("git clone https://github.com/andrew-d/static-binaries.git /tmp/StaticBinary")
+
+    os.system("mv /tmp/StaticBinary/binaries/ /var/lib/mkt/Tools/Source/Tools/StaticBinary/")
+    os.system("mv /tmp/StaticBinary/README.md /var/lib/mkt/Tools/Source/Tools/StaticBinary/README.md")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/StaticBinary/README.md")):
+        import sys
+        module_name = "Tools/StaticBinary.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+    
+    os.system("rm -rf /tmp/StaticBinary")
+
+    print("OK")
+
+
+def Uninstall():
+    print("[StaticBinary] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/StaticBinary")
+
+def Upgrade():
+    Uninstall()
+    Install()
