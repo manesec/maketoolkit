@@ -1,0 +1,40 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
+def Install():
+    print("[LNKUp] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/Plazmaz/LNKUp.git LNKUp")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/LNKUp/README.md")):
+        import sys
+        module_name = "Windows/LNKUp.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/LNKUp")
+    os.system("python2 -m pip install setuptools")
+    os.system("python2 -m pip install -r requirements.txt")
+
+    print("OK")  
+
+def Uninstall():
+    print("[LNKUp] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/LNKUp")
+
+def Upgrade():
+    print("[LNKUp] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/LNKUp")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

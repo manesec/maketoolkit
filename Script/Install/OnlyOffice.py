@@ -11,3 +11,4 @@ def Run():
     os.system("apt install -y fonts-crosextra-carlito")
     os.system("dpkg -i /tmp/onlyoffice-desktopeditors_amd64.deb")
     os.system("rm /tmp/onlyoffice-desktopeditors_amd64.deb")
+    print("OK")

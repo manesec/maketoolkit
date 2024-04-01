@@ -1,0 +1,47 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
+def Install():
+    print("[ConPtyShellCSharp] Downloading base ...")
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Windows/ConPtyShellCSharp")
+    path.mkdir(parents=True, exist_ok=True)
+
+    UpdateFromGithub()
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/ConPtyShellCSharp")
+    os.system("unzip ConPtyShell.zip")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/ConPtyShellCSharp/ConPtyShell.exe")):
+        import sys
+        module_name = "Windows/ConPtyShellCSharp.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    os.system("rm -f ConPtyShell.zip")
+    print("OK")
+
+
+def Uninstall():
+    import os
+    print("[ConPtyShellCSharp] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/ConPtyShellCSharp")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/ConPtyShell_*")
+    
+
+def Upgrade():
+    print("[ConPtyShellCSharp] Upgrading ...")
+    UpdateFromGithub()
+    
+def UpdateFromGithub():
+    Files = [
+        ["ConPtyShell.zip","/var/lib/mkt/Tools/Source/Windows/ConPtyShellCSharp/ConPtyShell.zip"],
+    ]
+    Github.UpdateFromGithubReleaseFiles("antonioCoco/ConPtyShell",Files,sign_prefix="ConPtyShell_")
+    Github.CheckGithubAPIQuta()
