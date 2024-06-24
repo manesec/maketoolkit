@@ -3,6 +3,9 @@ def Info():
     print("    - Markdown viewer on terminal.")
 
 def Run():
+    from importlib.machinery import SourceFileLoader
+    SourceFileLoader("require_root","/var/lib/mkt/Bin/module_unit.py").load_module().RequireRoot()
+    
     import os
     Info()
     InstallGlow()

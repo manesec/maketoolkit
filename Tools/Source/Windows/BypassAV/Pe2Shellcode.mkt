@@ -1,0 +1,35 @@
+
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
+def Install():
+    print("[Pe2Shellcode] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/BypassAV/")
+    os.system("git clone https://github.com/hasherezade/pe_to_shellcode.git Pe2Shellcode")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/BypassAV/Pe2Shellcode/README.md")):
+        import sys
+        module_name = "Windows/BypassAV/Pe2Shellcode.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")  
+
+def Uninstall():
+    print("[Pe2Shellcode] Uninstalling ...")
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/BypassAV/Pe2Shellcode")
+
+def Upgrade():
+    print("[Pe2Shellcode] Upgrade ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/BypassAV/Pe2Shellcode/")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

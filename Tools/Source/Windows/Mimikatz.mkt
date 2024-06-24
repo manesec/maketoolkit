@@ -1,17 +1,23 @@
 from importlib.machinery import SourceFileLoader
+import os
+from pathlib import Path
+
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
 def Install():
-    print("[Mimikatz] Installing base ...")
+    print("[Mimikatz] Downloading base ...")
 
-    import os
-    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
-    os.system("git clone https://github.com/ParrotSec/mimikatz.git Mimikatz")
+    path = Path("/var/lib/mkt/Tools/Source/Windows/Mimikatz")
+    path.mkdir(parents=True, exist_ok=True)
 
-    os.system("mkt db install Tools/Mimikatz")
+    UpdateFromGithub()
+
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/Mimikatz/")
+    os.system("unzip mimikatz_trunk.zip")
+    os.system("rm -rf mimikatz_trunk.zip")
 
     # check if installed 
-    import os
     if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/Mimikatz/README.md")):
         import sys
         module_name = "Windows/Mimikatz.mkt"
@@ -24,20 +30,15 @@ def Install():
 
 def Uninstall():
     print("[Mimikatz] Uninstalling ...")
-
-    import os
     os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/Mimikatz")
-
-    os.system("mkt db uninstall Tools/Mimikatz")
 
 def Upgrade():
     print("[Mimikatz] Upgrading ...")
-
-    import os
-    os.chdir("/var/lib/mkt/Tools/Source/Windows/Mimikatz")
+    UpdateFromGithub()
     
-    Branches = "master"
-    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
-
-    os.system("mkt db upgrade Tools/Mimikatz")
-    
+def UpdateFromGithub():
+    Files = [
+        ["(.){0,}.zip","/var/lib/mkt/Tools/Source/Windows/Mimikatz/mimikatz_trunk.zip"],
+    ]
+    Github.UpdateFromGithubReleaseFiles("gentilkiwi/mimikatz",Files)
+    Github.CheckGithubAPIQuta()

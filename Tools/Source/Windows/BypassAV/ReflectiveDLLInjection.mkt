@@ -5,14 +5,14 @@ def Install():
     print("[ReflectiveDLLInjection] Installing base ...")
 
     import os
-    os.chdir("/var/lib/mkt/Tools/Source/Windows/BypassAMSI")
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/BypassAV")
     os.system("git clone https://github.com/lemmyz4n3771/Reflective-DLL-Injection.git ReflectiveDLLInjection")
 
     # check if installed 
     import os
-    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/BypassAMSI/ReflectiveDLLInjection/README.md")):
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/BypassAV/ReflectiveDLLInjection/README.md")):
         import sys
-        module_name = "Windows/BypassAMSI/ReflectiveDLLInjection.mkt"
+        module_name = "Windows/BypassAV/ReflectiveDLLInjection.mkt"
         print("[ERROR]: Failed to install " + module_name +" ...")
         Unit.RollBack(module_name)
         sys.exit(1)
@@ -23,13 +23,13 @@ def Uninstall():
     print("[ReflectiveDLLInjection] Uninstalling ...")
 
     import os
-    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/BypassAMSI/ReflectiveDLLInjection")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/BypassAV/ReflectiveDLLInjection")
 
 def Upgrade():
     print("[ReflectiveDLLInjection] Upgrading ...")
 
     import os
-    os.chdir("/var/lib/mkt/Tools/Source/Windows/BypassAMSI/ReflectiveDLLInjection")
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/BypassAV/ReflectiveDLLInjection")
     
-    Branches = "master"
+    Branches = "main"
     os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

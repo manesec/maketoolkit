@@ -3,6 +3,9 @@ def Info():
     - neo4j: no password""")
 
 def Run():
+    from importlib.machinery import SourceFileLoader
+    SourceFileLoader("require_root","/var/lib/mkt/Bin/module_unit.py").load_module().RequireRoot()
+
     import os,sys
 
     if (os.path.exists("/etc/neo4j/neo4j.conf") == False):

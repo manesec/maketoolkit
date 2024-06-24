@@ -1,0 +1,35 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
+def Install():
+    print("[OSEPCodeSnippets] Installing base ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/BypassAV")
+    os.system("git clone https://github.com/lemmyz4n3771/Reflective-DLL-Injection.git OSEPCodeSnippets")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/BypassAV/OSEPCodeSnippets/README.md")):
+        import sys
+        module_name = "Windows/BypassAV/OSEPCodeSnippets.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")  
+
+def Uninstall():
+    print("[OSEPCodeSnippets] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/BypassAV/OSEPCodeSnippets")
+
+def Upgrade():
+    print("[OSEPCodeSnippets] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/BypassAV/OSEPCodeSnippets")
+    
+    Branches = "main"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))

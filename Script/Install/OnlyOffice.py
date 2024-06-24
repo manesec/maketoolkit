@@ -5,6 +5,9 @@ def Info():
     print("This script will install OnlyOffice.")
 
 def Run():
+    from importlib.machinery import SourceFileLoader
+    SourceFileLoader("require_root","/var/lib/mkt/Bin/module_unit.py").load_module().RequireRoot()
+
     import os
     Download_link = "https://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb"
     Unit.WgetDownloadFile(Download_link, "/tmp/onlyoffice-desktopeditors_amd64.deb")

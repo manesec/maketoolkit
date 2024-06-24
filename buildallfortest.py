@@ -9,7 +9,7 @@ TestingTools = True
 Proxychains = False
 
 RunAsWhileList = True
-WhileList = ["Binary/Cutter"]
+WhileList = [""]
 blacklist = []
 
 def Run(command):
@@ -49,31 +49,22 @@ if TestingDB :
 
 if TestingTools :
     print("[Step 2] Install all the tools ...")
+    from pathlib import Path
 
-    allTools = []
+    for dirpath, dirnames, filenames in os.walk("/var/lib/mkt/Tools/Source/"):
+        for file in filenames:
+            if (Path(dirpath + file).suffix == ".mkt"):
+                print("[Test] Processing : " + dirpath +"/"+ file)
 
-    if RunAsWhileList:
-        allTools = WhileList
-    else:
-        for dirpath,_,filenames in os.walk("/var/lib/mkt/Tools/Source"):
-            for file in filenames:
-                dbName = (dirpath + "/" +file)
-                dbName = dbName.replace("/var/lib/mkt/Tools/Source/","")
-                dbName = (dbName[:-4])
-                
-                if (dbName in blacklist):
-                    continue
-                allTools.append(dbName)
+                relative_path = dirpath.replace("/var/lib/mkt/Tools/Source/","")
+                abs_path = "/var/lib/mkt/Tools/Install/" + relative_path
 
-    print( f"[Step 2] Total Tools: {len(allTools)}")
+                import shutil
+                from pathlib import Path
+                path = Path(abs_path)
+                print(abs_path)
+                path.mkdir(parents=True, exist_ok=True)
+                shutil.move(dirpath + "/"+ file, abs_path+ "/" + file)
 
-    for x in range(0,len(allTools)):
-        print(f"[Step 1 - {x + 1}/{len(allTools)}] Testing Tools {allTools[x]} ...")
-        RunCommand = ("mkt install %s" % (allTools[x]))
-
-        time.sleep(60)
-
-        if Proxychains:
-            RunCommand = "proxychains " + RunCommand
-        print("$ " + RunCommand)
-        Run(RunCommand)
+                from importlib.machinery import SourceFileLoader
+                SourceFileLoader("manesec", abs_path+ "/" + file).load_module().Install()

@@ -3,6 +3,9 @@ def Info():
     print("    - python2, pwncat-cs, cherrytree, glow, ripgrep, whoosh")
 
 def Run():
+    from importlib.machinery import SourceFileLoader
+    SourceFileLoader("require_root","/var/lib/mkt/Bin/module_unit.py").load_module().RequireRoot()
+
     import os
     Info()
     os.system("pip3 install pwncat-cs whoosh")

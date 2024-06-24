@@ -1,14 +1,20 @@
 import configparser
 import subprocess,os
 from pyfzf.pyfzf import FzfPrompt
+import shutil
 
-def findinFiles(filename):
+def copyAndfindinFiles(filename):
+    print(filename)
+    filename, target = filename
+    if not target:
+        target = os.getcwd()
+
     config = configparser.ConfigParser()
     config.read('/etc/mkt.conf')
     default_shell = (config['Mkt']['ShellProgram']).strip()
     fzf = FzfPrompt()
-
-    if (filename[0] == None):
+    
+    if (not filename):
         command = "find /Tools/ -type f -not -name '*\.mkt' -not -path '*/.git/*' " 
         status,output_str = subprocess.getstatusoutput(command)
         files = output_str.split('\n')
@@ -20,9 +26,8 @@ def findinFiles(filename):
         userSelect = fzf.prompt(files)
         if userSelect:
             userSelect = userSelect[0]
-            print ("[*] Selected: %s" % userSelect)
-            os.chdir(os.path.dirname(userSelect))
-            os.system(default_shell)
+            print ("[*] Copying %s to %s ..." % (userSelect, target()))
+            shutil.copy(userSelect,target)
             return
         else:
             print("[!] User cancel select.")
@@ -38,20 +43,18 @@ def findinFiles(filename):
         files = output_str.split('\n')
 
         # add filter
-        for search in filename[1:]:
-            # print("[*] Filtering : %s" % search)
-            tmp_search = []
-            search = search.strip().lower()
-            for file in files:
-                if file.lower().find(search) != -1:
-                    tmp_search.append(file)
-            files = tmp_search
+        tmp_search = []
+        for file in files:
+            if filename.strip().lower() in file.lower():
+                tmp_search.append(file)
+        files = tmp_search
+        
 
         # result
         if (len(files) == 1):
-            print ("[*] Goto: %s" % (files[0]))
-            os.chdir(os.path.dirname(files[0]))
-            os.system(default_shell)
+            userSelect = files[0]
+            print ("[*] Copying %s to %s ..." % (userSelect,target))
+            shutil.copy(userSelect,target)
             return
 
         if (len(files) == 0):
@@ -62,9 +65,8 @@ def findinFiles(filename):
 
         if userSelect:
             userSelect = userSelect[0]
-            print ("[*] Selected: %s" % userSelect)
-            os.chdir(os.path.dirname(userSelect))
-            os.system(default_shell)
+            print ("[*] Copying %s to %s ..." % (userSelect, target))
+            shutil.copy(userSelect,target)
             return
         else:
             print("[!] User cancel select.")

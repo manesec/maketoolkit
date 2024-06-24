@@ -1,0 +1,59 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
+def Install():
+    print("[LigoloNG] Downloading base ...")
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Tools/LigoloNG")
+    path.mkdir(parents=True, exist_ok=True)
+
+    UpdateFromGithub()
+
+
+    unzipFileList = [
+        ["(.){0,}proxy.exe","/var/lib/mkt/Tools/Source/Tools/LigoloNG/proxy.exe"]
+    ]
+    Unit.extractZipFileAndDelete("/var/lib/mkt/Tools/Source/Tools/LigoloNG/Proxy_Windows_x64.zip",unzipFileList)
+
+    unzipFileList = [
+        ["(.){0,}agent.exe","/var/lib/mkt/Tools/Source/Tools/LigoloNG/agent.exe"]
+    ]
+    Unit.extractZipFileAndDelete("/var/lib/mkt/Tools/Source/Tools/LigoloNG/Agent_Windows_x64.zip",unzipFileList)
+
+    unzipFileList = [
+        ["(.){0,}agent","/var/lib/mkt/Tools/Source/Tools/LigoloNG/agent"]
+    ]
+    Unit.extractGZFileAndDelete("/var/lib/mkt/Tools/Source/Tools/LigoloNG/Agent_Linux_x64.tar.gz",unzipFileList)
+
+    unzipFileList = [
+        ["(.){0,}proxy","/var/lib/mkt/Tools/Source/Tools/LigoloNG/proxy"]
+    ]
+    Unit.extractGZFileAndDelete("/var/lib/mkt/Tools/Source/Tools/LigoloNG/Proxy_Linux_x64.tar.gz",unzipFileList)
+
+    print("OK")
+
+
+def Uninstall():
+    import os
+    print("[LigoloNG] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/LigoloNG")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/LigoloNG_*")
+    
+
+def Upgrade():
+    print("[LigoloNG] Upgrading ...")
+    UpdateFromGithub()
+    
+def UpdateFromGithub():
+    Files = [
+        ["(.){0,}_proxy_(.){0,}_windows_amd64.zip","/var/lib/mkt/Tools/Source/Tools/LigoloNG/Proxy_Windows_x64.zip"],
+        ["(.){0,}_agent_(.){0,}_windows_amd64.zip","/var/lib/mkt/Tools/Source/Tools/LigoloNG/Agent_Windows_x64.zip"],
+
+        ["(.){0,}_proxy_(.){0,}_linux_amd64.tar.gz","/var/lib/mkt/Tools/Source/Tools/LigoloNG/Proxy_Linux_x64.tar.gz"],
+        ["(.){0,}_agent_(.){0,}_linux_amd64.tar.gz","/var/lib/mkt/Tools/Source/Tools/LigoloNG/Agent_Linux_x64.tar.gz"],
+
+    ]
+    Github.UpdateFromGithubReleaseFiles("nicocha30/ligolo-ng",Files,sign_prefix="LigoloNG_")
+    Github.CheckGithubAPIQuta()

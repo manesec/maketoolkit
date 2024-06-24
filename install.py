@@ -7,13 +7,21 @@ if (os.getuid() != 0):
     sys.exit(1)
 
 # Step 1 - Checking Command
-requests_command = ["less","git","wget","unzip"]
+#os.system("apt update")
+requests_command = ["less","git","wget","unzip","pipx","fzf"]
 
 for check_command in requests_command:
     runcode = os.WEXITSTATUS(os.system("command -v %s > /dev/null" % (check_command)))
     if (runcode != 0):
-        print("ERROR: %s not found on your system." % (check_command))
-        sys.exit(1)
+        while(True):
+            inputIn = input("ERROR: %s not found on your system, Install it ? (y/n) " % (check_command)).strip().lower()
+            if (inputIn == "y") or (inputIn == "yes"):
+                command = "apt install -y %s " % check_command
+                print("> %s" % command)
+                os.system(command)
+                break
+            if (inputIn == "n") or (inputIn == "no"):
+                sys.exit(1)
 
 # Step 2 - Install Library
 os.system("pip3 install -r requirements.txt")
@@ -28,7 +36,11 @@ if (os.path.exists("/var/lib/mkt")):
 os.system("mkdir -p /var/lib/mkt")
 os.system("cp -r . /var/lib/mkt")
 
-# Setp 4 - Setup the env
+# Setp 4 - Testing case
+print("[Test] Testing Document Server ...")
+os.system("python3 /var/lib/mkt/Test/TestDocServer.py")
+
+# Setp 5 - Setup the env
 os.system("chmod -R 755 /var/lib/mkt/")
 os.system("ln -s /var/lib/mkt/Tools/Source /Tools")
 os.system("ln -s /var/lib/mkt/mkt /bin/mkt")

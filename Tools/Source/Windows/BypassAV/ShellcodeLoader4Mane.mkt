@@ -6,14 +6,14 @@ def Install():
     print("[ShellcodeLoader4Mane] Installing base ...")
 
     import os
-    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/BypassAV/")
     os.system("git clone https://github.com/manesec/shellcodeloader4mane ShellcodeLoader4Mane")
 
     # check if installed 
     import os
-    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/ShellcodeLoader4Mane/README.md")):
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/BypassAV/ShellcodeLoader4Mane/README.md")):
         import sys
-        module_name = "Windows/ShellcodeLoader4Mane.mkt"
+        module_name = "Windows/BypassAV/ShellcodeLoader4Mane.mkt"
         print("[ERROR]: Failed to install " + module_name +" ...")
         Unit.RollBack(module_name)
         sys.exit(1)
@@ -23,13 +23,13 @@ def Install():
 def Uninstall():
     print("[ShellcodeLoader4Mane] Uninstalling ...")
     import os
-    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/ShellcodeLoader4Mane")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/BypassAV/ShellcodeLoader4Mane")
 
 def Upgrade():
     print("[ShellcodeLoader4Mane] Upgrade ...")
 
     import os
-    os.chdir("/var/lib/mkt/Tools/Source/Windows/ShellcodeLoader4Mane")
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/BypassAV/ShellcodeLoader4Mane")
     
     Branches = "main"
     os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
