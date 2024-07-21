@@ -1,0 +1,53 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
+def Install():
+    print("[Udpx] Downloading base ...")
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Tools/Udpx")
+    path.mkdir(parents=True, exist_ok=True)
+
+    UpdateFromGithub()
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Udpx/")
+
+    Unit.extractZipFileAndDelete("/var/lib/mkt/Tools/Source/Tools/Udpx/udpx-linux-386.zip",[["udpx(.){0,}","/var/lib/mkt/Tools/Source/Tools/Udpx/udpx"]])
+    Unit.extractZipFileAndDelete("/var/lib/mkt/Tools/Source/Tools/Udpx/udpx-linux-amd64.zip",[["udpx(.){0,}","/var/lib/mkt/Tools/Source/Tools/Udpx/udpx64"]])
+    Unit.extractZipFileAndDelete("/var/lib/mkt/Tools/Source/Tools/Udpx/udpx-windows-386.zip",[["udpx(.){0,}","/var/lib/mkt/Tools/Source/Tools/Udpx/udpx.exe"]])
+    Unit.extractZipFileAndDelete("/var/lib/mkt/Tools/Source/Tools/Udpx/udpx-windows-amd64.zip",[["udpx(.){0,}","/var/lib/mkt/Tools/Source/Tools/Udpx/udpx64.exe"]])
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/Udpx/udpx64")):
+        import sys
+        module_name = "Tools/Udpx.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")
+
+
+def Uninstall():
+    import os
+    print("[Udpx] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Udpx")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/Udpx_*")
+    
+
+def Upgrade():
+    print("[Udpx] Upgrading ...")
+    UpdateFromGithub()
+    
+def UpdateFromGithub():
+    Files = [
+        ["udpx-linux-386.zip","/var/lib/mkt/Tools/Source/Tools/Udpx/udpx-linux-386.zip"],
+        ["udpx-linux-amd64.zip","/var/lib/mkt/Tools/Source/Tools/Udpx/udpx-linux-amd64.zip"],
+        ["udpx-windows-386.zip","/var/lib/mkt/Tools/Source/Tools/Udpx/udpx-windows-386.zip"],
+        ["udpx-windows-amd64.zip","/var/lib/mkt/Tools/Source/Tools/Udpx/udpx-windows-amd64.zip"]
+    ]
+    Github.UpdateFromGithubReleaseFiles("nullt3r/udpx",Files,sign_prefix="Udpx_")
+    Github.CheckGithubAPIQuta()

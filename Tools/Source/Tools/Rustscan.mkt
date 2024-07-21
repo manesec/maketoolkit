@@ -1,0 +1,63 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
+
+def Install():
+    print("[Rustscan] Downloading base ...")
+
+
+    from pathlib import Path
+    path = Path("/tmp/mkt/rustscan")
+    path.mkdir(parents=True, exist_ok=True)
+
+    from pathlib import Path
+    path = Path("/var/lib/mkt/Tools/Source/Tools/Rustscan")
+    path.mkdir(parents=True, exist_ok=True)
+
+    UpdateFromGithub()
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Rustscan/")
+    Unit.extractZipFileAndDelete("/tmp/mkt/rustscan/rustscan-windows.zip",[["(.){0,}.exe","/var/lib/mkt/Tools/Source/Tools/Rustscan/rustscan.exe"]])
+    Unit.extractZipFileAndDelete("/tmp/mkt/rustscan/rustscan-windows-gun.zip",[["(.){0,}.exe","/var/lib/mkt/Tools/Source/Tools/Rustscan/rustscan-gun.exe"]])
+
+    os.chdir("/tmp/mkt/rustscan")
+    os.system("unzip /tmp/mkt/rustscan/rustscan-linux.zip")
+    os.system("find /tmp/mkt/rustscan -iname 'rustscan' -type f -exec mv {} /var/lib/mkt/Tools/Source/Tools/Rustscan/rustscan \;")
+
+
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/Rustscan/")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/Rustscan/rustscan")):
+        import sys
+        module_name = "Tools/Rustscan.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    os.system("rm -rf /tmp/mkt/")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Rustscan/tmp")
+    print("OK")
+
+
+def Uninstall():
+    import os
+    print("[Rustscan] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/Rustscan")
+    os.system("rm -rf /var/lib/mkt/Tools/Version/Rustscan_*")
+    
+
+def Upgrade():
+    print("[Rustscan] Upgrading ...")
+    UpdateFromGithub()
+    
+def UpdateFromGithub():
+    Files = [
+        ["(.){0,}-linux.zip","/tmp/mkt/rustscan/rustscan-linux.zip"],
+        ["(.){0,}-windows.zip","/tmp/mkt/rustscan/rustscan-windows.zip"],
+        ["(.){0,}-win-gnu.zip","/tmp/mkt/rustscan/rustscan-windows-gun.zip"],
+    ]
+    Github.UpdateFromGithubReleaseFiles("RustScan/RustScan",Files,sign_prefix="Rustscan_")
+    Github.CheckGithubAPIQuta()

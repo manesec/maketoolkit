@@ -4,10 +4,12 @@ from pyfzf.pyfzf import FzfPrompt
 import shutil
 
 def copyAndfindinFiles(filename):
-    print(filename)
+    #print(filename)
+
+    if not filename[1]:
+        filename[1] = os.getcwd()
+
     filename, target = filename
-    if not target:
-        target = os.getcwd()
 
     config = configparser.ConfigParser()
     config.read('/etc/mkt.conf')
@@ -26,8 +28,8 @@ def copyAndfindinFiles(filename):
         userSelect = fzf.prompt(files)
         if userSelect:
             userSelect = userSelect[0]
-            print ("[*] Copying %s to %s ..." % (userSelect, target()))
-            shutil.copy(userSelect,target)
+            print ("[*] Copying %s --> %s ..." % (userSelect, target))
+            os.system("cp '%s' '%s' " % (userSelect,target))
             return
         else:
             print("[!] User cancel select.")
@@ -53,8 +55,8 @@ def copyAndfindinFiles(filename):
         # result
         if (len(files) == 1):
             userSelect = files[0]
-            print ("[*] Copying %s to %s ..." % (userSelect,target))
-            shutil.copy(userSelect,target)
+            print ("[*] Copying %s --> %s ..." % (userSelect, target))
+            os.system("cp '%s' '%s' " % (userSelect,target))
             return
 
         if (len(files) == 0):
@@ -65,8 +67,8 @@ def copyAndfindinFiles(filename):
 
         if userSelect:
             userSelect = userSelect[0]
-            print ("[*] Copying %s to %s ..." % (userSelect, target))
-            shutil.copy(userSelect,target)
+            print ("[*] Copying %s --> %s ..." % (userSelect, target))
+            os.system("cp '%s' '%s' " % (userSelect,target))
             return
         else:
             print("[!] User cancel select.")

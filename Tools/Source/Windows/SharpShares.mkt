@@ -3,40 +3,37 @@ Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
 def Install():
-    print("[PrintSpoofer] Downloading base ...")
+    print("[SharpShares] Downloading base ...")
 
     from pathlib import Path
-    path = Path("/var/lib/mkt/Tools/Source/Windows/PrintSpoofer")
+    path = Path("/var/lib/mkt/Tools/Source/Windows/SharpShares")
     path.mkdir(parents=True, exist_ok=True)
 
     UpdateFromGithub()
 
     # check if installed 
     import os
-    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/PrintSpoofer/PrintSpoofer32.exe")):
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/SharpShares/SharpShares.exe")):
         import sys
-        module_name = "Windows/PrintSpoofer.mkt"
+        module_name = "Windows/SharpShares.mkt"
         print("[ERROR]: Failed to install " + module_name +" ...")
         Unit.RollBack(module_name)
         sys.exit(1)
 
     print("OK")  
 
-
-
 def Uninstall():
     import os
-    print("[PrintSpoofer] Uninstalling ...")
-    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/PrintSpoofer")
+    print("[SharpShares] Uninstalling ...")
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/SharpShares")
 
 def Upgrade():
-    print("[PrintSpoofer] Upgrading ...")
+    print("[SharpShares] Upgrading ...")
     UpdateFromGithub()
     
 def UpdateFromGithub():
     Files = [
-        ["PrintSpoofer32.exe","/var/lib/mkt/Tools/Source/Windows/PrintSpoofer/PrintSpoofer32.exe"],
-        ["PrintSpoofer64.exe","/var/lib/mkt/Tools/Source/Windows/PrintSpoofer/PrintSpoofer64.exe"],
+        ["SharpShares.exe","/var/lib/mkt/Tools/Source/Windows/SharpShares/SharpShares.exe"],
     ]
-    Github.UpdateFromGithubReleaseFiles("itm4n/PrintSpoofer",Files)
+    Github.UpdateFromGithubReleaseFiles("mitchmoser/SharpShares",Files)
     Github.CheckGithubAPIQuta()
