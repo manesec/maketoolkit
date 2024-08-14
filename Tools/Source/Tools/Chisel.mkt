@@ -40,10 +40,10 @@ def Upgrade():
     
 def UpdateFromGithub():
     Files = [
-        ["chisel(.){0,}linux_386","/var/lib/mkt/Tools/Source/Tools/Chisel/chisel_linux_386.gz"],
-        ["chisel(.){0,}linux_amd64","/var/lib/mkt/Tools/Source/Tools/Chisel/chisel_linux_amd64.gz"],
-        ["chisel(.){0,}windows_386","/var/lib/mkt/Tools/Source/Tools/Chisel/chisel_windows_386.gz"],
-        ["chisel*(.){0,}windows_amd64","/var/lib/mkt/Tools/Source/Tools/Chisel/chisel_windows_amd64.gz"]
+        ["chisel(.){0,}linux_386.gz","/var/lib/mkt/Tools/Source/Tools/Chisel/chisel_linux_386.gz"],
+        ["chisel(.){0,}linux_amd64.gz","/var/lib/mkt/Tools/Source/Tools/Chisel/chisel_linux_amd64.gz"],
+        ["chisel(.){0,}windows_386.gz","/var/lib/mkt/Tools/Source/Tools/Chisel/chisel_windows_386.gz"],
+        ["chisel*(.){0,}windows_amd64.gz","/var/lib/mkt/Tools/Source/Tools/Chisel/chisel_windows_amd64.gz"]
     ]
     Github.UpdateFromGithubReleaseFiles("jpillora/chisel",Files,sign_prefix="CHISEL_")
     Github.CheckGithubAPIQuta()
