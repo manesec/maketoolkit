@@ -2,6 +2,25 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Local Privilege Escalation, Exploitation, Windows Vulnerabilities
+
+PetitPotato exploits the MS-EFSR protocol to achieve local privilege escalation by impersonating the NT AUTHORITY\SYSTEM account, allowing unauthorized access to sensitive operations on Windows systems.
+
+- Utilizes MS-EFSR for remote encrypted data management.
+- Abuses EfsRpcOpenFileRaw API for privilege escalation.
+- Requires setting AuthnLevel to RPC_C_AUTHN_LEVEL_PKT_PRIVACY.
+- Compatible with all Windows versions post-patch.
+- Creates a malicious named pipe for impersonation.
+- Demonstrates successful SYSTEM privilege elevation.
+- Can execute commands with elevated privileges.
+- Exploits vulnerabilities in EFSRPC communication.
+- Simple command-line interface for usage.
+- Active GitHub repository for updates and community support.
+"""
+    print(desc)
+
 def Install():
     print("[PetitPotato] Downloading base ...")
 

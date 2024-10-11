@@ -2,6 +2,24 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Privilege Escalation, NTLM Relay, Windows Exploits, DCOM Exploits
+
+RemotePotato0 is a Windows privilege escalation tool that enables an attacker to escalate from a standard user to Domain Admin by exploiting DCOM activation services and NTLM authentication.
+
+- Escalates privileges from User to Domain Admin
+- Abuses DCOM activation service
+- Relays NTLM authentication messages
+- Can capture NTLMv2 hashes
+- Supports multiple modules for various tasks
+- Works with various Windows Server versions
+- Requires a privileged user logged in on the target
+- Utilizes cross-protocol relay techniques
+- Can be used to set up further relay nodes
+- Detection through Yara rules available
+"""
+    print(desc)
 
 def Install():
     print("[RemotePotato] Downloading base ...")

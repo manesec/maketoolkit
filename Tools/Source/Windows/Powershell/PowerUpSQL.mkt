@@ -1,6 +1,25 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: SQL Auditing, Privilege Escalation, Penetration Testing, Threat Hunting
+
+PowerUpSQL is a powerful tool designed for SQL Server discovery, weak configuration auditing, and privilege escalation, making it ideal for internal penetration tests and red team engagements. It also aids administrators in inventorying SQL Servers and conducting threat hunting.
+
+- Supports SQL Server discovery and auditing
+- Facilitates privilege escalation on a large scale
+- Enables OS command execution post-exploitation
+- Useful for internal penetration tests and red team operations
+- Assists administrators in SQL Server inventory
+- Provides common threat hunting functionalities
+- Includes comprehensive documentation and usage examples
+- Actively maintained by a community of contributors
+- BSD 3-Clause licensed for flexibility
+- Regular updates based on user feedback and bug reports
+"""
+    print(desc)
+
 def Install():
     print("[PowerUpSQL] Installing base ...")
 

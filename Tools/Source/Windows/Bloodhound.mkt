@@ -2,6 +2,25 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Active Directory, Penetration Testing, Security Assessment, Graph Theory, Attack Path Management
+
+BloodHound is a powerful tool that utilizes graph theory to uncover hidden relationships and attack paths within Active Directory or Azure environments. It's invaluable for both attackers and defenders in identifying and mitigating complex security vulnerabilities.
+
+- Visualizes Active Directory relationships
+- Identifies complex attack paths
+- Supports both red and blue team operations
+- Built on Linkurious and Neo4j
+- C# data collector for data ingestion
+- Single-page JavaScript web application
+- Continuous updates with rolling releases
+- Sample database generator available
+- Free and open-source under GPL
+- Maintained by a dedicated team
+"""
+    print(desc)
+
 def Install():
     import os
 

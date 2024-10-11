@@ -2,6 +2,25 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Vulnerability Scanner, Java RMI, Security Testing, Penetration Testing
+
+Remote Method Guesser (RMG) is a Java RMI vulnerability scanner designed to identify and exploit common security vulnerabilities in Java RMI endpoints. It provides a range of operations for enumeration, method guessing, and deserialization attacks.
+
+- Scans Java RMI endpoints for vulnerabilities
+- Supports enumeration of RMI services and bound names
+- Allows method guessing using predefined wordlists
+- Facilitates deserialization attacks on RMI components
+- Can bind custom objects to RMI registries
+- Provides codebase attack capabilities
+- Includes SSRF attack options
+- Offers a plugin system for extensibility
+- Available as a Docker image for easy deployment
+- Presented at Black Hat USA 2021
+"""
+    print(desc)
+
 def Install():
     print("[JavaRMI] Downloading base ...")
 

@@ -2,6 +2,26 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Password Analysis, Data Security, Cybersecurity Research, Password Management
+
+PWDB is a cutting-edge tool for mass-analysis of password datasets, designed to identify patterns and vulnerabilities in password usage. It processes large volumes of credential data to uncover high-entropy passwords and common weaknesses, aiming to enhance security practices and inform users about potential risks.
+
+- Analyzes over 1 billion password records
+- Filters out corrupt data and test accounts
+- Identifies unique and high-entropy passwords
+- Provides statistics on password usage trends
+- Detects language-specific password patterns
+- Compares findings with established datasets like rockyou.txt
+- Releases regular updates based on new data
+- Offers a mystery list of uncommon passwords
+- Encourages community inquiries for further insights
+- Aims to improve password management tools and practices
+
+"""
+    print(desc)
+    
 def Install():
     print("[Pwdb] Installing base ...")
 

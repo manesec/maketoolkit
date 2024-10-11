@@ -2,6 +2,25 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Web Application Screenshot Tools
+
+EyeWitness is a powerful tool for taking screenshots of websites, gathering server header information, and identifying default credentials. It supports various input formats and runs seamlessly on Kali Linux and Windows, making it an essential tool for web application assessments.
+
+- Takes automated screenshots of web pages
+- Supports multiple input formats (URLs, Nmap, Nessus)
+- Identifies default credentials for known services
+- Configurable timeout for rendering pages
+- Compatible with Docker for easy deployment
+- Generates detailed HTML reports
+- Proxy support for scanning through proxies
+- Cross-platform: works on Kali Linux and Windows
+- Easy to set up with clear usage instructions
+- Actively maintained with community contributions
+"""
+    print(desc)
+
 def Install():
     print("[EyeWitness] Installing base ...")
 

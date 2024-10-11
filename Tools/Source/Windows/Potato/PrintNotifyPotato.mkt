@@ -2,6 +2,26 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
+
+def description():
+    desc = r"""
+Categories: Privilege Escalation, Windows Exploitation, Post-Exploitation
+
+PrintNotifyPotato is a tool designed for privilege escalation on Windows systems by leveraging the PrintNotify COM service. It allows attackers to obtain SYSTEM-level access by exploiting vulnerabilities in the printing subsystem.
+
+- Utilizes PrintNotify COM service for privilege escalation
+- Compatible with Windows 10, 11, and Windows Server 2012-2022
+- Easy to execute via command line
+- Can run arbitrary commands with elevated privileges
+- Provides a simple interface for testing and exploitation
+- Outputs current user context after escalation
+- Supports interactive command execution
+- Open-source on GitHub for community contributions
+- Demonstrates a common attack vector in Windows environments
+- Useful for red team assessments and security research
+"""
+    print(desc)
+
 def Install():
     print("[PrintNotifyPotato] Downloading base ...")
 

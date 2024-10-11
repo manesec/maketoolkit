@@ -1,4 +1,4 @@
-def Info():
+def description():
     print("This script will be install basic tools include: ")
     print("    - python2, pwncat-cs, cherrytree, glow, ripgrep, whoosh")
 
@@ -7,7 +7,6 @@ def Run():
     SourceFileLoader("require_root","/var/lib/mkt/Bin/module_unit.py").load_module().RequireRoot()
 
     import os
-    Info()
     os.system("pip3 install pwncat-cs whoosh")
     os.system("apt update && apt -y install cherrytree python2 ripgrep")
     InstallGlow()

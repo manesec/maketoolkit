@@ -1,6 +1,25 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Web Security, Pentesting, Bug Bounty, API Discovery, Infrastructure Scanning
+
+A curated collection of targeted paths linked to major web frameworks and infrastructure, designed for rapid web-content discovery. Ideal for pentesters and security engineers seeking quick wins through high-quality wordlists.
+
+- Focuses on known misconfigurations and sensitive data leaks.
+- Identifies hidden API endpoints and verbose server data.
+- Prioritizes modern tech stacks for better results.
+- Supports contributions to enhance the wordlist.
+- Short and focused for efficient scanning.
+- Useful for bug bounty hunters across multiple subdomains.
+- Aims to streamline the assessment process.
+- Avoids CVEs, emphasizing practical paths instead.
+- Complements larger wordlists from Assetnote and SecLists.
+- Provides a community-driven resource for security professionals.
+"""
+    print(desc)
+
 def Install():
     print("[LeakyPaths] Installing base ...")
 

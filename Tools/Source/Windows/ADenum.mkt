@@ -1,6 +1,25 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Active Directory, Penetration Testing, LDAP, Kerberos, Security Tools
+
+ADEnum.py is a powerful pentesting tool designed for Active Directory enumeration, leveraging LDAP to identify misconfigurations and potential vulnerabilities, particularly in Kerberos authentication.
+
+- Enumerates Domain Admin users
+- Identifies Domain Controllers
+- Detects users with non-expiring passwords
+- Finds users with outdated passwords
+- Lists users with interesting descriptions
+- Checks for non-default encryption settings
+- Protects privileged domain accounts
+- Supports AS-REP and Kerberoasting attacks
+- Integrates with John for password cracking
+- Requires Impacket and Python 3 for operation
+"""
+    print(desc)
+    
 def Install():
     print("[ADenum] Installing base ...")
 

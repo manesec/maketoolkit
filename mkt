@@ -5,14 +5,14 @@ isDebug = False
 
 # mkt help and version
 def MKT_HELP():
-    print("""
+    print(r"""
          __      __                .__          
   _____ |  | ___/  |_  ____   ____ |  |   ______
  /     \|  |/ /\   __\/  _ \ /  _ \|  |  /  ___/
 |  Y Y  \    <  |  | (  <_> |  <_> )  |__\___ \ 
 |__|_|  /__|_ \ |__|  \____/ \____/|____/____  >
       \/     \/                              \/ 
-       By @manesec, Version: 20240625 Beta
+       By @manesec, Version: 20241011 Beta
       https://github.com/manesec/maketoolkit
 
 Usage:
@@ -40,16 +40,6 @@ Script:
     # Run the script 
     mkt      script           <script_name>
     mkt      script           <script_index>
-
-Virtual Env:
-    mkt      docker    list
-    mkt      docker    run       <name>    <option>
-    mkt      docker    build     <name>
-    mkt      docker    rebuild   <name>
-    mkt      venv      list
-    mkt      venv      run       <name>
-    mkt      venv      remove    <name>
-    mkt      venv      rebuild   <name>
 
 DB and res:
     mkt        db         installable
@@ -187,109 +177,7 @@ def Parser_DB_String_When_Installed(inputString):
     return abs_file
 
 
-def Parser_Python_Venv_String(inputString):
-    """ parser user input to python venv """
-    input_str = inputString.strip()
 
-    # pre-load installed tools
-    toolsList = []
-    for path,subpaths,files in os.walk("/var/lib/mkt/Env/Python/"):
-        for file in files:
-            if file[-6:] == ".mktpy":
-                module_name = (path + "/"+ file)[:-6]
-                module_name = module_name.replace("/var/lib/mkt/Env/Python/","")
-                toolsList.append(module_name)
-    Debug("toolsList => " + str(toolsList))
-
-    finded_Tools = []
-    for tools in toolsList:
-        if (input_str.lower() in tools.lower()):
-            Debug("Hit => " + tools)
-            finded_Tools.append(tools)
-
-    if (len(finded_Tools) == 0): 
-        print("[ERROR] No found !")
-        sys.exit(1)
-
-    if (len(finded_Tools) > 1):
-        # When more than one tools
-        Debug(finded_Tools)
-        def show_list():
-            print(" Found more than one python venv, please select.")
-            print("--------------------------------------------------------")
-            for index,tools in enumerate(finded_Tools):
-                print("[%s] %s" % (index,tools))
-        read_input = None
-        show_list()
-        print("Tips: input 'l' can list again")
-        while True:
-            user_input = input("  Select number to install : ").strip()
-            if user_input == "l" : show_list()
-            if user_input.isdigit(): 
-                if (int(user_input) >= 0) and (int(user_input) <= len(finded_Tools) - 1):
-                    print ("[*] Selected: %s" % (finded_Tools[int(user_input)]))
-                    abs_file = "/var/lib/mkt/Env/Python/" + finded_Tools[int(user_input)] + ".mktpy"
-                    break
-
-    elif (len(finded_Tools) == 1):
-        # When have one tools
-        Debug("Return => " + finded_Tools[0])
-        abs_file = "/var/lib/mkt/Env/Python/" + finded_Tools[0] + ".mktpy"
-
-    Debug("abs_file =>" + abs_file)
-    return abs_file
-
-
-def Parser_Docker_String(inputString):
-    input_str = inputString.strip()
-
-    # pre-load installed tools
-    toolsList = []
-    for path,subpaths,files in os.walk("/var/lib/mkt/Env/Docker/"):
-        for file in files:
-            if file[-6:] == ".mktdk":
-                module_name = (path + "/"+ file)[:-6]
-                module_name = module_name.replace("/var/lib/mkt/Env/Docker/","")
-                toolsList.append(module_name)
-    Debug("toolsList => " + str(toolsList))
-
-    finded_Tools = []
-    for tools in toolsList:
-        if (input_str.lower() in tools.lower()):
-            Debug("Hit => " + tools)
-            finded_Tools.append(tools)
-
-    if (len(finded_Tools) == 0): 
-        print("[ERROR] No found !")
-        sys.exit(1)
-
-    if (len(finded_Tools) > 1):
-        # When more than one tools
-        Debug(finded_Tools)
-        def show_list():
-            print(" Found more than one docker container, please select.")
-            print("--------------------------------------------------------")
-            for index,tools in enumerate(finded_Tools):
-                print("[%s] %s" % (index,tools))
-        read_input = None
-        show_list()
-        print("Tips: input 'l' can list again")
-        while True:
-            user_input = input("  Select number to install : ").strip()
-            if user_input == "l" : show_list()
-            if user_input.isdigit(): 
-                if (int(user_input) >= 0) and (int(user_input) <= len(finded_Tools) - 1):
-                    print ("[*] Selected: %s" % (finded_Tools[int(user_input)]))
-                    abs_file = "/var/lib/mkt/Env/Docker/" + finded_Tools[int(user_input)] + ".mktdk"
-                    break
-
-    elif (len(finded_Tools) == 1):
-        # When have one tools
-        Debug("Return => " + finded_Tools[0])
-        abs_file = "/var/lib/mkt/Env/Docker/" + finded_Tools[0] + ".mktdk"
-
-    Debug("abs_file =>" + abs_file)
-    return abs_file
 
 # ==========================================================================
 #                                 Base
@@ -361,7 +249,6 @@ def MKT_CD_TOOLD():
 
 # mkt list install module
 def MKT_LIST():
-    
     def functionHelp():
         print("[ERROR] Invalid parameter")
         print("    Usage: mkt list <install,installable>")
@@ -450,146 +337,47 @@ def MKT_SCRIPT_USE():
 
     from importlib.machinery import SourceFileLoader
     search_bin = "/var/lib/mkt/Bin/func_script.py"
-    SourceFileLoader("search_whoosh",search_bin).load_module().useScript(input_str)
+    SourceFileLoader("func_script",search_bin).load_module().useScript(input_str)
     MKT_CLEARUP()
 
 def MKT_SCRIPT_LIST():
     from importlib.machinery import SourceFileLoader
     search_bin = "/var/lib/mkt/Bin/func_script.py"
-    SourceFileLoader("search_whoosh",search_bin).load_module().listScript()
-
+    SourceFileLoader("func_script",search_bin).load_module().listScript()
 
 # ==========================================================================
-#                              Python Venv
+#                              Description
 # ==========================================================================
-# mkt venv 
-def MKT_VENV():
+
+# mkt desc tool xxxxx
+# mkt desc db xxxxx
+# mkt desc script xxxxx
+
+def MKT_DESCRIPTION():
     def functionHelp():
         print("[ERROR] Invalid parameter")
-        print("    Usage: mkt venv <run, build, list, remove> \n")
-        sys.exit(1)
+        print("    Usage: mkt desc <tool_install, tool_uninstall, db_install, db_uninstall, script> <module_name>")
+        sys.exit(0)
 
-    if (len(sys.argv) < 3):
+    if ((len(sys.argv) < 4)):
         functionHelp()
     
-    if (sys.argv[2] in ["list","ls"]):
-        MKT_VENV_LIST()
-        sys.exit(1)
-    
-    if (len(sys.argv) < 4):
+    print(sys.argv[3])
+    SelectFunction = {
+        "tool_install": "/var/lib/mkt/Tools/Source/" + sys.argv[3] + ".mkt",
+        "tool_uninstall": "/var/lib/mkt/Tools/Install/" + sys.argv[3] + ".mkt",
+        "script" : "/var/lib/mkt/Script/" + sys.argv[3] + ".py",
+    }
+
+    if (sys.argv[2] not in SelectFunction.keys()):
         functionHelp()
 
-    if os.getuid() == 0 :
-        print("[WARNING] You are in root premission")
-        user_input = input("[*] Are you sure to run in root premission ? (y/N): ")
-        if not ("y" in user_input.lower()):
-            sys.exit(1)
+    if os.path.exists(SelectFunction[sys.argv[2]]):
+        from importlib.machinery import SourceFileLoader
+        SourceFileLoader("mkt_desc",SelectFunction[sys.argv[2]]).load_module().description()
+    else:
+        print("[Error] File: %s not exist. " % (SelectFunction[sys.argv[2]]))
 
-    SelectFunction = {
-        "run" : MKT_VENV_RUN,
-        "rebuild": MKT_VENV_REBUILD,
-        "build": MKT_VENV_BUILD,
-        "remove": MKT_VENV_REMOVE,
-        "rm": MKT_VENV_REMOVE,
-        "delete": MKT_VENV_REMOVE,
-    }
-    SelectFunction.get(sys.argv[2],functionHelp)()
-
-
-
-def MKT_VENV_LIST():
-    print("[*] Available python venv: ")
-    for path,subpaths,files in os.walk("/var/lib/mkt/Env/Python/"):
-        for file in files:
-            if file[-6:] == ".mktpy":
-                module_name = (path + "/"+ file)[:-6]
-                module_name = module_name.replace("/var/lib/mkt/Env/Python/","")
-                print("    " + module_name)
-
-def MKT_VENV_REBUILD():
-    MKT_VENV_REMOVE()
-    MKT_VENV_BUILD()
-
-def MKT_VENV_RUN():
-    abs_file = Parser_Python_Venv_String(sys.argv[3])
-    from importlib.machinery import SourceFileLoader
-    SourceFileLoader("manesec",abs_file).load_module().Active()
-
-def MKT_VENV_BUILD():
-    abs_file = Parser_Python_Venv_String(sys.argv[3])
-    from importlib.machinery import SourceFileLoader
-    SourceFileLoader("manesec",abs_file).load_module().Build()
-
-def MKT_VENV_REMOVE():
-    abs_file = Parser_Python_Venv_String(sys.argv[3])
-    from importlib.machinery import SourceFileLoader
-    SourceFileLoader("manesec",abs_file).load_module().Remove()
-# ==========================================================================
-#                              Docker RUN
-# ==========================================================================
-# mkt docker 
-def MKT_DOCKER():
-
-    def functionHelp():
-        print("[ERROR] Invalid parameter")
-        print("    Usage: mkt docker <run, build, list, remove> \n")
-        sys.exit(1)
-
-    if (len(sys.argv) < 3):
-        functionHelp()
-
-    if (sys.argv[2] in ["list","ls"]):
-        MKT_DOCKER_LIST()
-        sys.exit(1)
-
-    if (len(sys.argv) < 4):
-        print("[ERROR] Invalid parameter")
-        print("    Usage: mkt docker <run, build, list, remove> \n")
-        sys.exit(1)
-
-    CheckUID()
-    SelectFunction = {
-        "run" : MKT_DOCKER_RUN,
-        "rebuild": MKT_DOCKER_REBUILD,
-        "build": MKT_DOCKER_BUILD,
-        "remove": MKT_DOCKER_REMOVE,
-        "rm": MKT_DOCKER_REMOVE,
-        "delete": MKT_DOCKER_REMOVE,
-    }
-    SelectFunction.get(sys.argv[2],functionHelp)()
-
-
-def MKT_DOCKER_REBUILD():
-    MKT_DOCKER_REMOVE()
-    MKT_DOCKER_BUILD()
-
-def MKT_DOCKER_REMOVE():
-    abs_file = Parser_Docker_String(sys.argv[3])
-    from importlib.machinery import SourceFileLoader
-    SourceFileLoader("manesec",abs_file).load_module().Remove()
-
-def MKT_DOCKER_LIST():
-    print("[*] Available docker containers: ")
-    for path,subpaths,files in os.walk("/var/lib/mkt/Env/Docker/"):
-        for file in files:
-            if file[-6:] == ".mktdk":
-                module_name = (path + "/"+ file)[:-6]
-                module_name = module_name.replace("/var/lib/mkt/Env/Docker/","")
-                print("    " + module_name)
-
-def MKT_DOCKER_RUN():
-    abs_file = Parser_Docker_String(sys.argv[3])
-    from importlib.machinery import SourceFileLoader
-    post_cmd = ""
-    for cmd in sys.argv[4:]:
-        post_cmd += " " + cmd
-    Debug("PostCMD => " + post_cmd)
-    SourceFileLoader("manesec",abs_file).load_module().Run(post_cmd)
-
-def MKT_DOCKER_BUILD():
-    abs_file = Parser_Docker_String(sys.argv[3])
-    from importlib.machinery import SourceFileLoader
-    SourceFileLoader("manesec",abs_file).load_module().Build()
 
 
 # ==========================================================================
@@ -858,14 +646,14 @@ if __name__ == "__main__" :
         "update-all":MKT_UPGRADE_ALL,
         "upgrade-all":MKT_UPGRADE_ALL,
 
-        # Will be deprecated or rewrite ...
-        "docker":MKT_DOCKER,
-        "venv": MKT_VENV,
-
         # doc server
         "doc": MKT_DOC_SERVER,
         "document-server": MKT_DOC_SERVER,
         "doc-server": MKT_DOC_SERVER,
+
+        # description
+        "desc" : MKT_DESCRIPTION,
+    
 
         # go to tools dir
         "cd": MKT_CD_TOOLD,

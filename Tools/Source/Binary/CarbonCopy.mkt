@@ -1,6 +1,26 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+
+def description():
+    desc = r"""
+Categories: Certificate Spoofing, AV Evasion, Cross-Platform
+
+CarbonCopy is a tool designed to create spoofed certificates for any online website, allowing users to sign executables for antivirus evasion. It operates on both Windows and Linux systems.
+
+Generates spoofed certificates for any website
+Signs executables to evade antivirus detection
+Compatible with both Windows and Linux
+Useful for penetration testing and security research
+Supports multiple file formats for signing
+Helps in testing application security
+Allows for customization of spoofed certificates
+Facilitates advanced social engineering tactics
+Provides a stealthy approach to malware deployment
+Enhances skills in digital certificate manipulation
+"""
+    print(desc)
+
 def Install():
     print("[CarbonCopy] Installing base ...")
 

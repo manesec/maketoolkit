@@ -41,10 +41,6 @@ There are 5 main structure, `Tools` , `Search DB` and `Script` ,
 
 + `Script` is some script, use to install some tools or setup the env.
 
-+ `Docker` is use to help for automatic build custom docker image.
-
-+ `Venv` is use to help for automatic build python virtual environment.
-
 A Config file will be locate in `/etc/mkt.conf`.
 
 ## About Tools
@@ -247,16 +243,6 @@ Script:
     # Run the script 
     mkt      script           <script_name>
     mkt      script           <script_index>
-
-Virtual Env:
-    mkt      docker    list
-    mkt      docker    run       <name>    <option>
-    mkt      docker    build     <name>
-    mkt      docker    rebuild   <name>
-    mkt      venv      list
-    mkt      venv      run       <name>
-    mkt      venv      remove    <name>
-    mkt      venv      rebuild   <name>
 
 DB and res:
     mkt        db         installable

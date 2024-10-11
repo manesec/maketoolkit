@@ -1,6 +1,26 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Memory Execution, C#, Encryption, Bypassing AV
+
+Invoke-SharpLoader is a tool for executing encrypted C# code directly in memory, allowing for stealthy operations by bypassing traditional antivirus and AMSI protections. It utilizes Invoke-SharpEncrypt to encrypt C# files and load them either from a remote server or locally.
+
+- Load encrypted C# code into memory.
+- Bypass antivirus and AMSI protections.
+- Encrypt executables with custom passwords.
+- Host encrypted files on a web server.
+- Execute files from local disk or remote URL.
+- Supports multiple arguments for execution.
+- Designed for stealthy operations.
+- Inspired by the p0wnedLoader project.
+- Requires full paths for file operations.
+- Ideal for red team engagements.
+
+"""
+    print(desc)
+    
 def Install():
     print("[SharpLoader] Installing base ...")
 

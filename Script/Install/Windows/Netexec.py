@@ -1,5 +1,7 @@
-def Info():
-    print("This script will install Netexec.")
+
+def description():
+    desc = r"""Install Netexec in pipx."""
+    print(desc)
 
 def Run():
     import os

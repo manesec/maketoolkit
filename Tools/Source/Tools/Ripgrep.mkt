@@ -2,6 +2,25 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Search Tools, Regex Tools, Command-Line Utilities
+
+ripgrep (rg) is a high-performance search tool that recursively searches directories for regex patterns while respecting .gitignore rules. It is designed for speed and efficiency, making it a preferred choice for developers looking to quickly find code snippets.
+
+- Fast recursive searching
+- Supports regex patterns
+- Ignores .gitignore files by default
+- Cross-platform support (Windows, macOS, Linux)
+- Custom file type searches
+- Supports multiple encodings
+- Can search compressed files
+- PCRE2 support for advanced regex features
+- Configurable via a config file
+- Lightweight and easy to install
+"""
+    print(desc)
+
 def Install():
     import os
 

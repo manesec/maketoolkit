@@ -25,7 +25,7 @@ def copyAndfindinFiles(filename):
             print("[!] Not such files, please install some tools.")
             return
 
-        userSelect = fzf.prompt(files)
+        userSelect = fzf.prompt(files,"--preview-window=wrap --preview \"cat '{}' \"")
         if userSelect:
             userSelect = userSelect[0]
             print ("[*] Copying %s --> %s ..." % (userSelect, target))
@@ -63,7 +63,7 @@ def copyAndfindinFiles(filename):
             print("[!] Not Found!")
             return
 
-        userSelect = fzf.prompt(files)
+        userSelect = fzf.prompt(files,"--preview-window=wrap --preview \"cat '{}' \"")
 
         if userSelect:
             userSelect = userSelect[0]

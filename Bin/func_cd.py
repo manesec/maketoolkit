@@ -43,7 +43,7 @@ def Parser_Tools_String_When_Installed(inputString):
             # When more than one tools
             Debug(finded_Tools)
 
-            userSelect = fzf.prompt(finded_Tools)
+            userSelect = fzf.prompt(finded_Tools,"--preview-window=wrap --preview \"mkt desc tool_uninstall '{}' \"")
 
             if userSelect:
                 userSelect = userSelect[0]
@@ -62,7 +62,7 @@ def Parser_Tools_String_When_Installed(inputString):
             module_name = finded_Tools[0] + ".mkt"
     
     else:
-        userSelect = fzf.prompt(toolsList)
+        userSelect = fzf.prompt(toolsList,"--preview-window=wrap --preview \"mkt desc tool_uninstall '{}' \"")
 
         if userSelect:
             userSelect = userSelect[0]

@@ -2,6 +2,25 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Port Scanning, Security, Penetration Testing, Scripting
+
+RustScan is a modern, fast port scanner designed for efficiency and extensibility. It can scan all 65,000 ports in just 3 seconds and supports scripting in multiple languages, making it a versatile tool for security professionals.
+
+- Scans all 65,000 ports in 3 seconds.
+- Supports custom scripts in Python, Lua, and Shell.
+- Automatically pipes results into Nmap for further analysis.
+- Utilizes Adaptive Learning to improve performance over time.
+- Accessible design aimed at inclusivity in penetration testing.
+- Continuous performance monitoring to ensure speed.
+- Compatible with Docker for easy deployment.
+- Community-driven with multiple distributions available.
+- Extensive documentation and installation guides.
+- Active community support via Discord.
+"""
+    print(desc)
+
 def Install():
     print("[Rustscan] Downloading base ...")
 

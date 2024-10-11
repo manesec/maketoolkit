@@ -1,6 +1,25 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Active Directory, PowerShell, Automation, Security
+
+AdsiPS is a PowerShell module designed for seamless interaction with Active Directory using the .NET Framework. It simplifies tasks like querying, modifying, and managing AD objects directly from PowerShell, making it essential for system administrators and security professionals.
+
+- Built on .NET Framework for robust functionality
+- Supports querying and managing Active Directory objects
+- Easy installation via PowerShell Gallery or GitHub
+- Compatible only with Windows Operating Systems
+- Offers functions for automation and scripting
+- Active community contributions enhance the tool
+- Documentation available for guidance and use cases
+- Facilitates security audits and compliance checks
+- Integrates with other PowerShell tools for extended capabilities
+- Regular updates and community support improve reliability
+"""
+    print(desc)
+
 def Install():
     print("[AdsiPS] Installing base ...")
 

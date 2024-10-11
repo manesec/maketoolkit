@@ -2,6 +2,24 @@ from importlib.machinery import SourceFileLoader
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Process Monitoring, Linux Tools, Enumeration, CTF Tools
+
+pspy is a command-line utility that allows users to monitor processes on a Linux system without requiring root privileges. It captures and displays commands executed by other users and cron jobs in real-time, making it an invaluable tool for system enumeration and security demonstrations.
+
+- Monitors processes without root access
+- Tracks commands in real-time as they execute
+- Uses inotify to catch short-lived processes
+- Ideal for CTF challenges and security assessments
+- Demonstrates risks of passing sensitive data in command line arguments
+- Supports recursive and non-recursive directory watching
+- Configurable scanning intervals for process detection
+- Outputs process information with UID and PID
+- Lightweight and easy to deploy on Linux systems
+"""
+    print(desc)
+
 def Install():
     print("[Pspy] Downloading base ...")
 

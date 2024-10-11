@@ -1,6 +1,25 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Vulnerability Scanning, Web Application Security, Joomla Security, Open Source Tools
+
+OWASP JoomScan is an automated vulnerability scanner specifically designed for Joomla CMS installations. It detects known vulnerabilities, misconfigurations, and potential security weaknesses, providing detailed reports in text and HTML formats.
+
+- Automated scanning for Joomla installations
+- Detects known vulnerabilities and misconfigurations
+- Lightweight and modular architecture
+- User-friendly interface for ease of use
+- Generates reports in text and HTML formats
+- Supports version and component enumeration
+- Includes firewall detection capabilities
+- Easily integrated into Kali Linux
+- Supports Docker for containerized deployment
+- Actively maintained with community contributions
+"""
+    print(desc)
+
 def Install():
     print("[JoomlaScan] Installing base ...")
 

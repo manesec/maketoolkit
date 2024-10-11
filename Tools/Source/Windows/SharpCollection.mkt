@@ -1,6 +1,26 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: C#, Offensive Security, Active Directory, Privilege Escalation, Reconnaissance
+
+SharpCollection provides nightly builds of various C# offensive tools, aimed at penetration testers and security researchers. These tools are compiled from their respective master branches using Azure DevOps, ensuring users have access to the latest features and fixes.
+
+- Nightly builds ensure up-to-date tools.
+- Supports multiple .NET Framework versions.
+- Focus on Active Directory exploitation.
+- Includes tools for privilege escalation.
+- Designed for safe testing in lab environments.
+- Encourages users to review code before deployment.
+- Active community for tool suggestions and improvements.
+- Tools cover a wide range of functionalities.
+- Built with offensive security in mind.
+- Available for various architectures.
+
+"""
+    print(desc)
+    
 def Install():
     print("[SharpCollection] Installing base ...")
 

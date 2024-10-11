@@ -1,6 +1,24 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Privilege Escalation, Windows, PowerShell, Security Auditing
+
+PrivescCheck is a PowerShell script designed to identify local privilege escalation vulnerabilities in Windows systems. It assesses configuration issues and bad practices while gathering valuable information for exploitation and post-exploitation tasks.
+
+- Identifies local privilege escalation vulnerabilities
+- Supports basic, extended, and audit checks
+- Generates human-readable and machine-readable reports
+- Can be run in various execution environments
+- Bypasses PowerShell execution policies in certain scenarios
+- Compatible with PowerShell version 2 for bypassing constraints
+- Provides options for experimental checks
+- Useful for security audits and assessments
+- Can be executed within Meterpreter sessions with timeout adjustments
+- Open-source and community-supported tool
+"""
+    print(desc)
 
 def Install():
     print("[PrivescCheck] Installing base ...")

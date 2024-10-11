@@ -1,6 +1,25 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Docker, Docker Registry Dumper, Enumeration, Security, Python Tools
+
+DockerRegistryGrabber is a powerful Python tool designed for enumerating and dumping images from a Docker Registry. It supports both unauthenticated and authenticated access, making it versatile for security assessments.
+
+- Easy installation via GitHub
+- Supports listing and dumping Docker images
+- Handles basic authentication and bearer tokens
+- Customizable port settings
+- Simple command-line interface
+- Efficient for security assessments
+- Outputs detailed image information
+- Ideal for penetration testing
+- Actively maintained by the community
+- User-friendly documentation and examples
+"""
+    print(desc)
+
 def Install():
     print("[DockerRegistryGrabber] Installing base ...")
 

@@ -1,5 +1,7 @@
-def Info():
-    print("This script will install Powerview Python.")
+
+def description():
+    desc = r"""Install powerview in pipx."""
+    print(desc)
 
 def Run():
     import os

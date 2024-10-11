@@ -2,6 +2,26 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Tunneling, VPN, Penetration Testing, Networking
+
+Ligolo-ng is a lightweight tunneling tool that enables penetration testers to create secure tunnels using TUN interfaces, eliminating the need for SOCKS proxies. It supports multiple platforms and offers automatic certificate configuration, making it easy to set up and use.
+
+- Lightweight and fast tunneling tool
+- Utilizes TUN interfaces instead of SOCKS
+- No administrative access required on the agent side
+- Automatic Let's Encrypt certificate configuration
+- Supports TCP, UDP, and ICMP protocols
+- High performance with multiplexing capabilities
+- Handles multiple tunnels simultaneously
+- Websocket support for enhanced connectivity
+- Automatic recovery from network issues
+- Simple UI for agent selection and network info
+
+"""
+    print(desc)
+
 def Install():
     print("[LigoloNG] Downloading base ...")
 

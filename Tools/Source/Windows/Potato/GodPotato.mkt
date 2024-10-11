@@ -2,6 +2,24 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Privilege Escalation, Windows Exploitation, DCOM Exploits
+
+GodPotato is a privilege escalation tool that leverages flaws in DCOM to elevate user privileges on Windows Server 2012 to 2022 and Windows 8 to 11. With just "ImpersonatePrivilege," users can escalate to "NT AUTHORITY\SYSTEM," often found in web and database services.
+
+- Utilizes DCOM vulnerabilities for privilege escalation
+- Compatible with Windows Server 2012 - 2022 and Windows 8 - 11
+- Requires "ImpersonatePrivilege" permission
+- Executes commands with elevated privileges
+- Built-in CLSID for easy usage
+- Supports custom CLSID for advanced users
+- Can execute reverse shell commands
+- Lightweight and easy to deploy
+- Open-source under Apache License 2.0
+- Designed for ethical hacking and penetration testing
+"""
+    print(desc)
 
 def Install():
     print("[GodPotato] Downloading base ...")

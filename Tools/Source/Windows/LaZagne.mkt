@@ -2,6 +2,26 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Password Recovery, Post-Exploitation, Open Source, Security Tools
+
+The LaZagne Project is an open-source tool designed to recover stored passwords from various applications on local computers. It supports multiple platforms and can extract credentials from browsers, chat applications, databases, and more.
+
+- Open-source and free to use
+- Supports Windows, Linux, and Mac
+- Retrieves passwords from numerous applications
+- Can run in memory without touching the disk
+- Offers multiple output formats (TXT, JSON)
+- Interactive mode for password entry
+- Can decrypt domain credentials with user password
+- Requires admin privileges for Wi-Fi password retrieval
+- Simple command-line interface
+- Actively maintained with community contributions
+
+"""
+    print(desc)
+    
 def Install():
     print("[LaZagne] Downloading base ...")
 

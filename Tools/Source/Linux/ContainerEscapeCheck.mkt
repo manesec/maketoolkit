@@ -1,6 +1,24 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Container Security, Vulnerability Assessment, Docker Tools
+
+Container Escape Check is a script designed to identify potential Docker container escape vulnerabilities. It assesses various escape methods, including privilege escalation and specific CVEs, to help ensure container security.
+
+- Detects privileged mode vulnerabilities
+- Checks for mounted Docker socket
+- Identifies host procfs and root directory mounts
+- Scans for open Docker Remote API
+- Tests for known CVEs related to container escape
+- Requires execution within the Docker container
+- Offers a straightforward one-command usage
+- Aims to minimize false positives and omissions
+- Encourages community feedback for improvements
+"""
+    print(desc)
+
 def Install():
     print("[ContainerEscapeCheck] Installing base ...")
 

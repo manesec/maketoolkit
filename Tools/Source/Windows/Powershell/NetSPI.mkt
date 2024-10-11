@@ -1,6 +1,60 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: PowerShell, Scripting, Security, Penetration Testing, Automation
+
+NetSPI PowerShell Scripts provide a collection of tools for penetration testers and security professionals to automate tasks, gather information, and exploit vulnerabilities within various environments. These scripts facilitate efficient data collection and manipulation, enhancing the effectiveness of security assessments.
+
+- Automates data collection from Active Directory
+- Retrieves SSL certificate information
+- Facilitates SQL Server exploitation
+- Generates fake sensitive data for testing
+- Conducts domain information gathering
+- Analyzes AWS S3 bucket permissions
+- Supports mass credential extraction
+- Implements web filter testing
+- Enables DNS validation token resolution
+- Assists in privilege escalation assessments
+
+[Files]
+./cryptit/CryptIt.cs
+./cryptit/Crypt-It.ps1
+./cryptit/CryptItexe.zip
+./Get-SSLCertInfo-Scan.psm1
+./Get-DomainInfoADPS.psm1
+./README.md
+./fish.ps1
+./Install-NetspiAgent.psm1
+./Get-GPRegistryPolicy.ps1
+./Convert-CsvToPsDt.ps1
+./Invoke-MassMimikatz-PsRemoting.psm1
+./Create-FakeSensitiveData.psm1
+./Get-FederationEndpoint.ps1
+./Get-BadPrivilege.psm1
+./Load-AdPsModule.ps1
+./Convert-DataTableToHtmlTable.ps1
+./Invoke-SqlServer-Persist-StartupSp.psm1
+./Get-SSLCertInfo-CTFR.psm1
+./Convert-ImageToHtml.ps1
+./Invoke-SqlServer-Persist-TriggerDDL.psm1
+./Get-AdDecodedPassword.psm1
+./Get-PublicAwsS3BucketList.psm1
+./Invoke-HuntSQLServers.ps1
+./Get-IpInfoFromCap.ps1
+./Get-GraphAPIToken.ps1
+./PowerSkype.ps1
+./Get-GPPPasswordMod.ps1
+./Dump-AzureDomainInfo.ps1
+./Invoke-ExternalDomainBruteforce.psm1
+./Invoke-WebFilterTest.psm1
+./Resolve-DnsDomainValidationToken.ps1
+./fish.psm1
+./Send-ProtocolHandlerEmailLinks.psm1
+"""
+    print(desc)
+
 def Install():
     print("[NetSPI] Installing base ...")
 

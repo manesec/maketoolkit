@@ -1,6 +1,27 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Vulnerability Scanning, Web Application Security, Joomla Tools, Python Tools
+
+Juumla is a Python-based tool designed to identify Joomla versions, scan for vulnerabilities, and locate sensitive files within Joomla installations.
+
+- Identifies Joomla version quickly
+- Scans for known vulnerabilities
+- Locates sensitive configuration files
+- Low resource consumption
+- Open-source and community-driven
+- Easy installation via Git and pip
+- Supports Docker for containerized environments
+- Regular updates planned for vulnerability database
+- Contributing guidelines available
+- Warning against malicious use
+
+
+"""
+    print(desc)
+
 def Install():
     print("[Juumla] Installing base ...")
 

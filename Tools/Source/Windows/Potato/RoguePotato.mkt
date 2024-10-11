@@ -2,6 +2,25 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Local Privilege Escalation, Windows Exploitation, Command Execution
+
+RoguePotato is a tool for exploiting Windows services to escalate privileges from a service account to SYSTEM level. It facilitates remote command execution, making it useful for penetration testers and security researchers.
+
+- Exploits Windows local privilege escalation vulnerabilities
+- Utilizes service accounts for privilege escalation
+- Supports remote command execution
+- Requires minimal setup on the target machine
+- Customizable CLSID and pipe names
+- Can run in conjunction with RogueOxidResolver
+- Works through network redirectors
+- Allows for port forwarding
+- Useful for bypassing firewall restrictions
+- Open-source and actively maintained
+"""
+    print(desc)
+
 def Install():
     try:
         import os

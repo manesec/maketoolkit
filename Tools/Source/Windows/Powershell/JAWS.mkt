@@ -1,6 +1,26 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+
+def description():
+    desc = r"""
+Categories: Penetration Testing, Windows Enumeration, Privilege Escalation
+
+JAWS - Just Another Windows (Enum) Script - is a PowerShell script that aids penetration testers in identifying potential privilege escalation vectors on Windows systems. Its compatibility with PowerShell 2.0 allows it to run on all Windows versions since Windows 7, making it a versatile tool for security assessments.
+
+- Quickly identifies privilege escalation vectors
+- Compatible with all Windows versions since 7
+- Gathers network information (interfaces, arp, netstat)
+- Checks firewall status and rules
+- Lists running processes and mapped drives
+- Identifies files with full control or modify access
+- Detects unquoted service paths and recent documents
+- Analyzes installed applications and potentially vulnerable services
+- Checks for stored credentials and scheduled tasks
+- Outputs results to file or screen for easy review
+"""
+    print(desc)
+
 def Install():
     print("[JAWS] Installing base ...")
 

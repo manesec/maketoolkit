@@ -2,6 +2,25 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Git Dumper,Reconnaissance, Exploitation, Information Gathering
+
+Gitjacker is a tool designed to download git repositories from misconfigured sites where the .git directory is publicly accessible. It effectively extracts repository contents even when directory listings are disabled, making it a valuable resource for penetration testing and security assessments.
+
+- Extracts .git repositories from exposed directories
+- Works even with disabled directory listings
+- Useful for penetration testing and security audits
+- Requires Git to be installed
+- Can recover significant portions of a repository
+- Easy installation via script or precompiled binary
+- Aids in identifying security misconfigurations
+- Supports educational purposes in cybersecurity
+- Offers insights into repository contents
+- Regularly featured in security newsletters and articles
+"""
+    print(desc)
+
 def Install():
     print("[Gitjacker] Downloading base ...")
     UpdateFromGithub()

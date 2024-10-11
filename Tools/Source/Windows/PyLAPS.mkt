@@ -1,6 +1,26 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Password Management, LDAP Tools, Python Scripts
+
+pyLAPS is a Python script for reading and writing LAPS (Local Administrator Password Solution) passwords on Windows machines. It allows users with the appropriate permissions to get or set passwords securely via LDAP.
+
+- Supports multiple authentication methods (LDAP, LDAPS, Kerberos).
+- Requires domain admin privileges for full functionality.
+- Can extract passwords for all managed computers in a domain.
+- Allows setting random or specific passwords for target computers.
+- Easy command-line usage with various optional arguments.
+- Outputs detailed success messages for actions performed.
+- Compatible with both Windows and Linux environments.
+- Inspired by SharpLAPS, enhancing functionality in Python.
+- Open-source with contributions welcome on GitHub.
+- Useful for system administrators managing local admin accounts.
+
+"""
+    print(desc)
+    
 def Install():
     print("[PyLAPS] Installing base ...")
 

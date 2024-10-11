@@ -1,6 +1,25 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Active Directory, Enumeration, PowerShell, Security Assessment
+
+adPEAS is a PowerShell tool designed to automate Active Directory enumeration by integrating various existing tools like PowerView and BloodHound. It facilitates comprehensive data collection on domain configurations, permissions, and potential vulnerabilities.
+
+- Automates Active Directory enumeration
+- Utilizes existing tools for enhanced functionality
+- Supports multiple enumeration modules
+- Can run on domain-joined or standalone systems
+- Outputs data in various formats
+- Focuses on credential exposure issues
+- Provides insights into delegation and account privileges
+- Lightweight version available to avoid AV detection
+- Easily customizable with parameters
+- Open-source and community-supported
+"""
+    print(desc)
+
 def Install():
     print("[ADPeas] Installing base ...")
 

@@ -2,6 +2,26 @@ from importlib.machinery import SourceFileLoader
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+
+def description():
+    desc = r"""
+Categories: Decompilation, Cross-platform, .NET Tools, Open Source
+
+AvaloniaILSpy is a cross-platform decompiler for .NET applications, built using Avalonia UI. It allows users to analyze and navigate through assemblies, providing a modern interface and extensibility options.
+
+- Cross-platform compatibility (Windows, Linux, Mac)
+- Decompiles .NET assemblies to readable code
+- Search functionality for types/methods/properties
+- Hyperlink-based navigation for easy exploration
+- Extensible via MEF (Managed Extensibility Framework)
+- User-friendly interface with modern design
+- Supports various .NET versions
+- Active community and ongoing feature development
+- Regular updates and stable releases available
+- Open-source with accessible source code for customization
+"""
+    print(desc)
+
 def Install():
     import os
 

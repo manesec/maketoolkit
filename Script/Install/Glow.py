@@ -1,4 +1,4 @@
-def Info():
+def description():
     print("This is script will be install glow.")
     print("    - Markdown viewer on terminal.")
 
@@ -7,7 +7,6 @@ def Run():
     SourceFileLoader("require_root","/var/lib/mkt/Bin/module_unit.py").load_module().RequireRoot()
     
     import os
-    Info()
     InstallGlow()
 
 

@@ -1,3 +1,22 @@
+def description():
+    desc = r"""
+Categories: Subdomain Enumeration, Wordlists, OSINT, Penetration Testing
+
+Payload box collection
+
+command-injection-payload-list
+ssti-payloads
+xss-payload-list
+sql-injection-payload-list.git
+rfi-lfi-payload-list
+csv-injection-payloads
+directory-payload-list
+open-redirect-payload-list
+xxe-injection-payload-list
+
+"""
+    print(desc)
+
 def Install():
     print("[PayloadBox] Downloading  ...")
 

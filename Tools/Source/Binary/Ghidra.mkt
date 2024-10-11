@@ -2,6 +2,24 @@ from importlib.machinery import SourceFileLoader
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Software Reverse Engineering, Cybersecurity, Analysis Tools
+
+Ghidra is a powerful software reverse engineering framework developed by the NSA, providing a comprehensive suite of tools for analyzing compiled code across various platforms. It supports extensive customization and scripting, making it ideal for both automated and interactive analysis.
+
+- Disassembles and decompiles code for various architectures
+- Supports user-created scripts in Java and Python
+- Offers a graphical interface for code analysis
+- Facilitates collaboration through team-oriented features
+- Regularly updated with community contributions
+- Includes extensive documentation and user guides
+- Capable of analyzing malicious code and vulnerabilities
+- Cross-platform compatibility (Windows, macOS, Linux)
+- Open-source with a strong focus on security
+"""
+    print(desc)
+
 def Install():
     import os
 

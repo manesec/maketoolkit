@@ -2,6 +2,24 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Privilege Escalation, Windows Exploitation, DLL Injection
+
+RottenPotatoNG is a powerful tool for privilege escalation on Windows systems, allowing attackers to obtain a handle to a privileged token without relying on Meterpreter or other frameworks.
+
+- Supports C++ DLL and standalone binary formats
+- No dependencies on external tools like Meterpreter
+- Allows execution of arbitrary commands with elevated privileges
+- Simple integration into penetration testing workflows
+- Example usage provided in the MSFRottenPotatoTestHarness project
+- Customizable command execution by modifying the main method
+- Facilitates exploitation of token manipulation vulnerabilities
+- Ideal for red team engagements and security assessments
+- Open-source project with community support and updates
+- Comprehensive documentation available for implementation guidance
+"""
+    print(desc)
 
 def Install():
     print("[RottenPotato] Installing base ...")

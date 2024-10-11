@@ -1,6 +1,25 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Web Exploitation, Git Dumper, Data Extraction
+
+git-dumper is a tool designed to extract a Git repository from a website, enabling users to retrieve version-controlled files easily.
+
+- Dumps Git repositories from websites.
+- Supports simultaneous requests for faster extraction.
+- Can use proxies for anonymity.
+- Allows custom user agents for requests.
+- Configurable timeout and retry options.
+- Recursively fetches Git objects and refs.
+- Analyzes Git metadata for comprehensive data retrieval.
+- Can recover the working tree with `git checkout`.
+- Easy installation via pip.
+- Use responsibly to avoid legal issues.
+"""
+    print(desc)
+
 def Install():
     print("[Gitdumper] Installing base ...")
 

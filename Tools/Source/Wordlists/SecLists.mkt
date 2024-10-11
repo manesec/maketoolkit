@@ -1,6 +1,24 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Wordlists, Security Testing, Fuzzing, Penetration Testing, Vulnerability Assessment
+
+SecLists is an essential collection of multiple types of lists used for security assessments, including usernames, passwords, URLs, and payloads. It streamlines the testing process by providing a comprehensive resource for security professionals.
+
+- Comprehensive collection of security-related lists
+- Includes usernames, passwords, URLs, and sensitive data patterns
+- Supports fuzzing and testing with various payloads
+- Maintained by well-known security experts
+- Easy to clone and integrate into testing environments
+- Available in multiple formats (zip and git)
+- Regularly updated with new lists and contributions
+- Compatible with popular security distributions like Kali Linux
+- Licensed under the MIT license for easy use
+- Ideal for penetration testers and security researchers
+"""
+    print(desc)
 
 def Install():
     print("[SecLists] Installing base ...")

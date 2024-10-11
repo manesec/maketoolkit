@@ -1,6 +1,25 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Default Credentials, Penetration Testing, Security Tools
+
+The Default Credentials Cheat Sheet is a comprehensive resource for penetration testers, providing a collection of default login credentials for various products. It aids in identifying security vulnerabilities during assessments and helps organizations secure their systems.
+
+- Extensive database with over 3,600 default credentials
+- Supports multiple platforms (Linux, Windows)
+- Allows searching and exporting of credentials
+- Regular updates to keep the dataset current
+- Integrates with other tools like Changeme and Routersploit
+- Facilitates red teaming and blue team efforts
+- User-friendly command-line interface
+- Proxy support for enhanced anonymity
+- Contributes to better security practices
+- Open-source with community contributions
+"""
+    print(desc)
+
 def Install():
     print("[DefaultCreds] Installing base ...")
 

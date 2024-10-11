@@ -1,12 +1,34 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Code Injection, Lateral Movement, Bypass Techniques, Shellcode Encoding, Process Hollowing
+
+The OSEP Code Snippets provide a collection of utilities and techniques for bypassing security measures and executing payloads in various environments. These snippets are designed for educational purposes in offensive security.
+
+- AppLocker Bypass PowerShell Runspace (C#)
+- Fileless Lateral Movement (C#)
+- Linux Shellcode Encoder (Python)
+- Linux Shellcode Loaders (C)
+- MiniDump (C# & PS1)
+- MSSQL (C#)
+- PrintSpoofer.NET (C#)
+- ROT Shellcode Encoder (C#)
+- Sections Shellcode Process Injector (C#)
+- Shellcode Process Hollowing (C#)
+- Shellcode Process Injector (C# & PS1)
+- Simple Shellcode Runner (C# & PS1 & VBA)
+- XOR Shellcode Encoder (C#)
+"""
+    print(desc)
+
 def Install():
     print("[OSEPCodeSnippets] Installing base ...")
 
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Windows/BypassAV")
-    os.system("git clone https://github.com/lemmyz4n3771/Reflective-DLL-Injection.git OSEPCodeSnippets")
+    os.system("git clone https://github.com/chvancooten/OSEP-Code-Snippets OSEPCodeSnippets")
 
     # check if installed 
     import os

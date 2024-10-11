@@ -1,6 +1,26 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Network Enumeration, DCOM, Security Research, Vulnerability Assessment
+
+IOXIDResolver is a Python tool that allows hackers to remotely enumerate network interfaces without authentication. It identifies additional active interfaces, which can indicate virtual machines, VPNs, or other interesting network configurations.
+
+- Remote enumeration of network interfaces
+- No authentication required
+- Identifies virtual machines and VPNs
+- Useful for security assessments
+- Supports DCOM protocol
+- Helps in network mapping
+- Assists in identifying potential attack vectors
+- Simple command-line interface
+- Developed by Airbus Security
+- Open-source research tool
+
+"""
+    print(desc)
+    
 def Install():
     print("[IOXIDResolver] Installing base ...")
 

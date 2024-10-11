@@ -2,6 +2,25 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Port Scanning, Network Security, Enumeration, Open Source
+
+Naabu is a fast and efficient port scanning tool written in Go, designed to enumerate valid ports for hosts using SYN, CONNECT, and UDP probes. It supports multiple input formats, integrates with Nmap for service discovery, and can exclude CDN/WAF IPs.
+
+- Fast SYN/CONNECT/UDP scanning
+- Supports IPv4 and IPv6
+- Automatic IP deduplication
+- Multiple output formats (JSON, CSV)
+- Nmap integration for deeper scans
+- Excludes CDN/WAF IPs
+- Host discovery options available
+- Configurable rate limits
+- Easy installation via Go
+- Community-driven open-source tool
+"""
+    print(desc)
+
 def Install():
     print("[Naabu] Downloading base ...")
 

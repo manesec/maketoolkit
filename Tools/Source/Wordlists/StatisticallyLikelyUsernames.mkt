@@ -1,6 +1,25 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Username Generation, Security Testing, Password Attacks, Penetration Testing
+
+Statistically Likely Usernames is a resource designed for security professionals to create probable username lists for efficient enumeration and password-guessing attacks. By leveraging popular naming conventions and formats, it enhances the success rate of attacks while minimizing account lockout risks.
+
+- Generates usernames based on statistical likelihood
+- Utilizes data from US Census and Facebook
+- Supports horizontal password attacks
+- Provides various pre-canned username formats
+- Allows customization and manipulation of base lists
+- Includes email address variations
+- Tested extensively in live penetration tests
+- Aids in efficient guessing strategies
+- Reduces time spent on less likely usernames
+- Helps identify common username patterns
+"""
+    print(desc)
+
 def Install():
     print("[StatisticallyLikelyUsernames] Installing base ...")
 

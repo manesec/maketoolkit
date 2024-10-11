@@ -1,4 +1,4 @@
-def Info():
+def description():
     print("Install gospider from https://github.com/jaeles-project/gospider.git")
 
 def Run():

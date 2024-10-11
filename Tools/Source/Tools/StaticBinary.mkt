@@ -1,6 +1,27 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Static Binary, Networking, Development Tools, Security Tools, Scripting
+
+This repository provides a collection of statically-linked binaries for various essential tools, enabling easy access across different platforms and architectures. Users can build these tools using provided Dockerfiles, ensuring portability and compatibility.
+
+- Contains a variety of useful tools like nmap, tcpdump, and python.
+- Supports building via Docker for consistent environments.
+- Statically-linked binaries minimize dependencies on the host system.
+- Includes tools for network scanning and analysis.
+- Ideal for security assessments and penetration testing.
+- Easy to contribute new tools or request builds for different platforms.
+- Offers documentation for specific usage scenarios.
+- Facilitates quick setup for development and testing.
+- Provides a straightforward build process with Docker.
+- Ensures broad compatibility across modern Linux distributions.
+
+
+"""
+    print(desc)
+
 def Install():
     print("[StaticBinary] Installing base ...")
 

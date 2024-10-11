@@ -2,6 +2,25 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Network Tools, Penetration Testing, Open Source
+
+NetExec is a powerful network execution tool designed for penetration testing and network assessment. Originally derived from CrackMapExec, it has evolved with community contributions to streamline network operations and enhance security assessments.
+
+- Community-driven development with regular updates
+- Supports various network protocols
+- Easy installation via pipx
+- Comprehensive documentation in development
+- Allows for quick execution of commands across multiple hosts
+- Integrates with existing tools and scripts
+- Active Discord channel for support and discussions
+- Maintains a focus on open-source accessibility
+- Encourages contributions from the community
+- Acknowledges past contributors for continuous improvement
+"""
+    print(desc)
+
 def Install():
     print("[Netexec] Downloading base ...")
 

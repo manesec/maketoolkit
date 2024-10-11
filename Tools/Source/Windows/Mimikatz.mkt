@@ -5,6 +5,25 @@ from pathlib import Path
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Credential Dumping, Post-Exploitation, Windows Security, Kerberos Attacks
+
+Mimikatz is a powerful post-exploitation tool that extracts plaintext passwords, hashes, PIN codes, and Kerberos tickets from memory. It enables various attacks, including pass-the-hash and golden ticket creation, making it invaluable for penetration testers and security researchers.
+
+- Extracts plaintext passwords and hashes from memory
+- Performs pass-the-hash attacks
+- Creates golden tickets for Kerberos
+- Dumps credentials from Windows Vault
+- Supports credential manipulation and elevation
+- Exports Kerberos tickets for reuse
+- Integrates with Visual Studio for custom builds
+- Offers extensive documentation and community support
+- Available as precompiled binaries
+- Frequently updated with new features and modules
+"""
+    print(desc)
+
 def Install():
     print("[Mimikatz] Downloading base ...")
 

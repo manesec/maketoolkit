@@ -1,6 +1,26 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Credential Dumping, Active Directory, Post-Exploitation
+
+Leo4j / Tools  is a powerful tool for interacting with Kerberos tickets and performing various attacks on Windows environments, including ticket-granting ticket (TGT) extraction, ticket renewal, and pass-the-ticket attacks.
+
+- Extract and manipulate Kerberos tickets
+- Perform pass-the-ticket attacks
+- Renew and request TGTs
+- Support for Kerberos ticket extraction from memory
+- Ability to create and request service tickets
+- Supports various authentication methods
+- Integrates with Mimikatz for enhanced functionality
+- Can be executed in memory to evade detection
+- Useful for lateral movement in Active Directory environments
+- Open-source and actively maintained by the community
+
+"""
+    print(desc)
+    
 def Install():
     print("[Leo4jTools] Installing base ...")
 

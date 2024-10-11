@@ -1,6 +1,27 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Enumeration, Pentesting, Network Scanning, Automation
+
+Legion is an automatic enumeration tool designed for penetration testing. It integrates multiple open-source tools to streamline the process of gathering information on network services, reducing repetitive tasks and enhancing efficiency.
+
+- Integrates multiple open-source tools for comprehensive scans.
+- Supports automatic, semi-automatic, and manual enumeration.
+- Allows brute force attacks on various protocols.
+- Offers customizable scanning options and parameters.
+- Facilitates Docker container deployment for easy setup.
+- Provides internal commands for streamlined operations.
+- Capable of scanning both IPv4 and IPv6 addresses.
+- Features a user-friendly command interface.
+- Maintains a directory for storing victim information.
+- Regularly updated to include new protocols and features.
+
+
+"""
+    print(desc)
+
 def Install():
     print("[Legion] Installing base ...")
 

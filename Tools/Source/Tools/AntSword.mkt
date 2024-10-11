@@ -2,6 +2,24 @@ from importlib.machinery import SourceFileLoader
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Webshell, Penetration Testing, Security Research
+
+AntSword is an open-source, cross-platform tool designed for website administration, catering to the needs of penetration testers and security researchers. It emphasizes modularity and user contributions, promoting ease of use and modification.
+
+- Open-source and cross-platform
+- Designed for authorized security testing
+- Modular architecture for easy customization
+- Supports contributions from users of all levels
+- Encourages ethical use and compliance with laws
+- Built with Electron, ES6, and Node.js
+- Comprehensive documentation available
+- Active community support for enhancements
+- Regular updates and changelogs provided
+"""
+    print(desc)
+
 def Install():
     print("[AntSword] Downloading base ...")
 

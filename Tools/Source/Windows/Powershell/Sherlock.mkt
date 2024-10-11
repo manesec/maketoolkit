@@ -2,6 +2,26 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Privilege Escalation, Vulnerability Scanning, Windows Exploitation
+
+Sherlock is a PowerShell script designed to identify missing software patches related to local privilege escalation vulnerabilities in Windows systems. It provides quick insights into potential vulnerabilities, allowing users to take necessary actions to secure their systems.
+
+- Scans for multiple known vulnerabilities
+- Provides detailed vulnerability information
+- Easy integration with Metasploit's Beacon
+- Supports various Windows versions
+- Outputs vulnerability status and links to exploits
+- Facilitates privilege escalation through identified vulnerabilities
+- User-friendly command-line interface
+- Lightweight and efficient script
+- Regularly updated to cover new vulnerabilities
+- Community-supported for ongoing improvements
+
+"""
+    print(desc)
+    
 def Install():
     print("[Sherlock] Installing base ...")
 

@@ -1,6 +1,25 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Penetration Testing, Reconnaissance, Exploitation, Privilege Escalation, Windows Security
+
+WinPwn is a comprehensive PowerShell-based tool designed for internal penetration testing, automating reconnaissance and exploitation processes while integrating proxy support. It offers a wide range of functionalities to gather system and domain information, exploit vulnerabilities, and perform privilege escalation.
+
+- Automates internal penetration testing processes
+- Supports proxy integration for reconnaissance
+- Executes multiple exploitation techniques
+- Gathers extensive local and domain information
+- Includes modules for privilege escalation
+- Features AMSI bypass techniques
+- Provides offline functionality with included scripts
+- Generates detailed reports in various formats
+- Integrates with C2 frameworks for asynchronous operations
+- Continuously updated with community contributions
+
+"""
+    print(desc)
 
 def Install():
     print("[WinPWN] Installing base ...")

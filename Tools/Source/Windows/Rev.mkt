@@ -1,6 +1,26 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Reverse Shell, Networking, Windows, C/C++, Python
+
+This tool is a customizable reverse shell that allows remote command execution. It features adjustable beacon intervals and a timeout mechanism to prevent runaway processes. Designed for both Windows and Kali Linux, it supports multiple enhancements for system enumeration and file transfers.
+
+- Customizable IP and port settings
+- Supports both Windows and Linux environments
+- Beacon interval and timeout settings
+- Easy compilation with makefile or g++
+- Python receiver setup for handling connections
+- Future enhancements for multiple reverse shells
+- Options for system enumeration and file management
+- Minimal dependencies required
+- Debugging features for easy development
+- Ideal for penetration testing and CTF challenges
+
+"""
+    print(desc)
+
 def Install():
     print("[Rev] Installing base ...")
 

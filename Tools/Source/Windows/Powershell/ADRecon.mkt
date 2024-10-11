@@ -1,6 +1,25 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Active Directory, Reconnaissance, Security Assessment, Penetration Testing
+
+ADRecon is a powerful tool for extracting and analyzing data from Active Directory environments, generating comprehensive reports that aid security professionals in assessing the overall health and security posture of the AD setup.
+
+- Gathers extensive AD data including users, groups, and policies
+- Generates detailed reports in Excel format
+- Can be run from non-domain member hosts
+- Works with standard user credentials for most data
+- Supports multiple output formats (CSV, JSON, HTML, etc.)
+- Offers options for specific data collection modules
+- Utilizes LDAP for communication with Domain Controllers
+- Provides insights into ACLs and security settings
+- Useful for auditors, DFIR, and penetration testers
+- Regular updates and community contributions enhance functionality
+"""
+    print(desc)
+
 def Install():
     print("[ADRecon] Installing base ...")
 

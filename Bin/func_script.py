@@ -15,7 +15,7 @@ def listScript():
 
                 print("  ",end='')
                 from importlib.machinery import SourceFileLoader
-                SourceFileLoader("manesec",abs_path).load_module().Info()
+                SourceFileLoader("manesec",abs_path).load_module().description()
 
     if (nolist):
         print("[!] There are no any script can be use.")
@@ -67,7 +67,7 @@ def useScript(inputName):
 
     else:
         # no input value
-        userSelect = fzf.prompt(all_module)
+        userSelect = fzf.prompt(all_module,"--preview-window follow --preview-window=wrap --preview \"mkt desc script '{}' \"")
 
         if userSelect:
             userSelect = userSelect[0]

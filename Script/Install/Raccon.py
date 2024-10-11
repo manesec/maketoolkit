@@ -1,4 +1,4 @@
-def Info():
+def description():
     print("This script will install raccoon-scanner.")
 
 def Run():

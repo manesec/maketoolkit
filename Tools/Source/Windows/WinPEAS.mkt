@@ -2,6 +2,27 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Windows, Privilege Escalation, Security Auditing, Penetration Testing
+
+WinPEAS is a powerful script designed to identify potential privilege escalation paths on Windows systems. It performs a variety of checks to uncover misconfigurations and vulnerabilities that could be exploited to gain higher access privileges.
+
+- Scans for misconfigured services and scheduled tasks
+- Checks for unquoted service paths
+- Identifies vulnerable drivers and DLLs
+- Enumerates user and group permissions
+- Gathers system information and environment variables
+- Detects insecure file permissions
+- Analyzes installed applications for vulnerabilities
+- Supports obfuscated execution for stealth
+- Outputs results in color-coded format for clarity
+- Easy to execute via PowerShell with various parameters
+
+
+"""
+    print(desc)
+    
 def Install():
     print("[WinPEAS] Downloading base ...")
 

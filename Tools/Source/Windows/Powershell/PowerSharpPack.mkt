@@ -1,6 +1,25 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Offensive Security, PowerShell, C#, Post-Exploitation, Privilege Escalation
+
+PowerSharpPack is a versatile toolkit that integrates various offensive C# projects into PowerShell for streamlined usage. It enables users to bypass security mechanisms like AMSI and Script-block logging, making advanced security testing more accessible.
+
+- Combines multiple C# offensive tools into PowerShell
+- Bypasses common security features like AMSI
+- Easy binary loading via PowerShell commands
+- Supports a wide range of offensive security tasks
+- Facilitates privilege escalation and credential harvesting
+- Includes tools for Active Directory enumeration
+- Allows for remote code execution and lateral movement
+- Provides persistence mechanisms
+- Offers tools for data extraction from browsers and applications
+- Regularly updated with community contributions
+"""
+    print(desc)
+
 def Install():
     print("[PowerSharpPack] Installing base ...")
 

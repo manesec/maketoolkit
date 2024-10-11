@@ -1,6 +1,46 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: PowerShell, Red Teaming, Enumeration, Password Cracking, Privilege Escalation
+
+PowerShell-Red-Team-Enum is a versatile collection of PowerShell functions designed for Red Team operations, allowing users to gather information, perform password cracking, and exploit vulnerabilities on Windows systems.
+
+[Files]
+./Convert-Base64.ps1
+./Convert-SID.ps1
+./Convert-StringToHash.ps1
+./Enable-RDP.ps1
+./Get-AzureAccessToken.ps1
+./Get-ClearTextPassword.ps1
+./Get-HttpCertificate.ps1
+./Get-InitialEnum.ps1
+./Get-LdapInfo.ps1
+./Get-NetworkShareInfo.ps1
+./Invoke-AzureEnum.ps1
+./Invoke-AzurePasswordSpray.ps1
+./Invoke-DccwPersistence.ps1
+./Invoke-FodHelperBypass.ps1
+./Invoke-InMemoryPayload.ps1
+./Invoke-PingSweep.ps1
+./Invoke-ReversePowerShell.ps1
+./Invoke-UnquotedServicePathExploit.ps1
+./Invoke-UseCreds.ps1
+./Start-Bind.ps1
+./Start-Listener.ps1
+./Start-SimpleHTTPServer.ps1
+./Test-BruteForceCredentials.ps1
+./Test-BruteLocalUserCredential.ps1
+./Test-BruteZipPassword.ps1
+./Test-FTPCredential.ps1
+./Test-KerberosDoubleHop.ps1
+./Test-Port.ps1
+./Test-PrivEsc.ps1
+
+"""
+    print(desc)
+
 def Install():
     print("[RedTeamPowershellEnum] Installing base ...")
 

@@ -1,6 +1,25 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Webshell, Post-Exploitation, Command Execution, C# Tools
+
+SharPyShell is a lightweight and obfuscated ASP.NET webshell designed for executing commands over an encrypted channel. It compiles code in memory, making it suitable for environments with strict network restrictions.
+
+- Generates obfuscated webshells for C# applications.
+- Supports in-memory execution to avoid detection.
+- Uses encrypted channels for command transmission.
+- Facilitates privilege escalation and lateral movement.
+- Simulates a Windows terminal for interactive sessions.
+- Implements various attack modules (e.g., mimikatz).
+- Allows file uploads and downloads.
+- Compatible with .NET Framework >= 2.0.
+- Stealthy design evades file and network signatures.
+- Requires Python 3.6+ and specific dependencies.
+"""
+    print(desc)
+    
 def Install():
     print("[AspxSharPyShell] Installing base ...")
 

@@ -1,6 +1,25 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Credential Dumping, Active Directory, Security Tools
+
+gMSADumper is a Python tool designed to read and parse Group Managed Service Account (gMSA) password blobs that a user can access, facilitating credential extraction for security assessments.
+
+- Reads gMSA password blobs.
+- Supports LDAP server connections.
+- Allows for Pass-the-Hash authentication.
+- Can utilize Kerberos for secure access.
+- Requires user credentials for operation.
+- Outputs parsed gMSA values.
+- Useful in Active Directory environments.
+- Built on Impacket for blob parsing.
+- Simple command-line interface.
+- Ideal for penetration testing and security audits.
+"""
+    print(desc)
+    
 def Install():
     print("[gMSADumper] Installing base ...")
 

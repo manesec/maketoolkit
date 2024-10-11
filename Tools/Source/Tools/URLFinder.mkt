@@ -2,6 +2,27 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Information Gathering, Web Scraping, Security Testing
+
+URLFinder is a fast, comprehensive, and easy-to-use tool for extracting page information. It analyzes JavaScript and URLs to uncover sensitive information or unauthorized API endpoints hidden within webpages.
+
+- Supports both single and batch URL processing.
+- Displays various HTTP status codes.
+- Customizable user-agent headers.
+- Allows deep and secure crawling modes.
+- Exports results to CSV, JSON, or HTML formats.
+- Supports proxy settings for requests.
+- Can perform fuzz testing on 404 links.
+- Offers a YAML configuration file for custom settings.
+- Allows specification of maximum crawling depth and timeout.
+- Regular expression support for domain filtering.
+
+
+"""
+    print(desc)
+
 def Install():
     print("[URLFinder] Downloading base ...")
 

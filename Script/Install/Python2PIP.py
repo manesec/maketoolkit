@@ -1,7 +1,7 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
-def Info():
+def description():
     print("This script will install Python2 Pip.")
 
 def Run():

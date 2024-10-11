@@ -2,6 +2,25 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Tunneling, Networking, Security, SSH
+
+Chisel is a versatile TCP/UDP tunnel that operates over HTTP and is secured with SSH. It allows users to bypass firewalls and securely connect to remote services, making it a valuable tool for penetration testers and network administrators.
+
+- Fast TCP/UDP tunneling over HTTP
+- Secure connections using SSH encryption
+- Supports reverse port forwarding
+- Client auto-reconnect with exponential backoff
+- Multiple tunnel endpoints over a single connection
+- SOCKS5 proxy support
+- Easy to use with a single executable
+- Authenticated connections with user configuration
+- Can act as a reverse proxy
+- Cross-platform compatibility (written in Go)
+"""
+    print(desc)
+
 def Install():
     print("[Chisel] Downloading base ...")
 
@@ -43,7 +62,7 @@ def UpdateFromGithub():
         ["chisel(.){0,}linux_386.gz","/var/lib/mkt/Tools/Source/Tools/Chisel/chisel_linux_386.gz"],
         ["chisel(.){0,}linux_amd64.gz","/var/lib/mkt/Tools/Source/Tools/Chisel/chisel_linux_amd64.gz"],
         ["chisel(.){0,}windows_386.gz","/var/lib/mkt/Tools/Source/Tools/Chisel/chisel_windows_386.gz"],
-        ["chisel*(.){0,}windows_amd64.gz","/var/lib/mkt/Tools/Source/Tools/Chisel/chisel_windows_amd64.gz"]
+        ["chisel(.){0,}windows_amd64.gz","/var/lib/mkt/Tools/Source/Tools/Chisel/chisel_windows_amd64.gz"]
     ]
     Github.UpdateFromGithubReleaseFiles("jpillora/chisel",Files,sign_prefix="CHISEL_")
     Github.CheckGithubAPIQuta()

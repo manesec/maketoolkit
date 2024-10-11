@@ -3,6 +3,25 @@ Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
 
+def description():
+    desc = r"""
+Categories: Local Privilege Escalation, Windows Exploitation, COM Abuse, Security Tools
+
+Juicy Potato is a Local Privilege Escalation tool that exploits Windows COM servers to escalate privileges from service accounts to NT AUTHORITY\SYSTEM. It leverages the ability to instantiate COM objects with impersonation privileges and can be customized for various execution scenarios.
+
+- Targets multiple CLSIDs for exploitation
+- Allows custom COM listening ports and IPs
+- Supports different process creation modes
+- Launches executables or scripts upon success
+- Customizable process arguments for flexibility
+- Includes a TEST mode for CLSID validation
+- Works with RPC server authentication for stealth
+- Requires SeImpersonate or SeAssignPrimaryToken privileges
+- Designed for Windows environments
+- Automatic builds available for easy deployment
+"""
+    print(desc)
+
 def Install():
     print("[Juicypotato] Downloading base ...")
 

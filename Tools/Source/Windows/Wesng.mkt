@@ -2,6 +2,26 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Vulnerability Assessment, Exploit Development, Windows Tools
+
+WES-NG is a powerful tool that analyzes Windows systems to identify vulnerabilities and suggest applicable exploits based on the system's patch status. It supports all Windows OS versions from XP to 11, enhancing security assessments for penetration testers and security researchers.
+
+- Supports Windows OS from XP to 11
+- Utilizes systeminfo utility for data collection
+- Provides a list of vulnerabilities and exploits
+- Regularly updated vulnerability database
+- Validates missing patches against Microsoft Update Catalog
+- Offers multiple input methods for system data
+- Reduces false positives with additional parameters
+- Integrates data from MSRC and NVD
+- User-friendly command-line interface
+- Active community for bug reporting and improvements
+
+"""
+    print(desc)
+    
 def Install():
     print("[Windows Exploit Suggester] Installing base ...")
 

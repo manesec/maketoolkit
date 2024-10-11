@@ -2,6 +2,26 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Kerberos, Authentication, Security Testing, Penetration Testing, Exploitation
+
+Krbrelayx is a powerful toolkit designed for exploiting Kerberos authentication vulnerabilities, particularly focusing on Kerberos relaying and unconstrained delegation attacks. It facilitates the manipulation of Service Principal Names (SPNs) and Active Directory DNS records, enabling attackers to escalate privileges and compromise systems efficiently.
+
+- Relays Kerberos authentication to target hosts
+- Abuses unconstrained delegation for credential theft
+- Supports adding/modifying SPNs in Active Directory
+- Enables DNS record manipulation via LDAP
+- Executes commands or files on compromised systems
+- Can dump NTLM hashes and TGTs
+- Provides options for Kerberos authentication
+- Compatible with Impacket, ldap3, and dnspython
+- Offers various attack vectors including SMB and LDAP
+- Regularly updated with new features and improvements
+
+"""
+    print(desc)
+    
 def Install():
     print("[Krbrelayx] Installing base ...")
 

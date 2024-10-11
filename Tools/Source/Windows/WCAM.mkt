@@ -2,6 +2,26 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Coerced Authentication, Windows Security, Network Protocols, Penetration Testing
+
+This repository details methods to coerce Windows machines into authenticating with attacker-controlled systems, exploiting automatic UNC path authentication. It includes 15 functions across 5 protocols, providing a significant attack vector for domain users.
+
+- Exploits automatic UNC path authentication
+- 15 working functions across multiple protocols
+- Includes methods for DFS, EFS, and Print System protocols
+- Python proof of concept for each call
+- Potential for NTLM relay attacks
+- Focus on domain controller authentication
+- List of untested methods available
+- Contributions encouraged for new methods
+- Emphasizes security implications of coerced authentication
+- Microsoft’s stance on security vulnerabilities discussed
+
+"""
+    print(desc)
+
 def Install():
     print("[windows coerced authentication methods] Installing base ...")
 

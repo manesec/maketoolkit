@@ -1,6 +1,26 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: PowerShell, Penetration Testing, Red Teaming, Offensive Security, Script Framework
+
+Nishang is a versatile PowerShell framework designed for offensive security, offering a collection of scripts and payloads for penetration testing and red teaming. It enables attackers to execute commands, gather information, and maintain persistence within target systems.
+
+- Comprehensive collection of PowerShell scripts
+- Supports various phases of penetration testing
+- Allows execution of scripts in memory
+- Bypasses security measures like AMSI
+- Facilitates data exfiltration and persistence
+- Includes tools for credential harvesting
+- Provides backdoors for remote command execution
+- Offers various payloads for different attack vectors
+- Actively maintained with regular updates
+- Community-driven with opportunities for contribution
+
+"""
+    print(desc)
+
 def Install():
     print("[Nishang] Installing base ...")
 

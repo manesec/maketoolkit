@@ -1,6 +1,26 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Privilege Escalation, Windows Exploits, Driver Exploits
+
+SeLoadDriverPrivilegeExp exploits the SeLoadDriverPrivilege in Windows to gain elevated privileges. It requires two files: Capcom.sys and ExploitCapcom.exe. This tool allows users to load a custom driver and execute commands with system-level privileges.
+
+- Requires Capcom.sys and ExploitCapcom.exe
+- Must use absolute paths for file locations
+- Enables SeLoadDriverPrivilege
+- Loads custom driver for exploitation
+- Can fail if run through certain environments (e.g., Evil-WinRM)
+- Successful execution grants SYSTEM privileges
+- Useful for privilege escalation on Windows systems
+- Shellcode execution after successful loading
+- Token stealing capabilities
+- Community-supported with resources from various blogs
+
+"""
+    print(desc)
+
 def Install():
     print("[SeLoadDriverPrivilege] Installing base ...")
 

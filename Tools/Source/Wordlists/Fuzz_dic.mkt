@@ -2,6 +2,14 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
 
+def description():
+    desc = r"""
+Categories: Penetration Testing, Fuzzing, Brute Force, Vulnerability Discovery
+
+chinese wordlists collections
+"""
+    print(desc)
+
 def Install():
     print("[Fuzz_dic] Installing base ...")
 

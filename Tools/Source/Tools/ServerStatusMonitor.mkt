@@ -1,6 +1,26 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Information Gathering, Web Application Testing, Exploitation
+
+server-status PWN is a script designed to monitor and extract URLs and client data from misconfigured Apache server-status instances. It helps attackers gather sensitive information by continuously polling the server-status page for new requests.
+
+- Monitors Apache server-status for exposed data
+- Extracts requested URLs and client IPs
+- Logs data into an SQLite3 database
+- Saves unique URLs in a newline-delimited file
+- Works with both Python2 and Python3
+- Requires requests and bs4 libraries
+- Ideal for intelligence engagements
+- Highlights risks of misconfigured server-status
+- Educational tool for ethical hacking
+- Legal use only with consent
+
+"""
+    print(desc)
+
 def Install():
     print("[ServerStatusMonitor] Installing base ...")
 

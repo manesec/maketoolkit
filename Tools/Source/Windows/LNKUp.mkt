@@ -1,6 +1,26 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Data Exfiltration, Payload Generation, Windows Tools
+
+LNKUp is a tool designed to create LNK payloads for data exfiltration on Windows systems. When executed, these payloads can capture sensitive information like NTLM hashes and environment variables.
+
+- Generates LNK payloads for data exfiltration.
+- Targets Windows systems exclusively.
+- Supports NTLM hash capture.
+- Allows environment variable extraction.
+- Requires a listener server for hash capture.
+- Can execute commands on double-click.
+- Simple installation via pip.
+- Customizable payload output.
+- Useful for penetration testing.
+- Open to community support and issues.
+
+"""
+    print(desc)
+    
 def Install():
     print("[LNKUp] Installing base ...")
 

@@ -1,6 +1,25 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Scheduled Tasks, Process Manipulation, Token Manipulation, Named Pipe, Remote Execution, DLL Injection, Print Spooling
+
+Create a Scheduled Task to run commands as SYSTEM, enabling the execution of malicious payloads like a BIND shell. This technique exploits system-level permissions to gain unauthorized access.
+
+- Create a scheduled task to execute commands.
+- Run tasks as SYSTEM to bypass user-level restrictions.
+- Use CreateProcess with specific attributes for elevated access.
+- Manipulate tokens to gain SYSTEM-level privileges.
+- Employ Named Pipe for shell access.
+- Utilize PsExec for remote command execution.
+- Drop and load malicious DLLs in system folders.
+- Reflective loading of scripts for stealth.
+- Explore various token manipulation techniques.
+- Continuously adapt and integrate new methods for exploitation.
+"""
+    print(desc)
+
 def Install():
     print("[GetSystemTechniques] Installing base ...")
 

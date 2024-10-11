@@ -1,6 +1,25 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Web Vulnerability Scanner, Automation Tool, Security Testing, Penetration Testing
+
+RapidScan is a multi-tool web vulnerability scanner designed to automate the process of running various security tools simultaneously. It simplifies vulnerability discovery, reduces false positives, and saves time for penetration testers.
+
+- One-step installation for quick setup.
+- Executes multiple security tools like nmap, nikto, and more in one run.
+- Provides detailed vulnerability classifications (critical, high, medium, low, informational).
+- Offers remediation guidance for discovered vulnerabilities.
+- Generates comprehensive PDF reports of scan results.
+- Lightweight and efficient, minimizing resource usage.
+- AI-driven tool deployment based on detected issues (under development).
+- Supports checks for popular CMS platforms (WordPress, Joomla, Drupal).
+- Currently supports 80 vulnerability tests with more to come.
+- Designed for use on Kali OS, Parrot, and Ubuntu systems.
+"""
+    print(desc)
+
 def Install():
     print("[rapidscan] Installing base ...")
 

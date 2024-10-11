@@ -2,6 +2,25 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Privilege Escalation, NTLM Attacks, Exploitation Tools
+
+LocalPotato is a Windows privilege escalation tool that leverages NTLM reflection attacks to gain elevated access and perform arbitrary file operations. It exploits vulnerabilities in local authentication mechanisms, particularly in SMB and HTTP/WebDAV scenarios.
+
+- Targets local Windows systems for privilege escalation
+- Utilizes NTLM reflection techniques
+- Supports both SMB and HTTP/WebDAV exploitation
+- Allows arbitrary file read/write capabilities
+- Effective against unpatched systems
+- Requires specific command-line arguments for operation
+- Notable for its simplicity and effectiveness
+- Developed by security researchers @decoder_it and @splinter_code
+- SMB scenario patched in January 2023, but HTTP/WebDAV remains vulnerable
+- Documentation available for detailed usage and examples
+"""
+    print(desc)
+
 def Install():
     print("[LocalPotato] Downloading base ...")
 

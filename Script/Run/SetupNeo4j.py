@@ -1,4 +1,4 @@
-def Info():
+def description():
     print("""This script will be setup Setup neo4j and run neo4j: 
     - neo4j: no password""")
 

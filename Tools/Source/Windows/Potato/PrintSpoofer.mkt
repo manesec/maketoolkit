@@ -2,6 +2,26 @@ from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 Github = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_github.py").load_module()
 
+
+def description():
+    desc = r"""
+Categories: Privilege Escalation, Windows Exploitation, Post-Exploitation
+
+PrintSpoofer is a tool that allows users with the SeImpersonatePrivilege on Windows to escalate privileges to SYSTEM by leveraging the Print Spooler service. It can execute commands interactively or non-interactively, making it useful for various exploitation scenarios.
+
+- Leverages SeImpersonatePrivilege for privilege escalation
+- Works on Windows 10 and Server 2016/2019
+- Can execute commands as SYSTEM
+- Supports interactive and non-interactive modes
+- Allows spawning processes on specific desktops
+- Ideal for reverse shells and bind shells
+- Simple command-line interface
+- Useful in penetration testing and red teaming
+- Can be used with various payloads (e.g., Netcat)
+- Requires appropriate user privileges to function
+"""
+    print(desc)
+
 def Install():
     print("[PrintSpoofer] Downloading base ...")
 

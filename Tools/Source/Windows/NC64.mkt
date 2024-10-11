@@ -1,6 +1,25 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Network Utility, Penetration Testing, TCP/IP Tools
+
+Netcat, often dubbed the "Swiss Army knife" of networking, allows for versatile TCP/IP communication. It can establish connections, listen for incoming connections, and even create reverse shells, making it a staple for network administrators and security professionals.
+
+- Outbound/inbound connections over TCP/UDP
+- Built-in port scanning capabilities
+- Ability to execute commands on remote machines
+- Supports DNS forward/reverse checking
+- Can read command line arguments from standard input
+- Slow-send mode for controlled data transmission
+- Hex dump of transmitted/received data
+- Runs in the background without a console
+- Can bind to any local source port
+- Supports multiple operating systems (Windows, Unix)
+"""
+    print(desc)
+
 def Install():
     print("[NC64] Installing base ...")
 

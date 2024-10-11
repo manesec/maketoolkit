@@ -1,6 +1,26 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Reverse Shells, Web Shells, PHP Tools
+
+A simple PHP reverse shell that allows remote command execution by connecting back to an attacker's machine. It requires minimal setup and is effective for gaining access to a compromised server.
+
+- Easy to configure by changing IP and port.
+- Lightweight and efficient for quick deployments.
+- Can be uploaded to vulnerable web servers.
+- Provides remote access to the server's command line.
+- Works on Windows environments.
+- Supports binary implementation for stealth.
+- Requires a listener on the attacker's machine.
+- Ideal for penetration testing and CTF challenges.
+- Open-source with community support.
+- Maintains a low profile to avoid detection.
+
+"""
+    print(desc)
+
 def Install():
     print("[PHPReverseShell] Installing base ...")
 

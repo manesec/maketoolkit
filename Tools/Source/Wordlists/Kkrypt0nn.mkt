@@ -1,6 +1,25 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Wordlists, Password Cracking, Vulnerability Assessment, Enumeration, Security Testing
+
+A comprehensive collection of wordlists designed for various hacking tasks, including password cracking and directory enumeration. These wordlists are categorized by content, making it easy to find the right list for your needs.
+
+- Extensive collection of over 14 million lines across various categories
+- Supports multiple languages for global applicability
+- Includes common passwords and usernames for testing
+- Useful for web application security assessments
+- Regularly updated with contributions from the community
+- Categorized for easy navigation and selection
+- Ideal for penetration testing and ethical hacking
+- Contains specific lists for vulnerabilities and exploits
+- Offers both public and private wordlists
+- Encourages community contributions to expand its offerings
+"""
+    print(desc)
+    
 def Install():
     print("[Kkrypt0nn] Installing base ...")
 

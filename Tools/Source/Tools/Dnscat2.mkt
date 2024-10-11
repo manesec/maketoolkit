@@ -1,6 +1,25 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: DNS Tunneling, Command and Control, Networking, Security
+
+dnscat2 is a DNS tunneling tool that establishes an encrypted command-and-control channel over the DNS protocol, allowing data transfer and remote command execution through DNS queries.
+
+- Creates an encrypted tunnel over DNS
+- Supports file uploads and downloads
+- Enables remote shell access
+- Can operate via authoritative DNS servers
+- Minimal dependencies for client (C) and server (Ruby)
+- Offers direct connection options
+- Built-in command session management
+- Protects against man-in-the-middle attacks
+- Flexible tunneling capabilities
+- Open-source under BSD license
+"""
+    print(desc)
+
 def Install():
     print("[Dnscat2] Download the Client ...")
 

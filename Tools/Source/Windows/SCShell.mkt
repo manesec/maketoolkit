@@ -1,6 +1,25 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Lateral Movement, Fileless Attacks, Remote Execution, Privilege Escalation
+
+SCShell is a fileless lateral movement tool that enables remote command execution without creating or registering a service. It utilizes the ChangeServiceConfigA API to modify a service's binary path, executing commands over DCERPC without SMB authentication.
+
+- Fileless operation minimizes detection risk
+- Uses ChangeServiceConfigA for execution
+- Remote execution without service registration
+- Supports command execution via full paths
+- Can be used with pass-the-hash techniques
+- Written in C, with plans for C# and PowerShell ports
+- Relies on DCERPC for authentication
+- Service path reverts after execution
+- Compatible with msbuild payloads
+- Open-source with community support
+
+"""
+    print(desc)
 
 def Install():
     print("[SCShell] Installing base ...")

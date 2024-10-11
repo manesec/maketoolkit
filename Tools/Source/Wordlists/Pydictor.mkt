@@ -1,6 +1,26 @@
 from importlib.machinery import SourceFileLoader
 Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
 
+def description():
+    desc = r"""
+Categories: Dictionary Builder, Brute-Force Attack, Wordlist Generator, Social Engineering
+
+Pydictor is a versatile dictionary builder designed for brute-force attacks, enabling users to create custom wordlists from various sources. It supports extensive customization and offers built-in tools for managing wordlists efficiently.
+
+- Generates general and custom wordlists
+- Supports Python 2.7 and 3.x
+- Offers tools for merging, filtering, and counting words
+- Highly customizable with configuration files
+- Compatible across Windows, Linux, and Mac
+- Includes plugins for specialized wordlist generation
+- Provides leet mode for obfuscation
+- Allows regex filtering for advanced users
+- Facilitates social engineering wordlist creation
+- Legal disclaimer: usage for unauthorized attacks is illegal
+
+"""
+    print(desc)
+
 def Install():
     print("[Pydoctor] Installing base ...")
 
