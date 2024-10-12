@@ -42,7 +42,7 @@ def Install():
 
     os.chdir("/tmp/mkt/rustscan")
     os.system("unzip /tmp/mkt/rustscan/rustscan-linux.zip")
-    os.system("find /tmp/mkt/rustscan -iname 'rustscan' -type f -exec mv {} /var/lib/mkt/Tools/Source/Tools/Rustscan/rustscan \;")
+    os.system(r"find /tmp/mkt/rustscan -iname 'rustscan' -type f -exec mv {} /var/lib/mkt/Tools/Source/Tools/Rustscan/rustscan \;")
 
 
     os.chdir("/var/lib/mkt/Tools/Source/Tools/Rustscan/")

@@ -31,14 +31,22 @@ def Install():
 
     UpdateFromGithub()
 
+    file = [["hack-browser-data","/var/lib/mkt/Tools/Source/Tools/HackBrowserData/hack-browser-data-32"]]
+    Unit.extractZipFileAndDelete("/var/lib/mkt/Tools/Source/Tools/HackBrowserData/hack-browser-data-linux-32bit.zip", file)
+
+    file = [["hack-browser-data","/var/lib/mkt/Tools/Source/Tools/HackBrowserData/hack-browser-data-64"]]
+    Unit.extractZipFileAndDelete("/var/lib/mkt/Tools/Source/Tools/HackBrowserData/hack-browser-data-linux-64bit.zip", file)
+
+    file = [["hack-browser-data.exe","/var/lib/mkt/Tools/Source/Tools/HackBrowserData/hack-browser-data-64.exe"]]
+    Unit.extractZipFileAndDelete("/var/lib/mkt/Tools/Source/Tools/HackBrowserData/hack-browser-data-windows-64bit.zip", file)
+
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Tools/HackBrowserData/")
-    os.system("unzip \*.zip")
     os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/HackBrowserData/*.zip")
 
     # check if installed 
     import os
-    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/HackBrowserData/hack-browser-data-linux-386")):
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/HackBrowserData/hack-browser-data-32")):
         import sys
         module_name = "Tools/HackBrowserData.mkt"
         print("[ERROR]: Failed to install " + module_name +" ...")
@@ -59,9 +67,8 @@ def Upgrade():
     
 def UpdateFromGithub():
     Files = [
-        ["hack-browser-data-linux-386.zip","/var/lib/mkt/Tools/Source/Tools/HackBrowserData/hack-browser-data-linux-386.zip"],
-        ["hack-browser-data-linux-amd64.zip","/var/lib/mkt/Tools/Source/Tools/HackBrowserData/hack-browser-data-linux-amd64.zip"],
-        ["hack-browser-data-windows-32bit.zip","/var/lib/mkt/Tools/Source/Tools/HackBrowserData/hack-browser-data-windows-32bit.zip"],
+        ["hack-browser-data-linux-32bit.zip","/var/lib/mkt/Tools/Source/Tools/HackBrowserData/hack-browser-data-linux-32bit.zip"],
+        ["hack-browser-data-linux-64bit.zip","/var/lib/mkt/Tools/Source/Tools/HackBrowserData/hack-browser-data-linux-64bit.zip"],
         ["hack-browser-data-windows-64bit.zip","/var/lib/mkt/Tools/Source/Tools/HackBrowserData/hack-browser-data-windows-64bit.zip"]
     ]
     Github.UpdateFromGithubReleaseFiles("moonD4rk/HackBrowserData",Files,sign_prefix="HackBrowserData_")

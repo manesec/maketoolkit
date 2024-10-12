@@ -33,13 +33,12 @@ def Install():
     path = Path("/var/lib/mkt/Res/Data/Sudo_Killer/")
     path.mkdir(parents=True, exist_ok=True)
     
-    os.system("ln -s /var/lib/mkt/Tools/Source/Linux/Sudo_Killer/exploits /var/lib/mkt/Res/Data/Sudo_Killer/exploits")
     os.system("ln -s /var/lib/mkt/Tools/Source/Linux/Sudo_Killer/notes /var/lib/mkt/Res/Data/Sudo_Killer/notes")
 
 
     # check if installed 
     import os
-    if not (os.path.exists("/var/lib/mkt/Tools/Source/Linux/Sudo_Killer/Dockerfile")):
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Linux/Sudo_Killer/README.md")):
         import sys
         module_name = "Linux/Sudo_killer.mkt"
         print("[ERROR]: Failed to install " + module_name +" ...")
@@ -52,7 +51,6 @@ def Uninstall():
 
     import os
     os.system("unlink /var/lib/mkt/Res/Data/Sudo_Killer/notes")
-    os.system("unlink /var/lib/mkt/Res/Data/Sudo_Killer/exploits")
     os.system("rm -rf /var/lib/mkt/Tools/Source/Linux/Sudo_Killer")
 
 

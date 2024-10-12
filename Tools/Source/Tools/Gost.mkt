@@ -33,20 +33,18 @@ def Install():
     import os
     os.chdir("/var/lib/mkt/Tools/Source/Tools/Gost/")
     os.system("gzip -d *.gz")
-    os.system("unzip gost-windows-386.zip")
-    os.system("unzip gost-windows-amd64.zip")
+
+    Unit.extractZipFileAndDelete("/var/lib/mkt/Tools/Source/Tools/Gost/gost-windows-amd64.zip",[["gost.exe","/var/lib/mkt/Tools/Source/Tools/Gost/gost64.exe"]])
+    Unit.extractZipFileAndDelete("/var/lib/mkt/Tools/Source/Tools/Gost/gost-windows-386.zip",[["gost.exe","/var/lib/mkt/Tools/Source/Tools/Gost/gost.exe"]])
 
     # check if installed 
     import os
-    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/Gost/gost-windows-386.zip")):
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/Gost/gost64.exe")):
         import sys
         module_name = "Tools/Gost.mkt"
         print("[ERROR]: Failed to install " + module_name +" ...")
         Unit.RollBack(module_name)
         sys.exit(1)
-
-    os.system("rm gost-windows-386.zip")
-    os.system("rm gost-windows-amd64.zip")
 
     print("OK")
 
@@ -64,10 +62,10 @@ def Upgrade():
     
 def UpdateFromGithub():
     Files = [
-        ["(.){0,}-linux-amd64-(.){0,}","/var/lib/mkt/Tools/Source/Tools/Gost/gost-linux-amd64.gz"],
-        ["(.){0,}-linux-386-(.){0,}","/var/lib/mkt/Tools/Source/Tools/Gost/gost-linux-386.gz"],
-        ["(.){0,}-windows-386-(.){0,}","/var/lib/mkt/Tools/Source/Tools/Gost/gost-windows-386.zip"],
-        ["(.){0,}-windows-amd64-(.){0,}","/var/lib/mkt/Tools/Source/Tools/Gost/gost-windows-amd64.zip"],
+        ["(.){0,}_linux_amd64(.){0,}","/var/lib/mkt/Tools/Source/Tools/Gost/gost-linux-amd64.gz"],
+        ["(.){0,}_linux_386(.){0,}","/var/lib/mkt/Tools/Source/Tools/Gost/gost-linux-386.gz"],
+        ["(.){0,}_windows_386.zip","/var/lib/mkt/Tools/Source/Tools/Gost/gost-windows-386.zip"],
+        ["(.){0,}_windows_amd64.zip","/var/lib/mkt/Tools/Source/Tools/Gost/gost-windows-amd64.zip"],
     ]
     Github.UpdateFromGithubReleaseFiles("ginuerzh/gost",Files,sign_prefix="Gost_")
     Github.CheckGithubAPIQuta()
