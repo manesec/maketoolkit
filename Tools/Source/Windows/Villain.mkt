@@ -39,7 +39,6 @@ def Install():
 
     os.chdir("/var/lib/mkt/Tools/Source/Windows/Villain")
     os.system("pip3 install -r requirements.txt")
-    os.system("apt install -y gnome-terminal")
     print("OK")      
 
 def Uninstall():

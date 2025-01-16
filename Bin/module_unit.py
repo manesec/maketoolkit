@@ -1,4 +1,4 @@
-import os,sys,apt
+import os,sys
 def WgetDownloadFile(url,local_path,quiet = False):
     if os.path.exists(local_path + ".tmp"):
         os.remove(local_path)
@@ -13,17 +13,6 @@ def WgetDownloadFile(url,local_path,quiet = False):
 def RollBack(module_name):
     os.chdir("/var/lib/mkt")
     os.system("mkt remove " + module_name)
-
-def DebPackageSuggestInstall(pkgName):
-    cache = apt.Cache()
-    try:
-        if cache[pkgName].is_installed:
-            pass
-        else:
-            print("[*] Trying to using apt to install: %s " % (pkgName))
-            os.system("sudo apt install -y %s" % (pkgName))
-    except:
-        print("[WARNING] %s no found in your system packages, maybe your system unsupported" % (pkgName) )
 
 def RequireRoot():
     if os.geteuid() != 0:

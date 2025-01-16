@@ -25,8 +25,7 @@ def Install():
     print("[CarbonCopy] Installing base ...")
 
     import os
-    os.system("apt install -y osslsigncode")
-    os.system("python3 install pyopenssl")
+    os.system("pip3 install pyopenssl")
     os.chdir("/var/lib/mkt/Tools/Source/Binary/")
     os.system("git clone https://github.com/paranoidninja/CarbonCopy.git CarbonCopy")
 

@@ -24,9 +24,6 @@ BloodHound is a powerful tool that utilizes graph theory to uncover hidden relat
 def Install():
     import os
 
-    print("[Bloodhound] Pre-install neo4j ...")
-    os.system("apt update; apt install -y neo4j")
-
     print("[Bloodhound] Downloading base ...")
     Github.CheckGithubAPIQuta()
     GetListsFromGithub = Github.ReleasesFileGetFromGithubRepo("BloodHoundAD/BloodHound",["BloodHound-linux-x64.zip"])

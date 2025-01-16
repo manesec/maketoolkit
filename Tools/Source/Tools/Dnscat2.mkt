@@ -25,9 +25,6 @@ def Install():
 
     Download_Version = "v0.07"
 
-    import os
-    os.system("apt install ruby-dev")
-
     from pathlib import Path
 
     path = Path("/var/lib/mkt/Tools/Source/Tools/Dnscat2/Client")

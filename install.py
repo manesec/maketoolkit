@@ -14,14 +14,8 @@ for check_command in requests_command:
     runcode = os.WEXITSTATUS(os.system("command -v %s > /dev/null" % (check_command)))
     if (runcode != 0):
         while(True):
-            inputIn = input("ERROR: %s not found on your system, Install it ? (y/n) " % (check_command)).strip().lower()
-            if (inputIn == "y") or (inputIn == "yes"):
-                command = "apt install -y %s " % check_command
-                print("> %s" % command)
-                os.system(command)
-                break
-            if (inputIn == "n") or (inputIn == "no"):
-                sys.exit(1)
+            print("ERROR: %s not found on your system." % (check_command))
+            sys.exit(1)
 
 # Step 2 - Install Library
 os.system("pip3 install -r requirements.txt")

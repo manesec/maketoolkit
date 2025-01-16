@@ -9,7 +9,7 @@ def findinFiles(filename):
     fzf = FzfPrompt()
 
     if (filename[0] == None):
-        command = "find /Tools/ -type f -not -name '*\.mkt' -not -path '*/.git/*' " 
+        command = "find /Tools/ -type f -not -name '*\\.mkt' -not -path '*/.git/*' " 
         status,output_str = subprocess.getstatusoutput(command)
         files = output_str.split('\n')
 
@@ -28,7 +28,7 @@ def findinFiles(filename):
             print("[!] User cancel select.")
 
     else:
-        command = "find /Tools/ -type f -iname '*%s*' -not -name '*\.mkt' -not -path '*/.git/*' " % (filename[0])
+        command = "find /Tools/ -type f -iname '*%s*' -not -name '*\\.mkt' -not -path '*/.git/*' " % (filename[0])
         status,output_str = subprocess.getstatusoutput(command)
 
         if output_str.strip() == '':

@@ -17,7 +17,7 @@ def copyAndfindinFiles(filename):
     fzf = FzfPrompt()
     
     if (not filename):
-        command = "find /Tools/ -type f -not -name '*\.mkt' -not -path '*/.git/*' " 
+        command = "find /Tools/ -type f -not -name '*\\.mkt' -not -path '*/.git/*' " 
         status,output_str = subprocess.getstatusoutput(command)
         files = output_str.split('\n')
 
@@ -35,7 +35,7 @@ def copyAndfindinFiles(filename):
             print("[!] User cancel select.")
 
     else:
-        command = "find /Tools/ -type f -iname '*%s*' -not -name '*\.mkt' -not -path '*/.git/*' " % (filename[0])
+        command = "find /Tools/ -type f -iname '*%s*' -not -name '*\\.mkt' -not -path '*/.git/*' " % (filename[0])
         status,output_str = subprocess.getstatusoutput(command)
 
         if output_str.strip() == '':

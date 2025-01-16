@@ -1,0 +1,44 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
+def description():
+    desc = r"""
+pwn_jenkins
+
+
+"""
+    print(desc)
+    
+def Install():
+    print("[JenkinsPWN] Installing base ...")
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/")
+    os.system("git clone https://github.com/gquere/pwn_jenkins JenkinsPWN")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Tools/JenkinsPWN/README.md")):
+        import sys
+        module_name = "Tools/JenkinsPWN.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")  
+
+def Uninstall():
+    print("[JenkinsPWN] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Tools/JenkinsPWN")
+
+def Upgrade():
+    print("[JenkinsPWN] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Tools/JenkinsPWN")
+    
+    Branches = "master"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    os.system("pip3 install impacket ldap3 dnspython")
+    os.system("python3 setup.py install")

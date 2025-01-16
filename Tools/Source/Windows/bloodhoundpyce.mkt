@@ -1,0 +1,60 @@
+from importlib.machinery import SourceFileLoader
+Unit = SourceFileLoader("manesec_github","/var/lib/mkt/Bin/module_unit.py").load_module()
+
+def description():
+    desc = r"""
+Categories: Reconnaissance, Active Directory, Penetration Testing, Python Tools
+
+BloodHound.py is a Python-based ingestor for BloodHound, designed to facilitate Active Directory enumeration. It collects data on users, groups, trusts, and sessions to help identify attack paths within a domain.
+
+(only compatible with BloodHound CE)
+
+- Python 3 compatible, easy to install via pip.
+- Integrates with Impacket for enhanced functionality.
+- Supports multiple collection methods for flexible data gathering.
+- Requires domain credentials for operation.
+- Can run in a Docker container for isolated environments.
+- Provides options to specify domain and DC manually.
+- Collects data on local admins and group memberships.
+- Can perform privileged session enumeration.
+- Maintained by security professionals with community contributions.
+- Useful for identifying security weaknesses in Active Directory setups.
+"""
+    print(desc)
+    
+def Install():
+    print("[bloodhoundpy-ce] Installing base ...")
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/")
+    os.system("git clone https://github.com/fox-it/BloodHound.py.git bloodhoundpyce -b bloodhound-ce")
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/bloodhoundpyce")
+    os.system("pip3 install impacket ldap3 dnspython")
+    os.system("python3 setup.py install")
+
+    # check if installed 
+    import os
+    if not (os.path.exists("/var/lib/mkt/Tools/Source/Windows/bloodhoundpyce/README.md")):
+        import sys
+        module_name = "Windows/bloodhoundpyce.mkt"
+        print("[ERROR]: Failed to install " + module_name +" ...")
+        Unit.RollBack(module_name)
+        sys.exit(1)
+
+    print("OK")  
+
+def Uninstall():
+    print("[bloodhoundpy-ce] Uninstalling ...")
+
+    import os
+    os.system("rm -rf /var/lib/mkt/Tools/Source/Windows/bloodhoundpyce")
+
+def Upgrade():
+    print("[bloodhoundpy-ce] Upgrading ...")
+
+    import os
+    os.chdir("/var/lib/mkt/Tools/Source/Windows/bloodhoundpyce")
+    
+    Branches = "bloodhound-ce"
+    os.system("git pull origin %s || (git stash drop && git pull origin %s )" % (Branches,Branches))
+    os.system("pip3 install impacket ldap3 dnspython")
+    os.system("python3 setup.py install")
