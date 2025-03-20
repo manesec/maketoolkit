@@ -53,8 +53,11 @@ def Upgrade():
     
 def UpdateFromGithub():
     Files = [
-        ["nxc","/var/lib/mkt/Tools/Source/Tools/Netexec/nxc"],
-        ["nxc.exe","/var/lib/mkt/Tools/Source/Tools/Netexec/nxc.exe"]
+        ["nxc-ubuntu-latest.zip","/var/lib/mkt/Tools/Source/Tools/Netexec/nxc-ubuntu-latest.zip"],
+        ["nxc.exe.zip","/var/lib/mkt/Tools/Source/Tools/Netexec/nxc.exe.zip"]
     ]
     Github.UpdateFromGithubReleaseFiles("Pennyw0rth/NetExec",Files,sign_prefix="Netexec_")
     Github.CheckGithubAPIQuta()
+
+    Unit.extractZipFileAndDelete("/var/lib/mkt/Tools/Source/Tools/Netexec/nxc-ubuntu-latest.zip",[["nxc","/var/lib/mkt/Tools/Source/Tools/Netexec/nxc"]])
+    Unit.extractZipFileAndDelete("/var/lib/mkt/Tools/Source/Tools/Netexec/nxc.exe.zip",[["nxc.exe","/var/lib/mkt/Tools/Source/Tools/Netexec/nxc.exe"]])
